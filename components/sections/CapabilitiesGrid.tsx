@@ -78,7 +78,7 @@ export default function CapabilitiesGrid() {
             <span className="text-xs font-mono uppercase tracking-widest text-neutral-500">
               Agent Capabilities
             </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-light text-neutral-800 dark:text-white tracking-tight">
               Six Tools. One Agent.
             </h2>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">
@@ -95,7 +95,7 @@ export default function CapabilitiesGrid() {
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 ${
                   activeTab === tab
                     ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 shadow-xs'
-                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 {tab}
@@ -120,7 +120,7 @@ export default function CapabilitiesGrid() {
                     {cap.metric}
                   </span>
                 </div>
-                <h3 className="text-xl font-medium text-neutral-900 dark:text-white">{cap.title}</h3>
+                <h3 className="text-xl font-medium text-neutral-800 dark:text-white">{cap.title}</h3>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">{cap.description}</p>
               </div>
               <div className="mt-8 pt-4 border-t border-neutral-200/70 dark:border-neutral-800/60 flex items-center gap-2 text-xs font-mono text-neutral-500">

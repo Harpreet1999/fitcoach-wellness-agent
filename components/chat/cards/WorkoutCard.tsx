@@ -47,7 +47,7 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
             </div>
             <div>
               <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">{data.category}</div>
-              <div className="text-base font-semibold text-neutral-900 dark:text-white">{data.name}</div>
+              <div className="text-base font-semibold text-neutral-800 dark:text-white">{data.name}</div>
             </div>
           </div>
           <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
@@ -76,7 +76,7 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
         <>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full flex items-center justify-between px-5 py-3 border-t border-neutral-200 dark:border-neutral-800 text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors"
+            className="w-full flex items-center justify-between px-5 py-3 border-t border-neutral-200 dark:border-neutral-800 text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors"
           >
             <span>{data.exercises.length} Exercises Included</span>
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -87,7 +87,7 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
               {data.exercises.map((ex, i) => (
                 <div key={i} className="px-5 py-3 grid grid-cols-3 gap-2 text-xs">
                   <div className="col-span-2">
-                    <div className="font-medium text-neutral-900 dark:text-neutral-100">{ex.name}</div>
+                    <div className="font-medium text-neutral-800 dark:text-neutral-100">{ex.name}</div>
                     <div className="text-neutral-500 mt-0.5 font-light leading-relaxed">{ex.tips}</div>
                   </div>
                   <div className="text-right text-neutral-600 dark:text-neutral-400 font-mono">

@@ -13,6 +13,11 @@
   body {
     overflow-x: hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f7f5;
+  }
+
+  .dark body {
+    background-color: #0a0a0a;
   }
 
   * {
@@ -75,7 +80,7 @@
 
 /* Gradient text utility */
 .text-gradient {
-  background: linear-gradient(135deg, #171717 0%, #737373 100%);
+  background: linear-gradient(135deg, #262626 0%, #737373 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

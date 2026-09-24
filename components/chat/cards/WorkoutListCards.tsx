@@ -30,7 +30,7 @@ export function WorkoutLogCard({ data }: { data: WorkoutLogData }) {
         </div>
         <div>
           <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Routine Logged</div>
-          <div className="text-base font-semibold text-neutral-900 dark:text-white">{data.day}</div>
+          <div className="text-base font-semibold text-neutral-800 dark:text-white">{data.day}</div>
         </div>
         <CheckCircle2 className="w-5 h-5 text-neutral-800 dark:text-neutral-200 ml-auto" />
       </div>
@@ -59,7 +59,7 @@ export function WorkoutListCard({ data }: { data: WorkoutListData }) {
         {data.workouts.map((w) => (
           <div key={w.id} className="px-5 py-3 flex items-center justify-between hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors">
             <div>
-              <div className="text-sm font-medium text-neutral-900 dark:text-white">{w.name}</div>
+              <div className="text-sm font-medium text-neutral-800 dark:text-white">{w.name}</div>
               <div className="text-xs text-neutral-500 font-mono mt-0.5">
                 {w.category} · {w.duration_mins}min · {w.primary_muscles.slice(0, 2).join(', ')}
               </div>

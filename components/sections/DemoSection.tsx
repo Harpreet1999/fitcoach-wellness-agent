@@ -51,7 +51,7 @@ export default function DemoSection() {
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-500">
             Interactive Agent
           </span>
-          <h2 className="text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-light text-neutral-800 dark:text-white tracking-tight">
             Ask FitCoach Anything.
           </h2>
           <p className="text-sm text-neutral-600 dark:text-neutral-400 font-light max-w-xl">
@@ -80,7 +80,7 @@ export default function DemoSection() {
                         <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-500 transition-all duration-200">
                           <Icon className="w-3.5 h-3.5" />
                         </div>
-                        <div className="text-xs font-semibold text-neutral-900 dark:text-white">
+                        <div className="text-xs font-semibold text-neutral-800 dark:text-white">
                           {p.title}
                         </div>
                       </div>
@@ -93,7 +93,7 @@ export default function DemoSection() {
               </div>
 
               {/* Note */}
-              <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-900/30">
+              <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f3f2ee]/60 dark:bg-neutral-900/30">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1">In-Session Memory</div>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
                   Conversation history and calculated metrics persist locally in your session storage. Refresh to reset.

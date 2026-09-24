@@ -22,7 +22,7 @@ export default function NutritionCard({ data }: { data: NutritionData }) {
   }
 
   const macros = [
-    { label: 'Calories', value: `${data.calories} kcal`, color: 'text-neutral-900 dark:text-white' },
+    { label: 'Calories', value: `${data.calories} kcal`, color: 'text-neutral-800 dark:text-white' },
     { label: 'Protein', value: `${data.protein}g`, color: 'text-neutral-700 dark:text-neutral-300' },
     { label: 'Carbs', value: `${data.carbs}g`, color: 'text-neutral-700 dark:text-neutral-300' },
     { label: 'Fat', value: `${data.fat}g`, color: 'text-neutral-700 dark:text-neutral-300' },
@@ -37,7 +37,7 @@ export default function NutritionCard({ data }: { data: NutritionData }) {
         </div>
         <div>
           <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Nutrition Profile — per 100g</div>
-          <div className="text-base font-semibold text-neutral-900 dark:text-white capitalize">{data.name}</div>
+          <div className="text-base font-semibold text-neutral-800 dark:text-white capitalize">{data.name}</div>
           {data.family && <div className="text-xs text-neutral-500 font-mono">Taxonomy: {data.family}</div>}
         </div>
       </div>

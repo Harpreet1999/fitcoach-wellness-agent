@@ -50,7 +50,7 @@ export default function HabitCard({ data }: { data: HabitData }) {
           <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 capitalize">
             {data.category} Protocol
           </div>
-          <div className="text-sm font-semibold text-neutral-900 dark:text-white mt-0.5">
+          <div className="text-sm font-semibold text-neutral-800 dark:text-white mt-0.5">
             {data.title}
           </div>
         </div>

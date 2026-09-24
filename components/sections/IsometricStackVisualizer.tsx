@@ -97,7 +97,7 @@ export default function IsometricStackVisualizer() {
       {/* Top Header Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-neutral-800 dark:bg-white animate-pulse" />
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
             FIG_01 · LEFT-TO-RIGHT HORIZONTAL ARCHITECTURAL PIPELINE
           </span>
@@ -108,7 +108,7 @@ export default function IsometricStackVisualizer() {
       </div>
 
       {/* Main Left-to-Right 3D Isometric SVG Canvas */}
-      <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-950 p-4 sm:p-8 overflow-hidden shadow-xs">
+      <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f3f2ee]/60 dark:bg-neutral-950 p-4 sm:p-8 overflow-hidden shadow-xs">
         {/* Blueprint Dotted Matrix Background */}
         <div
           className="absolute inset-0 opacity-[0.25] dark:opacity-[0.20] pointer-events-none"
@@ -177,7 +177,7 @@ export default function IsometricStackVisualizer() {
                 points="110,218 175,250 110,282 45,250"
                 className={`transition-colors duration-200 ${
                   selectedStage === 'interface'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-700 dark:stroke-white stroke-[1.75]'
                     : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
                 }`}
               />
@@ -198,14 +198,14 @@ export default function IsometricStackVisualizer() {
                   points="110,180 160,205 110,230 60,205"
                   className={`transition-colors duration-200 ${
                     selectedStage === 'interface'
-                      ? 'fill-white dark:fill-neutral-800 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      ? 'fill-white dark:fill-neutral-800 stroke-neutral-700 dark:stroke-white stroke-[1.5]'
                       : 'fill-white/90 dark:fill-neutral-900/80 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
                   }`}
                 />
                 {/* Active Header Bar */}
                 <polygon
                   points="110,186 148,205 110,216 72,197"
-                  className={selectedStage === 'interface' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-300 dark:fill-neutral-700'}
+                  className={selectedStage === 'interface' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-300 dark:fill-neutral-700'}
                 />
                 {/* Simulated Content Bars */}
                 <line x1="82" y1="212" x2="118" y2="223" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="2" />
@@ -214,8 +214,8 @@ export default function IsometricStackVisualizer() {
 
               {/* Stage Pin & Monospace Labels */}
               <line x1="110" y1="145" x2="110" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
-              <circle cx="110" cy="145" r="2.5" className={selectedStage === 'interface' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
-              <text x="110" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'interface' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="110" cy="145" r="2.5" className={selectedStage === 'interface' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="110" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'interface' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 STAGE 01
               </text>
               <text x="110" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
@@ -240,7 +240,7 @@ export default function IsometricStackVisualizer() {
                 points="285,218 350,250 285,282 220,250"
                 className={`transition-colors duration-200 ${
                   selectedStage === 'context'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-700 dark:stroke-white stroke-[1.75]'
                     : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
                 }`}
               />
@@ -265,21 +265,21 @@ export default function IsometricStackVisualizer() {
                   points="285,200 325,220 285,240 245,220"
                   className={`transition-colors duration-200 ${
                     selectedStage === 'context'
-                      ? 'fill-white dark:fill-neutral-700 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      ? 'fill-white dark:fill-neutral-700 stroke-neutral-700 dark:stroke-white stroke-[1.5]'
                       : 'fill-white/90 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
                   }`}
                 />
                 {/* Injected Vector Indicator */}
                 <polygon
                   points="285,206 310,218 285,230 260,218"
-                  className={selectedStage === 'context' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'}
+                  className={selectedStage === 'context' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'}
                 />
               </g>
 
               {/* Stage Pin & Monospace Labels */}
               <line x1="285" y1="170" x2="285" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
-              <circle cx="285" cy="170" r="2.5" className={selectedStage === 'context' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
-              <text x="285" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'context' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="285" cy="170" r="2.5" className={selectedStage === 'context' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="285" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'context' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 STAGE 02
               </text>
               <text x="285" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
@@ -303,7 +303,7 @@ export default function IsometricStackVisualizer() {
                 points="460,218 530,250 460,282 390,250"
                 className={`transition-colors duration-200 ${
                   selectedStage === 'reasoning'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white stroke-[2]'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-700 dark:stroke-white stroke-[2]'
                     : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-400 dark:stroke-neutral-700 stroke-[1.2] group-hover:stroke-neutral-500'
                 }`}
               />
@@ -326,7 +326,7 @@ export default function IsometricStackVisualizer() {
                   points="0,-24 35,-6 0,12 -35,-6"
                   className={`transition-colors duration-200 ${
                     selectedStage === 'reasoning'
-                      ? 'fill-white dark:fill-neutral-100 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      ? 'fill-white dark:fill-neutral-100 stroke-neutral-700 dark:stroke-white stroke-[1.5]'
                       : 'fill-neutral-200 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
                   }`}
                 />
@@ -335,7 +335,7 @@ export default function IsometricStackVisualizer() {
                   points="-35,-6 0,12 0,44 -35,26"
                   className={`transition-colors duration-200 ${
                     selectedStage === 'reasoning'
-                      ? 'fill-neutral-300 dark:fill-neutral-300 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      ? 'fill-neutral-300 dark:fill-neutral-300 stroke-neutral-700 dark:stroke-white stroke-[1.5]'
                       : 'fill-neutral-300 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
                   }`}
                 />
@@ -344,7 +344,7 @@ export default function IsometricStackVisualizer() {
                   points="0,12 35,-6 35,26 0,44"
                   className={`transition-colors duration-200 ${
                     selectedStage === 'reasoning'
-                      ? 'fill-neutral-800 dark:fill-neutral-700 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      ? 'fill-neutral-800 dark:fill-neutral-700 stroke-neutral-700 dark:stroke-white stroke-[1.5]'
                       : 'fill-neutral-400 dark:fill-neutral-950 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
                   }`}
                 />
@@ -352,28 +352,28 @@ export default function IsometricStackVisualizer() {
                 {/* Core Inset Chip */}
                 <polygon
                   points="0,-14 20,-4 0,6 -20,-4"
-                  className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-black' : 'fill-neutral-400 dark:fill-neutral-700'}
+                  className={selectedStage === 'reasoning' ? 'fill-neutral-800 dark:fill-black' : 'fill-neutral-400 dark:fill-neutral-700'}
                 />
               </g>
 
               {/* Callout Indicator to Agent Node */}
               <line x1="495" y1="165" x2="550" y2="165" className="stroke-neutral-400 dark:stroke-neutral-600" strokeWidth="1" />
-              <circle cx="495" cy="165" r="2.5" className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'} />
-              <text x="555" y="168" className={`font-mono text-[9px] tracking-wider uppercase font-semibold ${selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="495" cy="165" r="2.5" className={selectedStage === 'reasoning' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'} />
+              <text x="555" y="168" className={`font-mono text-[9px] tracking-wider uppercase font-semibold ${selectedStage === 'reasoning' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 GEMINI NODE
               </text>
 
               {/* Stage Pin & Monospace Labels */}
               <line x1="460" y1="130" x2="460" y2="60" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
-              <circle cx="460" cy="130" r="3" className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
-              <text x="460" y="42" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-bold uppercase ${selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="460" cy="130" r="3" className={selectedStage === 'reasoning' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="460" y="42" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-bold uppercase ${selectedStage === 'reasoning' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 STAGE 03
               </text>
               <text x="460" y="54" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
                 REASONING CORE
               </text>
 
-              <text x="460" y="324" textAnchor="middle" className="font-mono text-[9px] tracking-wider font-semibold fill-neutral-950 dark:fill-white">
+              <text x="460" y="324" textAnchor="middle" className="font-mono text-[9px] tracking-wider font-semibold fill-neutral-800 dark:fill-white">
                 GEMINI 3.5 FLASH
               </text>
             </g>
@@ -390,7 +390,7 @@ export default function IsometricStackVisualizer() {
                 points="635,218 700,250 635,282 570,250"
                 className={`transition-colors duration-200 ${
                   selectedStage === 'pipeline'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-700 dark:stroke-white stroke-[1.75]'
                     : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
                 }`}
               />
@@ -408,7 +408,7 @@ export default function IsometricStackVisualizer() {
                 {/* Central Router Block */}
                 <polygon
                   points="635,225 665,240 635,255 605,240"
-                  className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white stroke-neutral-950 dark:stroke-white' : 'fill-neutral-300 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600'}
+                  className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white stroke-neutral-700 dark:stroke-white' : 'fill-neutral-300 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600'}
                   strokeWidth="1"
                 />
                 {/* Branching Traces */}
@@ -417,16 +417,16 @@ export default function IsometricStackVisualizer() {
                 <line x1="635" y1="225" x2="635" y2="208" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
                 <line x1="635" y1="255" x2="635" y2="270" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
                 {/* Tool Chip Nodes */}
-                <circle cx="585" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
-                <circle cx="685" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
-                <circle cx="635" cy="208" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
-                <circle cx="635" cy="270" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="585" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="685" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="635" cy="208" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="635" cy="270" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400'} />
               </g>
 
               {/* Stage Pin & Monospace Labels */}
               <line x1="635" y1="185" x2="635" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
-              <circle cx="635" cy="185" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
-              <text x="635" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'pipeline' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="635" cy="185" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="635" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'pipeline' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 STAGE 04
               </text>
               <text x="635" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
@@ -450,7 +450,7 @@ export default function IsometricStackVisualizer() {
                 points="810,218 875,250 810,282 745,250"
                 className={`transition-colors duration-200 ${
                   selectedStage === 'cloud'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-700 dark:stroke-white stroke-[1.75]'
                     : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
                 }`}
               />
@@ -479,18 +479,18 @@ export default function IsometricStackVisualizer() {
                   cy="215"
                   rx="15"
                   ry="7.5"
-                  className={selectedStage === 'cloud' ? 'fill-neutral-950 dark:fill-white stroke-neutral-950 dark:stroke-white stroke-[1.5]' : 'fill-neutral-300 dark:fill-neutral-700 stroke-neutral-400 dark:stroke-neutral-500'}
+                  className={selectedStage === 'cloud' ? 'fill-neutral-800 dark:fill-white stroke-neutral-700 dark:stroke-white stroke-[1.5]' : 'fill-neutral-300 dark:fill-neutral-700 stroke-neutral-400 dark:stroke-neutral-500'}
                 />
                 <path
                   d="M 795,215 v 20 a 15,7.5 0 0 0 30,0 v -20"
-                  className={selectedStage === 'cloud' ? 'fill-neutral-900 dark:fill-neutral-100 stroke-neutral-950 dark:stroke-white stroke-[1.5]' : 'fill-neutral-400 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-500'}
+                  className={selectedStage === 'cloud' ? 'fill-neutral-800 dark:fill-neutral-100 stroke-neutral-700 dark:stroke-white stroke-[1.5]' : 'fill-neutral-400 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-500'}
                 />
               </g>
 
               {/* Stage Pin & Monospace Labels */}
               <line x1="810" y1="185" x2="810" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
-              <circle cx="810" cy="185" r="2.5" className={selectedStage === 'cloud' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
-              <text x="810" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'cloud' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+              <circle cx="810" cy="185" r="2.5" className={selectedStage === 'cloud' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="810" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'cloud' ? 'fill-neutral-800 dark:fill-white' : 'fill-neutral-500'}`}>
                 STAGE 05
               </text>
               <text x="810" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
@@ -504,19 +504,19 @@ export default function IsometricStackVisualizer() {
 
             {/* Stage Selector Ring around active stage base */}
             {selectedStage === 'interface' && (
-              <polygon points="110,214 180,250 110,286 40,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+              <polygon points="110,214 180,250 110,286 40,250" fill="none" className="stroke-neutral-700 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
             )}
             {selectedStage === 'context' && (
-              <polygon points="285,214 355,250 285,286 215,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+              <polygon points="285,214 355,250 285,286 215,250" fill="none" className="stroke-neutral-700 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
             )}
             {selectedStage === 'reasoning' && (
-              <polygon points="460,214 535,250 460,286 385,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.5" strokeDasharray="4 4" />
+              <polygon points="460,214 535,250 460,286 385,250" fill="none" className="stroke-neutral-700 dark:stroke-white" strokeWidth="1.5" strokeDasharray="4 4" />
             )}
             {selectedStage === 'pipeline' && (
-              <polygon points="635,214 705,250 635,286 565,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+              <polygon points="635,214 705,250 635,286 565,250" fill="none" className="stroke-neutral-700 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
             )}
             {selectedStage === 'cloud' && (
-              <polygon points="810,214 880,250 810,286 740,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+              <polygon points="810,214 880,250 810,286 740,250" fill="none" className="stroke-neutral-700 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
             )}
           </svg>
         </div>
@@ -537,7 +537,7 @@ export default function IsometricStackVisualizer() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-150 flex items-center gap-1.5 ${
                     isSelected
                       ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 font-semibold shadow-xs'
-                      : 'bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
+                      : 'bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
                   }`}
                 >
                   <span className="opacity-60">{item.number}</span>
@@ -553,7 +553,7 @@ export default function IsometricStackVisualizer() {
       <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-8 backdrop-blur-sm shadow-xs transition-colors duration-200">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-neutral-200 dark:border-neutral-800">
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold">
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white font-semibold">
               {active.code}
             </span>
             <span className="text-xs font-mono text-neutral-500">
@@ -567,7 +567,7 @@ export default function IsometricStackVisualizer() {
 
         <div className="space-y-4 mb-6">
           <div className="space-y-1">
-            <h3 className="text-xl font-medium text-neutral-900 dark:text-white font-sans">
+            <h3 className="text-xl font-medium text-neutral-800 dark:text-white font-sans">
               {active.name}
             </h3>
             <div className="text-xs font-mono uppercase tracking-wider text-neutral-500">
@@ -584,12 +584,12 @@ export default function IsometricStackVisualizer() {
           {active.specs.map((spec, i) => (
             <div
               key={i}
-              className="p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-50 dark:bg-neutral-950/60 space-y-1"
+              className="p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-950/60 space-y-1"
             >
               <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500">
                 {spec.label}
               </div>
-              <div className="text-xs font-semibold text-neutral-900 dark:text-white font-mono">
+              <div className="text-xs font-semibold text-neutral-800 dark:text-white font-mono">
                 {spec.value}
               </div>
             </div>

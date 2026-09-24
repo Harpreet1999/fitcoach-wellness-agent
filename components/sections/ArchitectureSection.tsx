@@ -59,7 +59,7 @@ export default function ArchitectureSection() {
   };
 
   return (
-    <section id="architecture" className="py-24 border-t border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/40 dark:bg-neutral-950 transition-colors duration-200">
+    <section id="architecture" className="py-24 border-t border-neutral-200 dark:border-neutral-800/80 bg-[#f3f2ee]/60 dark:bg-neutral-950 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section eyebrow header — Kanso Screenshot 1 exact style */}
@@ -73,7 +73,7 @@ export default function ArchitectureSection() {
         {/* Section title & Copy button */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-6">
           <div className="space-y-2">
-            <h2 className="text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white tracking-tight font-sans">
+            <h2 className="text-3xl sm:text-4xl font-light text-neutral-800 dark:text-white tracking-tight font-sans">
               How FitCoach Thinks.
             </h2>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 font-light max-w-xl">
@@ -82,9 +82,9 @@ export default function ArchitectureSection() {
           </div>
           <button
             onClick={handleCopy}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors self-start sm:self-auto shadow-xs"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono text-neutral-700 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors self-start sm:self-auto shadow-xs"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-neutral-900 dark:text-white" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-neutral-800 dark:text-white" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'Copied' : 'Copy All Specs'}</span>
           </button>
         </div>
@@ -124,7 +124,7 @@ export default function ArchitectureSection() {
             ) : (
               <div>
                 <div className="border-b border-neutral-200 dark:border-neutral-800 pb-4 mb-6 flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-neutral-900 dark:text-white">{activeTab} Parameters</h3>
+                  <h3 className="text-lg font-medium text-neutral-800 dark:text-white">{activeTab} Parameters</h3>
                   <span className="text-xs font-mono text-neutral-500">{archData[activeTab].length} Parameters</span>
                 </div>
 
@@ -133,7 +133,7 @@ export default function ArchitectureSection() {
                     <div key={i} className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-baseline">
                       <div className="text-xs font-mono uppercase tracking-wider text-neutral-500">{item.label}</div>
                       <div className="sm:col-span-2 space-y-1">
-                        <div className="text-sm font-semibold text-neutral-900 dark:text-white">{item.value}</div>
+                        <div className="text-sm font-semibold text-neutral-800 dark:text-white">{item.value}</div>
                         <div className="text-xs text-neutral-600 dark:text-neutral-400 font-light">{item.detail}</div>
                       </div>
                     </div>
@@ -141,12 +141,12 @@ export default function ArchitectureSection() {
                 </div>
 
                 {/* Footer note */}
-                <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/50 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 p-6 rounded-b-2xl">
+                <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/50 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 p-6 rounded-b-2xl">
                   <div className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
                     GitHub Repository
                   </div>
                   <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">
-                    Full ADK agent code (<code className="text-neutral-900 dark:text-neutral-300 font-mono">app/agent.py</code>), A2UI renderer, FastAPI proxy, deployment manifests, and evaluation datasets are available in the GitHub repository.
+                    Full ADK agent code (<code className="text-neutral-800 dark:text-neutral-300 font-mono">app/agent.py</code>), A2UI renderer, FastAPI proxy, deployment manifests, and evaluation datasets are available in the GitHub repository.
                   </p>
                 </div>
               </div>

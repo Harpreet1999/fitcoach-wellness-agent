@@ -41,18 +41,18 @@ export default function MacroCard({ data }: { data: MacroData }) {
           </div>
           <div>
             <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Daily Targets</div>
-            <div className="text-sm font-semibold text-neutral-900 dark:text-white">{goalLabel[data.goal] || data.goal}</div>
+            <div className="text-sm font-semibold text-neutral-800 dark:text-white">{goalLabel[data.goal] || data.goal}</div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-semibold text-neutral-900 dark:text-white font-sans">{data.target_calories.toLocaleString()}</div>
+          <div className="text-2xl font-semibold text-neutral-800 dark:text-white font-sans">{data.target_calories.toLocaleString()}</div>
           <div className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">kcal / day</div>
         </div>
       </div>
 
       {/* Macro bars */}
       <div className="flex gap-1 h-2 rounded-full overflow-hidden mb-4 bg-neutral-100 dark:bg-neutral-800">
-        <div className="bg-neutral-900 dark:bg-neutral-100 rounded-full transition-all duration-500" style={{ width: `${proteinPct}%` }} />
+        <div className="bg-neutral-800 dark:bg-neutral-100 rounded-full transition-all duration-500" style={{ width: `${proteinPct}%` }} />
         <div className="bg-neutral-500 dark:bg-neutral-400 rounded-full transition-all duration-500" style={{ width: `${carbsPct}%` }} />
         <div className="bg-neutral-300 dark:bg-neutral-600 rounded-full transition-all duration-500" style={{ width: `${fatPct}%` }} />
       </div>
@@ -61,19 +61,19 @@ export default function MacroCard({ data }: { data: MacroData }) {
       <div className="grid grid-cols-3 gap-2.5 mb-4">
         <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
           <Beef className="w-4 h-4 text-neutral-700 dark:text-neutral-300 mx-auto mb-1" />
-          <div className="text-lg font-semibold text-neutral-900 dark:text-white">{data.protein_g}g</div>
+          <div className="text-lg font-semibold text-neutral-800 dark:text-white">{data.protein_g}g</div>
           <div className="text-[10px] font-mono text-neutral-500 uppercase">Protein</div>
           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 font-mono">{proteinPct}%</div>
         </div>
         <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
           <Wheat className="w-4 h-4 text-neutral-700 dark:text-neutral-300 mx-auto mb-1" />
-          <div className="text-lg font-semibold text-neutral-900 dark:text-white">{data.carbs_g}g</div>
+          <div className="text-lg font-semibold text-neutral-800 dark:text-white">{data.carbs_g}g</div>
           <div className="text-[10px] font-mono text-neutral-500 uppercase">Carbs</div>
           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 font-mono">{carbsPct}%</div>
         </div>
         <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
           <Droplets className="w-4 h-4 text-neutral-700 dark:text-neutral-300 mx-auto mb-1" />
-          <div className="text-lg font-semibold text-neutral-900 dark:text-white">{data.fat_g}g</div>
+          <div className="text-lg font-semibold text-neutral-800 dark:text-white">{data.fat_g}g</div>
           <div className="text-[10px] font-mono text-neutral-500 uppercase">Fat</div>
           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 font-mono">{fatPct}%</div>
         </div>

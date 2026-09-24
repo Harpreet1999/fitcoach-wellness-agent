@@ -174,14 +174,14 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-[640px] rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-200">
       {/* Chat header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-950/40">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/80 dark:bg-neutral-950/40">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-2.5 h-2.5 rounded-full bg-neutral-900 dark:bg-white animate-pulse" />
-            <div className="absolute inset-0 rounded-full bg-neutral-900/20 dark:bg-white/20 animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-neutral-800 dark:bg-white animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-neutral-800/20 dark:bg-white/20 animate-ping" />
           </div>
           <div>
-            <div className="text-xs font-semibold text-neutral-900 dark:text-white uppercase tracking-wider font-sans">
+            <div className="text-xs font-semibold text-neutral-800 dark:text-white uppercase tracking-wider font-sans">
               FitCoach Agent
             </div>
             <div className="text-[10px] font-mono text-neutral-500">
@@ -192,7 +192,7 @@ export default function ChatInterface() {
 
         <button
           onClick={clearSession}
-          className="p-2 text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          className="p-2 text-neutral-400 dark:text-neutral-500 hover:text-neutral-800 dark:hover:text-white transition-colors rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
           title="Clear session"
           aria-label="Clear session"
         >
@@ -239,8 +239,8 @@ export default function ChatInterface() {
                 <div
                   className={`px-4 py-3 rounded-2xl text-sm leading-relaxed font-light ${
                     msg.role === 'user'
-                      ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 rounded-br-xs shadow-xs'
-                      : 'bg-neutral-50 dark:bg-neutral-800/80 text-neutral-800 dark:text-neutral-200 rounded-bl-xs border border-neutral-200 dark:border-neutral-700/60 shadow-xs'
+                      ? 'bg-neutral-800 text-white dark:bg-white dark:text-neutral-950 rounded-br-xs shadow-xs'
+                      : 'bg-[#f8f7f5] dark:bg-neutral-800/80 text-neutral-800 dark:text-neutral-200 rounded-bl-xs border border-neutral-200 dark:border-neutral-700/60 shadow-xs'
                   }`}
                 >
                   {msg.role === 'user' ? (
@@ -250,16 +250,16 @@ export default function ChatInterface() {
                       remarkPlugins={[remarkGfm]}
                       components={{
                         p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
-                        strong: ({ children }) => <strong className="font-semibold text-neutral-950 dark:text-white">{children}</strong>,
+                        strong: ({ children }) => <strong className="font-semibold text-neutral-800 dark:text-white">{children}</strong>,
                         em: ({ children }) => <em className="italic text-neutral-600 dark:text-neutral-400">{children}</em>,
-                        h1: ({ children }) => <h1 className="text-base font-semibold text-neutral-950 dark:text-white mt-3 mb-1 first:mt-0">{children}</h1>,
-                        h2: ({ children }) => <h2 className="text-sm font-semibold text-neutral-950 dark:text-white mt-2.5 mb-1 first:mt-0">{children}</h2>,
-                        h3: ({ children }) => <h3 className="text-sm font-semibold text-neutral-950 dark:text-white mt-2 mb-0.5 first:mt-0">{children}</h3>,
+                        h1: ({ children }) => <h1 className="text-base font-semibold text-neutral-800 dark:text-white mt-3 mb-1 first:mt-0">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-sm font-semibold text-neutral-800 dark:text-white mt-2.5 mb-1 first:mt-0">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-sm font-semibold text-neutral-800 dark:text-white mt-2 mb-0.5 first:mt-0">{children}</h3>,
                         ul: ({ children }) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
                         ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
                         li: ({ children }) => <li className="leading-relaxed">{children}</li>,
                         code: ({ children }) => (
-                          <code className="font-mono text-xs bg-neutral-200/70 dark:bg-neutral-700/60 text-neutral-900 dark:text-neutral-200 px-1 py-0.5 rounded">
+                          <code className="font-mono text-xs bg-neutral-200/70 dark:bg-neutral-700/60 text-neutral-800 dark:text-neutral-200 px-1 py-0.5 rounded">
                             {children}
                           </code>
                         ),
@@ -289,7 +289,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input bar */}
-      <div className="px-5 pb-5 pt-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-950/30">
+      <div className="px-5 pb-5 pt-3 border-t border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/80 dark:bg-neutral-950/30">
         <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800/90 rounded-full border border-neutral-200 dark:border-neutral-700/70 px-4 py-2 focus-within:border-neutral-400 dark:focus-within:border-neutral-500 transition-colors">
           <input
             type="text"
@@ -302,7 +302,7 @@ export default function ChatInterface() {
               }
             }}
             placeholder="Ask about workouts, macros, habits..."
-            className="flex-1 bg-transparent text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none"
+            className="flex-1 bg-transparent text-sm text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none"
             disabled={isLoading}
           />
           <button

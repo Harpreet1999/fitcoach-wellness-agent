@@ -17,25 +17,25 @@ export default function Hero() {
 
             {/* Status pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/70 backdrop-blur-sm text-xs font-mono shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white animate-pulse-subtle" />
+              <span className="w-2 h-2 rounded-full bg-neutral-800 dark:bg-white animate-pulse-subtle" />
               <span className="text-neutral-600 dark:text-neutral-400">Google Build with Gemini 2026</span>
               <span className="text-neutral-300 dark:text-neutral-700">|</span>
-              <span className="text-neutral-900 dark:text-white font-medium">Live Demo</span>
+              <span className="text-neutral-800 dark:text-white font-medium">Live Demo</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-6xl lg:text-6xl font-light tracking-tight text-neutral-900 dark:text-white leading-[1.1]">
+              <h1 className="text-4xl sm:text-6xl lg:text-6xl font-light tracking-tight text-neutral-800 dark:text-white leading-[1.1]">
                 Your AI{' '}
                 <br />
-                <span className="font-semibold text-neutral-950 dark:text-neutral-100">
+                <span className="font-semibold text-neutral-800 dark:text-neutral-100">
                   Fitness Coach.
                 </span>
               </h1>
               <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
                 An intelligent wellness agent built on{' '}
-                <span className="text-neutral-900 dark:text-neutral-200 font-medium">Google&apos;s Gemini API</span> and{' '}
-                <span className="text-neutral-900 dark:text-neutral-200 font-medium">ADK patterns</span>.
+                <span className="text-neutral-800 dark:text-neutral-200 font-medium">Google&apos;s Gemini API</span> and{' '}
+                <span className="text-neutral-800 dark:text-neutral-200 font-medium">ADK patterns</span>.
                 Calculates personalized macros, explores workout protocols, and dispenses evidence-based habits.
               </p>
             </div>
