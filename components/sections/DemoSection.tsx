@@ -74,10 +74,10 @@ export default function DemoSection() {
                     <button
                       key={p.title}
                       onClick={() => handlePromptClick(p.prompt)}
-                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
+                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-500 transition-all duration-200">
+                        <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-500 transition-all duration-200">
                           <Icon className="w-3.5 h-3.5" />
                         </div>
                         <div className="text-xs font-semibold text-neutral-800 dark:text-white">
@@ -93,7 +93,7 @@ export default function DemoSection() {
               </div>
 
               {/* Note */}
-              <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-900/70">
+              <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-950/70">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1">In-Session Memory</div>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
                   Conversation history and calculated metrics persist locally in your session storage. Refresh to reset.

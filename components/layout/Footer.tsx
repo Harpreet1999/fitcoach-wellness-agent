@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Logo & tagline */}
           <div className="flex flex-col items-center md:items-start gap-1">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-950 flex items-center justify-center">
                 <div className="w-2 h-2 rounded-full bg-neutral-800 dark:bg-white" />
               </div>
               <span className="font-semibold text-sm tracking-widest text-neutral-800 dark:text-white uppercase font-sans">FITCOACH AI</span>

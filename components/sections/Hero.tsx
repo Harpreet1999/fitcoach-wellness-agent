@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Brain, Sparkles, Cpu, Layers, Target, Flame, Dumbbell, Apple, Moon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Hero() {
   return (
@@ -216,25 +217,36 @@ function AgentVisual() {
 
       {/* Center Holographic Agent Core with Smooth Cross-Fade */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white dark:bg-neutral-900 border border-neutral-300/90 dark:border-neutral-700/80 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out">
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white dark:bg-neutral-950 border border-neutral-300/90 dark:border-neutral-800 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out overflow-hidden">
           {/* Rotating Outer Accent Ring */}
           <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/70 animate-spin-slow pointer-events-none" />
 
-          {/* Center Icon Container (Non-Bold, strokeWidth 1.5, Soft Charcoal) */}
-          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 mb-1 transition-all duration-500 ease-in-out">
-            {activeTool ? (
-              <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100 transition-all duration-300 ease-out" />
-            ) : (
-              <Sparkles strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100 transition-all duration-300 ease-out" />
-            )}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTool ? activeTool.id : 'idle'}
+              initial={{ opacity: 0, y: 4, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, scale: 0.96 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center justify-center text-center w-full"
+            >
+              {/* Center Icon Container (Non-Bold, strokeWidth 1.5, Soft Charcoal) */}
+              <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1">
+                {activeTool ? (
+                  <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100" />
+                ) : (
+                  <Sparkles strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100" />
+                )}
+              </div>
 
-          <div className="text-[10px] sm:text-[11px] font-mono font-medium tracking-widest text-neutral-800 dark:text-neutral-100 uppercase text-center line-clamp-1 transition-all duration-400 ease-in-out">
-            {activeTool ? activeTool.label : 'FITCOACH AI'}
-          </div>
-          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5 transition-all duration-400 ease-in-out">
-            {activeTool ? 'ORCHESTRATING' : '6 TOOLS READY'}
-          </div>
+              <div className="text-[10px] sm:text-[11px] font-mono font-medium tracking-widest text-neutral-800 dark:text-neutral-100 uppercase text-center line-clamp-1">
+                {activeTool ? activeTool.label : 'FITCOACH AI'}
+              </div>
+              <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5">
+                {activeTool ? 'ORCHESTRATING' : '6 TOOLS READY'}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
 
@@ -252,7 +264,8 @@ function AgentVisual() {
         // Tooltip alignment:
         // - Right-side elements (angle 60, 120): start from top-right corner of element icon
         // - Left-side elements (angle 240, 300): start from top-left corner of element icon
-        // - Top/Bottom middle elements (angle 0, 180): centered above/below
+        // - Top middle (angle 0): rendered on top
+        // - Bottom middle (angle 180): rendered on bottom
         const isRightSide = tool.angle === 60 || tool.angle === 120;
         const isLeftSide = tool.angle === 240 || tool.angle === 300;
         const isMiddleTop = tool.angle === 0;
@@ -265,8 +278,8 @@ function AgentVisual() {
         } else if (isMiddleTop) {
           tooltipPlacementClass = 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2';
         } else {
-          // Angle 180: bottom middle, position neatly above icon
-          tooltipPlacementClass = 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2';
+          // Angle 180: bottom element rendered on bottom
+          tooltipPlacementClass = 'top-[calc(100%+8px)] left-1/2 -translate-x-1/2';
         }
 
         return (
@@ -294,23 +307,25 @@ function AgentVisual() {
                 {tool.tooltip}
               </div>
 
-              {/* Interactive Tool Box — less rounded (rounded-xl), soft border change & grow effect without variant flip */}
+              {/* Interactive Tool Box — less rounded (rounded-xl), soft border change & more larger grow effect on hover */}
               <div
-                className={`w-13 h-13 sm:w-15 sm:h-15 rounded-xl flex items-center justify-center transition-all duration-500 ease-out bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border ${
-                  isCurrent
+                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center transition-all duration-300 ease-out bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 border ${
+                  isHovered
+                    ? 'scale-[1.28] -translate-y-1 border-neutral-400 dark:border-neutral-400 shadow-xl text-neutral-900 dark:text-neutral-100 z-20'
+                    : isCurrent
                     ? 'scale-110 -translate-y-0.5 border-neutral-400 dark:border-neutral-500 shadow-md text-neutral-900 dark:text-neutral-100'
                     : 'scale-100 translate-y-0 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 shadow-xs'
                 }`}
               >
-                <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ease-out" />
+                <Icon strokeWidth={1.5} className="w-5.5 h-5.5 sm:w-6.5 sm:h-6.5 transition-transform duration-300 ease-out" />
               </div>
             </div>
 
             {/* Monospace Badge Label with Soft Border Focus (No Variant Flipping) */}
             <span
-              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-500 ease-out whitespace-nowrap bg-white dark:bg-neutral-900 ${
-                isCurrent
-                  ? 'border-neutral-400 dark:border-neutral-500 text-neutral-900 dark:text-neutral-100 font-medium'
+              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-300 ease-out whitespace-nowrap bg-white dark:bg-neutral-950 ${
+                isHovered || isCurrent
+                  ? 'border-neutral-400 dark:border-neutral-400 text-neutral-900 dark:text-neutral-100 font-medium'
                   : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400'
               }`}
             >
