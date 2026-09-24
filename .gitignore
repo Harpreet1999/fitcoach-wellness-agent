@@ -19,8 +19,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -207,3 +207,10 @@ tools/a2a-inspector/
 *.pem
 *-key.json
 credentials*.json
+
+# Next.js frontend (fitcoach-ai)
+fitcoach-ai/.next/
+fitcoach-ai/out/
+fitcoach-ai/.env*.local
+fitcoach-ai/.env
+!fitcoach-ai/.env.example

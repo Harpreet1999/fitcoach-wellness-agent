@@ -1,0 +1,194 @@
+[
+  {
+    "id": "sleep_1", "category": "sleep",
+    "title": "Consistent Sleep Schedule",
+    "description": "Go to bed and wake up at the same time every day — even on weekends.",
+    "frequency": "Daily",
+    "why_it_works": "Regulates your circadian rhythm, improving sleep quality and hormonal balance including cortisol and growth hormone release.",
+    "source": "American Academy of Sleep Medicine Guidelines"
+  },
+  {
+    "id": "sleep_2", "category": "sleep",
+    "title": "No Screens 60 Minutes Before Bed",
+    "description": "Avoid phones, tablets, and TV for 1 hour before sleeping. Use blue-light blocking glasses if unavoidable.",
+    "frequency": "Daily",
+    "why_it_works": "Blue light suppresses melatonin by up to 50%, delaying sleep onset and reducing REM sleep quality.",
+    "source": "Harvard Medical School Sleep Research"
+  },
+  {
+    "id": "sleep_3", "category": "sleep",
+    "title": "Keep Bedroom Under 19°C (66°F)",
+    "description": "Cool your sleeping environment. Use a fan, AC, or lighter bedding.",
+    "frequency": "Daily",
+    "why_it_works": "Core body temperature must drop 1-2°C to initiate deep sleep. A cool room accelerates this process.",
+    "source": "Sleep Foundation Thermoregulation Research"
+  },
+  {
+    "id": "sleep_4", "category": "sleep",
+    "title": "Magnesium Before Bed",
+    "description": "Take 200-400mg magnesium glycinate 30-60 minutes before sleep.",
+    "frequency": "Daily",
+    "why_it_works": "Magnesium activates the parasympathetic nervous system and regulates GABA receptors, promoting deeper relaxation.",
+    "source": "ACSM Micronutrient Position Stand"
+  },
+  {
+    "id": "hydration_1", "category": "hydration",
+    "title": "Morning Water Ritual",
+    "description": "Drink 500ml (16oz) of water within 30 minutes of waking up.",
+    "frequency": "Daily",
+    "why_it_works": "Kickstarts metabolism, rehydrates after 8 hours of no fluid intake, and activates the gut-brain axis for mental clarity.",
+    "source": "NASM Hydration Guidelines"
+  },
+  {
+    "id": "hydration_2", "category": "hydration",
+    "title": "Drink 35ml Per Kg of Bodyweight Daily",
+    "description": "Calculate your daily water target: weight (kg) × 35ml. Spread intake evenly throughout the day.",
+    "frequency": "Daily",
+    "why_it_works": "Even 2% dehydration impairs strength by 6-10% and cognitive performance by 13%. Consistent intake maintains plasma volume.",
+    "source": "ACSM Fluid Replacement Position Stand 2017"
+  },
+  {
+    "id": "hydration_3", "category": "hydration",
+    "title": "Electrolyte Intake on Training Days",
+    "description": "Add a pinch of sea salt + squeeze of lemon to 500ml water post-workout, or use an electrolyte supplement.",
+    "frequency": "Training days",
+    "why_it_works": "Sweating depletes sodium, potassium, and magnesium. Replacing electrolytes prevents cramps, supports nerve function and muscle contraction.",
+    "source": "International Society of Sports Nutrition Position Stand"
+  },
+  {
+    "id": "hydration_4", "category": "hydration",
+    "title": "Pre-Workout Hydration Protocol",
+    "description": "Drink 400-600ml of water 2 hours before training. Sip 150-250ml every 15-20 minutes during exercise.",
+    "frequency": "Training days",
+    "why_it_works": "Pre-loading prevents dehydration during exercise. Intra-workout sipping maintains blood volume and delays fatigue.",
+    "source": "ACSM Exercise and Fluid Replacement Guidelines"
+  },
+  {
+    "id": "nutrition_1", "category": "nutrition",
+    "title": "Protein Within 2 Hours Post-Workout",
+    "description": "Consume 20-40g of complete protein within 2 hours of finishing your workout.",
+    "frequency": "Training days",
+    "why_it_works": "The post-exercise anabolic window is real. mTOR is maximally activated, muscle protein synthesis peaks with leucine-rich protein.",
+    "source": "ISSN Protein and Exercise Position Stand 2017"
+  },
+  {
+    "id": "nutrition_2", "category": "nutrition",
+    "title": "Eat Protein at Every Meal",
+    "description": "Include a palm-sized portion (25-40g) of lean protein at every meal — chicken, fish, eggs, tofu, Greek yogurt.",
+    "frequency": "Daily",
+    "why_it_works": "Spreading protein intake evenly maximizes muscle protein synthesis across the day vs. one large protein dose.",
+    "source": "ACSM/AND/DC Joint Position Stand on Nutrition for Athletes"
+  },
+  {
+    "id": "nutrition_3", "category": "nutrition",
+    "title": "Carbohydrate Timing Around Workouts",
+    "description": "Eat complex carbs (oats, rice, sweet potato) 1-2 hours pre-workout. Simple carbs (fruit, rice cake) immediately post-workout.",
+    "frequency": "Training days",
+    "why_it_works": "Pre-workout carbs fuel glycolytic pathways. Post-workout simple carbs rapidly replenish glycogen and spike insulin for nutrient delivery.",
+    "source": "NSCA Strength and Conditioning Journal"
+  },
+  {
+    "id": "nutrition_4", "category": "nutrition",
+    "title": "Eat 5 Colors of Vegetables Per Day",
+    "description": "Aim for vegetables of 5 different colors daily — greens, reds, oranges, purples, whites.",
+    "frequency": "Daily",
+    "why_it_works": "Each color represents different phytonutrients and antioxidants. Diversity reduces inflammation, supports gut microbiome variety and immune function.",
+    "source": "Harvard T.H. Chan School of Public Health Dietary Guidelines"
+  },
+  {
+    "id": "recovery_1", "category": "recovery",
+    "title": "Active Recovery Walk",
+    "description": "Take a 20-30 minute easy walk on rest days. Keep heart rate below 120 bpm.",
+    "frequency": "Rest days",
+    "why_it_works": "Increases blood flow to damaged muscle tissue without adding training stress, accelerating metabolic waste removal and nutrient delivery.",
+    "source": "NSCA Recovery Strategies for Athletes"
+  },
+  {
+    "id": "recovery_2", "category": "recovery",
+    "title": "Cold Shower Post Strength Training",
+    "description": "End your post-workout shower with 2-3 minutes of cold water (15°C or below).",
+    "frequency": "Training days",
+    "why_it_works": "Cold exposure reduces acute inflammation and DOMS (delayed onset muscle soreness). Note: avoid cold exposure immediately post-workout if hypertrophy is the goal — wait 4+ hours.",
+    "source": "Journal of Physiology, Cold Water Immersion Meta-Analysis"
+  },
+  {
+    "id": "recovery_3", "category": "recovery",
+    "title": "Foam Rolling Protocol",
+    "description": "Spend 10 minutes foam rolling major muscle groups after training — quads, hamstrings, lats, upper back, calves.",
+    "frequency": "Post-workout / Daily",
+    "why_it_works": "Self-myofascial release improves tissue quality, reduces fascial adhesions, and increases range of motion without impairing strength.",
+    "source": "Journal of Strength and Conditioning Research"
+  },
+  {
+    "id": "recovery_4", "category": "recovery",
+    "title": "Plan 1-2 Full Rest Days Per Week",
+    "description": "Schedule at least one complete rest day with no structured exercise. Two is better for higher training volumes.",
+    "frequency": "Weekly",
+    "why_it_works": "Supercompensation — muscles grow during rest, not during training. Ignoring rest days leads to overtraining syndrome, elevated cortisol, and regression.",
+    "source": "NSCA Essentials of Strength Training and Conditioning"
+  },
+  {
+    "id": "mindset_1", "category": "mindset",
+    "title": "5-Minute Visualization Before Training",
+    "description": "Before your workout, close your eyes for 5 minutes and visualize each exercise — perfect form, completing every rep, feeling strong.",
+    "frequency": "Pre-workout",
+    "why_it_works": "Mental rehearsal activates the same neural pathways as physical practice. Studies show visualization improves performance by 10-15%.",
+    "source": "Journal of Sport and Exercise Psychology"
+  },
+  {
+    "id": "mindset_2", "category": "mindset",
+    "title": "Track Progress Weekly, Not Daily",
+    "description": "Measure bodyweight, strength, and measurements once per week — same day, same time, same conditions.",
+    "frequency": "Weekly",
+    "why_it_works": "Daily fluctuations from water retention and glycogen mask real progress. Weekly averaging reveals true trends and prevents discouragement.",
+    "source": "NASM Behavior Change Coaching"
+  },
+  {
+    "id": "mindset_3", "category": "mindset",
+    "title": "Set Process Goals, Not Outcome Goals",
+    "description": "Focus on 'I will train 4x this week' instead of 'I will lose 2kg'. Then show up and trust the process.",
+    "frequency": "Weekly",
+    "why_it_works": "Outcome goals are outside your direct control. Process goals are within your control and build identity-based habits that compound over time.",
+    "source": "James Clear — Atomic Habits (Research-backed behavioral framework)"
+  },
+  {
+    "id": "mindset_4", "category": "mindset",
+    "title": "Post-Workout Gratitude Log",
+    "description": "After each workout, write 3 things: one thing you did well, one thing to improve, and one thing you're grateful for.",
+    "frequency": "Post-workout",
+    "why_it_works": "Combines positive reinforcement (increases adherence) with deliberate practice reflection and gratitude-based stress reduction.",
+    "source": "Journal of Positive Psychology — Gratitude and Physical Activity Research"
+  },
+  {
+    "id": "movement_1", "category": "movement",
+    "title": "Break Sitting Every 45 Minutes",
+    "description": "Set a timer. Every 45 minutes of sitting, stand up and walk for 3-5 minutes.",
+    "frequency": "Daily",
+    "why_it_works": "Prolonged sitting reduces lipoprotein lipase activity by 90%, impairing fat metabolism. Regular movement breaks reset metabolic markers.",
+    "source": "American Heart Association Physical Activity Guidelines"
+  },
+  {
+    "id": "movement_2", "category": "movement",
+    "title": "Daily Step Target: 8,000-10,000 Steps",
+    "description": "Use a phone or watch to track steps. 8,000-10,000 steps daily is the evidence-based sweet spot.",
+    "frequency": "Daily",
+    "why_it_works": "Independent of structured exercise, daily steps correlate with reduced all-cause mortality. Increases NEAT (Non-Exercise Activity Thermogenesis) for fat loss.",
+    "source": "JAMA Internal Medicine — Steps and Mortality Study 2021"
+  },
+  {
+    "id": "movement_3", "category": "movement",
+    "title": "Morning Mobility Routine (10 min)",
+    "description": "Spend 10 minutes every morning on joint mobility: shoulder circles, hip CARs, ankle rotations, thoracic rotations.",
+    "frequency": "Daily",
+    "why_it_works": "Morning movement flushes synovial fluid into joints, reducing stiffness. Consistent mobility work expands pain-free range of motion over weeks.",
+    "source": "FRC (Functional Range Conditioning) Principles"
+  },
+  {
+    "id": "movement_4", "category": "movement",
+    "title": "Two-a-Day Walks (Morning + Evening)",
+    "description": "Take a 15-minute walk after breakfast and a 15-minute walk after dinner.",
+    "frequency": "Daily",
+    "why_it_works": "Post-meal walks reduce blood glucose spikes by 22% and improve insulin sensitivity. Evening walks also lower cortisol for better sleep.",
+    "source": "Sports Medicine Journal — Postprandial Walking Research"
+  }
+]
