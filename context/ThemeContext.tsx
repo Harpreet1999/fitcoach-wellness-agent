@@ -13,46 +13,43 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const saved = localStorage.getItem('kanso_theme') as Theme;
-    if (saved === 'light' || saved === 'dark') {
-      setThemeState(saved);
-      if (saved === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } else {
-      // Default to dark mode like Kanso reference
+    const initial = saved === 'light' ? 'light' : 'dark';
+    setThemeState(initial);
+    if (initial === 'dark') {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('kanso_theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
   }, []);
 
   const toggleTheme = () => {
-    const nextTheme: Theme = theme === 'dark' ? 'light' : 'dark';
-    setThemeState(nextTheme);
-    const root = document.documentElement;
-    if (nextTheme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('kanso_theme', nextTheme);
+    setThemeState((prev) => {
+      const next: Theme = prev === 'dark' ? 'light' : 'dark';
+      if (next === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      try {
+        localStorage.setItem('kanso_theme', next);
+      } catch (e) {}
+      return next;
+    });
   };
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    const root = document.documentElement;
     if (t === 'dark') {
-      root.classList.add('dark');
+      document.documentElement.classList.add('dark');
     } else {
-      root.classList.remove('dark');
+      document.documentElement.classList.remove('dark');
     }
-    localStorage.setItem('kanso_theme', t);
+    try {
+      localStorage.setItem('kanso_theme', t);
+    } catch (e) {}
   };
 
   return (
