@@ -94,8 +94,8 @@ export default function CapabilitiesGrid() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 ${
                   activeTab === tab
-                    ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 shadow-xs'
-                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                    ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 shadow-xs'
+                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 {tab}

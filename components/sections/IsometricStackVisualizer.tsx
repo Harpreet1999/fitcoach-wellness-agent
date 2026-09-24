@@ -536,7 +536,7 @@ export default function IsometricStackVisualizer() {
                   onClick={() => setSelectedStage(key)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-150 flex items-center gap-1.5 ${
                     isSelected
-                      ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 font-bold shadow-xs'
+                      ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 font-semibold shadow-xs'
                       : 'bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
                   }`}
                 >

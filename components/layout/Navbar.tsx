@@ -86,7 +86,7 @@ export default function Navbar() {
 
             <a
               href="#demo"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 text-xs font-semibold uppercase tracking-wider hover:opacity-90 active:scale-98 transition-all duration-200 shadow-xs"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-100 text-xs font-semibold uppercase tracking-wider active:scale-98 transition-all duration-200 shadow-xs"
             >
               <span>Try Demo</span>
               <ExternalLink className="w-3.5 h-3.5" />

@@ -308,7 +308,7 @@ export default function ChatInterface() {
           <button
             onClick={() => sendMessage(input)}
             disabled={!input.trim() || isLoading}
-            className="p-2 rounded-full bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 disabled:opacity-20 hover:opacity-90 active:scale-95 transition-all duration-200 shrink-0"
+            className="p-2 rounded-full bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-20 active:scale-95 transition-all duration-200 shrink-0"
             aria-label="Send message"
           >
             <Send className="w-3.5 h-3.5" />

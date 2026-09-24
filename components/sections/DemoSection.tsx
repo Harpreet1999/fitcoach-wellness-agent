@@ -74,7 +74,7 @@ export default function DemoSection() {
                     <button
                       key={p.title}
                       onClick={() => handlePromptClick(p.prompt)}
-                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/40 hover:border-neutral-900 dark:hover:border-white transition-all duration-200 group shadow-xs focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/40 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 ease-out group shadow-xs focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
                     >
                       <div className="flex items-center gap-2.5">
                         <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-500 transition-all duration-200">

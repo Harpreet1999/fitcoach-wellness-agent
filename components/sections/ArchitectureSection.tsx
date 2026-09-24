@@ -102,14 +102,14 @@ export default function ArchitectureSection() {
                   onClick={() => setActiveTab(tab)}
                   className={`text-left px-5 py-4 rounded-xl border transition-all duration-200 whitespace-nowrap lg:whitespace-normal flex items-center justify-between ${
                     isSelected
-                      ? 'border-neutral-950 dark:border-white bg-white dark:bg-neutral-900 shadow-xs'
+                      ? 'border-neutral-700 dark:border-neutral-400 bg-white dark:bg-neutral-900 shadow-xs'
                       : 'border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/30 hover:border-neutral-300 dark:hover:border-neutral-700'
                   }`}
                 >
-                  <span className={`text-xs font-mono uppercase tracking-wider ${isSelected ? 'font-bold text-neutral-950 dark:text-white' : 'text-neutral-500'}`}>
+                  <span className={`text-xs font-mono uppercase tracking-wider ${isSelected ? 'font-bold text-neutral-800 dark:text-neutral-100' : 'text-neutral-500'}`}>
                     {tab}
                   </span>
-                  <span className={`hidden lg:inline text-xs font-mono ${isSelected ? 'text-neutral-950 dark:text-white font-bold' : 'text-neutral-400 dark:text-neutral-600'}`}>
+                  <span className={`hidden lg:inline text-xs font-mono ${isSelected ? 'text-neutral-800 dark:text-neutral-100 font-bold' : 'text-neutral-400 dark:text-neutral-600'}`}>
                     0{idx + 1}
                   </span>
                 </button>

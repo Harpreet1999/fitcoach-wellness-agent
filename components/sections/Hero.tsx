@@ -44,14 +44,14 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <a
                 href="#demo"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 font-medium text-sm tracking-wide hover:opacity-90 active:scale-98 transition-all duration-200 flex items-center justify-center gap-3 shadow-sm"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-100 font-medium text-sm tracking-wide active:scale-98 transition-all duration-300 flex items-center justify-center gap-3 shadow-sm"
               >
                 <span>Talk to FitCoach</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#architecture"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/50 hover:bg-neutral-100 dark:hover:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full border border-neutral-300 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/50 hover:bg-neutral-100 dark:hover:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-xs"
               >
                 <Brain className="w-4 h-4" />
                 <span>View Architecture</span>
@@ -100,7 +100,7 @@ export default function Hero() {
     </section>
   );
 }
- 
+
 function AgentVisual() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isHoveringContainer, setIsHoveringContainer] = useState<boolean>(false);
@@ -122,7 +122,7 @@ function AgentVisual() {
     if (isHoveringContainer) return;
     const interval = setInterval(() => {
       setCycleIndex((prev) => (prev + 1) % tools.length);
-    }, 2500);
+    }, 2800);
     return () => clearInterval(interval);
   }, [isHoveringContainer, tools.length]);
 
@@ -130,12 +130,12 @@ function AgentVisual() {
   const activeIndex = isHoveringContainer ? hoveredIndex : cycleIndex;
   const activeTool = activeIndex !== null ? tools[activeIndex] : null;
 
-  // Interactive 3D mouse tilt tracking
+  // Interactive 3D mouse tilt tracking with gentle dampening
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -14;
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
     setTilt({ x: parseFloat(y.toFixed(2)), y: parseFloat(x.toFixed(2)) });
   };
 
@@ -155,14 +155,14 @@ function AgentVisual() {
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] transition-transform duration-300 ease-out cursor-default select-none"
+      className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] transition-transform duration-500 ease-out cursor-default select-none"
       style={{
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
       }}
     >
       {/* Blueprint Dotted Background Disc */}
       <div
-        className="absolute inset-8 rounded-full opacity-[0.20] dark:opacity-[0.18] pointer-events-none"
+        className="absolute inset-8 rounded-full opacity-[0.20] dark:opacity-[0.16] pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
           backgroundSize: '16px 16px',
@@ -170,14 +170,14 @@ function AgentVisual() {
       />
 
       {/* Orbit Rings with Counter-Rotations */}
-      <div className="absolute inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-800/80 animate-spin-slow pointer-events-none" />
+      <div className="absolute inset-2 rounded-full border border-neutral-300/70 dark:border-neutral-800/70 animate-spin-slow pointer-events-none" />
       <div
-        className="absolute inset-10 rounded-full border border-dashed border-neutral-300 dark:border-neutral-800/60 pointer-events-none"
-        style={{ animation: 'spin 40s linear infinite reverse' }}
+        className="absolute inset-10 rounded-full border border-dashed border-neutral-300/80 dark:border-neutral-800/60 pointer-events-none"
+        style={{ animation: 'spin 45s linear infinite reverse' }}
       />
       <div className="absolute inset-20 rounded-full border border-neutral-200 dark:border-neutral-800/40 pointer-events-none" />
 
-      {/* Connection Ray Lines (SVG) */}
+      {/* Connection Ray Lines (SVG) with Slow Smooth Transitions */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
         {tools.map((tool, i) => {
           const rad = ((tool.angle - 90) * Math.PI) / 180;
@@ -193,52 +193,52 @@ function AgentVisual() {
                 y1="50%"
                 x2={`${cx * 100}%`}
                 y2={`${cy * 100}%`}
-                className={`transition-all duration-300 ${
+                className={`transition-all duration-500 ease-in-out ${
                   isCurrent
-                    ? 'stroke-neutral-950 dark:stroke-white stroke-[1.5] opacity-100'
-                    : 'stroke-neutral-300 dark:stroke-neutral-800/90 stroke-[1] opacity-60'
+                    ? 'stroke-neutral-700 dark:stroke-neutral-300 stroke-[1.5] opacity-100'
+                    : 'stroke-neutral-300 dark:stroke-neutral-800/80 stroke-[1] opacity-50'
                 }`}
                 strokeDasharray={isCurrent ? 'none' : '3 4'}
               />
-              {/* Traveling Packet on Active Ray */}
-              {isCurrent && (
-                <circle
-                  cx={`${(0.5 + (r * 0.65) * Math.cos(rad)) * 100}%`}
-                  cy={`${(0.5 + (r * 0.65) * Math.sin(rad)) * 100}%`}
-                  r="3"
-                  className="fill-neutral-950 dark:fill-white animate-pulse"
-                />
-              )}
+              {/* Traveling Packet on Active Ray with Fade In/Out */}
+              <circle
+                cx={`${(0.5 + (r * 0.65) * Math.cos(rad)) * 100}%`}
+                cy={`${(0.5 + (r * 0.65) * Math.sin(rad)) * 100}%`}
+                r="3"
+                className={`fill-neutral-700 dark:fill-neutral-300 transition-opacity duration-500 ease-in-out ${
+                  isCurrent ? 'opacity-100 animate-pulse' : 'opacity-0'
+                }`}
+              />
             </g>
           );
         })}
       </svg>
 
-      {/* Center Holographic Agent Core */}
+      {/* Center Holographic Agent Core with Smooth Cross-Fade */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-950/95 border border-neutral-300 dark:border-neutral-700 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-300">
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-900/95 border border-neutral-300/90 dark:border-neutral-700/80 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out">
           {/* Rotating Outer Accent Ring */}
-          <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/80 animate-spin-slow pointer-events-none" />
+          <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/70 animate-spin-slow pointer-events-none" />
 
-          {/* Center Icon Container (Non-Bold, strokeWidth 1.5) */}
-          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1 transition-all duration-300">
+          {/* Center Icon Container (Non-Bold, strokeWidth 1.5, Soft Charcoal) */}
+          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 mb-1 transition-all duration-500 ease-in-out">
             {activeTool ? (
-              <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-900 dark:text-white transition-all duration-200" />
+              <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100 transition-all duration-300 ease-out" />
             ) : (
-              <Sparkles strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-900 dark:text-white transition-all duration-200" />
+              <Sparkles strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100 transition-all duration-300 ease-out" />
             )}
           </div>
 
-          <div className="text-[10px] sm:text-[11px] font-mono font-medium tracking-widest text-neutral-950 dark:text-white uppercase text-center line-clamp-1 transition-all duration-200">
+          <div className="text-[10px] sm:text-[11px] font-mono font-medium tracking-widest text-neutral-800 dark:text-neutral-100 uppercase text-center line-clamp-1 transition-all duration-400 ease-in-out">
             {activeTool ? activeTool.label : 'FITCOACH AI'}
           </div>
-          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5 transition-all duration-200">
+          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5 transition-all duration-400 ease-in-out">
             {activeTool ? 'ORCHESTRATING' : '6 TOOLS READY'}
           </div>
         </div>
       </div>
 
-      {/* Orbiting Tool Nodes with Non-Bold Icons & Tooltips */}
+      {/* Orbiting Tool Nodes with Non-Bold Icons, Tooltips & Slow Switching */}
       {tools.map((tool, i) => {
         const rad = ((tool.angle - 90) * Math.PI) / 180;
         const r = 160;
@@ -262,31 +262,31 @@ function AgentVisual() {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            {/* Tooltip on Hover */}
+            {/* Soft Charcoal Tooltip on Hover */}
             <div
-              className={`absolute ${isTopHalf ? '-top-8' : '-bottom-8'} px-2.5 py-1 rounded-md text-[9px] font-mono tracking-wider bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border border-neutral-800 dark:border-neutral-200 shadow-md whitespace-nowrap pointer-events-none transition-all duration-200 ${
+              className={`absolute ${isTopHalf ? '-top-8' : '-bottom-8'} px-2.5 py-1 rounded-md text-[9px] font-mono tracking-wider bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border border-neutral-700 dark:border-neutral-300 shadow-md whitespace-nowrap pointer-events-none transition-all duration-300 ease-out ${
                 isHovered ? 'opacity-100 scale-100 -translate-y-0.5' : 'opacity-0 scale-95 pointer-events-none'
               }`}
             >
               {tool.tooltip}
             </div>
 
-            {/* Interactive Tool Box with Non-Bold Icon */}
+            {/* Interactive Tool Box with Non-Bold Icon & Soft Charcoal Focus */}
             <div
-              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center transition-all duration-300 ease-out ${
+              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center transition-all duration-500 ease-out ${
                 isCurrent
-                  ? 'scale-110 -translate-y-0.5 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border border-neutral-950 dark:border-white shadow-xl'
-                  : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white shadow-sm'
+                  ? 'scale-108 -translate-y-0.5 bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border border-neutral-700 dark:border-neutral-300 shadow-lg'
+                  : 'bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 shadow-xs'
               }`}
             >
-              <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-200" />
+              <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ease-out" />
             </div>
 
-            {/* Monospace Badge Label */}
+            {/* Monospace Badge Label with Soft Charcoal Active State */}
             <span
-              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-200 whitespace-nowrap ${
+              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-500 ease-out whitespace-nowrap ${
                 isCurrent
-                  ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-neutral-950 dark:border-white font-medium'
+                  ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border-neutral-700 dark:border-neutral-300 font-medium'
                   : 'bg-white/90 dark:bg-neutral-900/90 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800'
               }`}
             >
