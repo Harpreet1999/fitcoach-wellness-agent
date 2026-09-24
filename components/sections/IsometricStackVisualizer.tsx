@@ -537,7 +537,7 @@ export default function IsometricStackVisualizer() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-150 flex items-center gap-1.5 ${
                     isSelected
                       ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 font-semibold shadow-xs'
-                      : 'bg-white/80 dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
+                      : 'bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
                   }`}
                 >
                   <span className="opacity-60">{item.number}</span>
@@ -550,10 +550,10 @@ export default function IsometricStackVisualizer() {
       </div>
 
       {/* Selected Stage Technical HUD Inspector (Pure Monochromatic) */}
-      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-6 sm:p-8 shadow-xs transition-colors duration-200">
+      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 sm:p-8 shadow-xs transition-colors duration-200">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-neutral-200 dark:border-neutral-800">
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 text-neutral-800 dark:text-white font-semibold">
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-800 dark:text-white font-semibold">
               {active.code}
             </span>
             <span className="text-xs font-mono text-neutral-500">
@@ -584,7 +584,7 @@ export default function IsometricStackVisualizer() {
           {active.specs.map((spec, i) => (
             <div
               key={i}
-              className="p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-900/80 space-y-1"
+              className="p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-950/60 space-y-1"
             >
               <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500">
                 {spec.label}
@@ -605,7 +605,7 @@ export default function IsometricStackVisualizer() {
             {active.tech.map((t, i) => (
               <span
                 key={i}
-                className="px-3 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200"
+                className="px-3 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700/80 text-neutral-800 dark:text-neutral-200"
               >
                 {t}
               </span>

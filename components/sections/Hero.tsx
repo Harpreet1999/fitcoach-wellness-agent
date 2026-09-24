@@ -217,7 +217,7 @@ function AgentVisual() {
 
       {/* Center Holographic Agent Core with Smooth Cross-Fade */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white dark:bg-neutral-950 border border-neutral-300/90 dark:border-neutral-800 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out overflow-hidden">
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white dark:bg-neutral-900 border border-neutral-300/90 dark:border-neutral-700/80 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out overflow-hidden">
           {/* Rotating Outer Accent Ring */}
           <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/70 animate-spin-slow pointer-events-none" />
 
@@ -231,7 +231,7 @@ function AgentVisual() {
               className="flex flex-col items-center justify-center text-center w-full"
             >
               {/* Center Icon Container (Non-Bold, strokeWidth 1.5, Soft Charcoal) */}
-              <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1">
+              <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 mb-1">
                 {activeTool ? (
                   <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-800 dark:text-neutral-100" />
                 ) : (
@@ -309,7 +309,7 @@ function AgentVisual() {
 
               {/* Interactive Tool Box — less rounded (rounded-xl), soft border change & more larger grow effect on hover */}
               <div
-                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center transition-all duration-300 ease-out bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 border ${
+                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center transition-all duration-300 ease-out bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border ${
                   isHovered
                     ? 'scale-[1.28] -translate-y-1 border-neutral-400 dark:border-neutral-400 shadow-xl text-neutral-900 dark:text-neutral-100 z-20'
                     : isCurrent
@@ -323,7 +323,7 @@ function AgentVisual() {
 
             {/* Monospace Badge Label with Soft Border Focus (No Variant Flipping) */}
             <span
-              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-300 ease-out whitespace-nowrap bg-white dark:bg-neutral-950 ${
+              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-300 ease-out whitespace-nowrap bg-white dark:bg-neutral-900 ${
                 isHovered || isCurrent
                   ? 'border-neutral-400 dark:border-neutral-400 text-neutral-900 dark:text-neutral-100 font-medium'
                   : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400'

@@ -95,7 +95,7 @@ export default function CapabilitiesGrid() {
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 ${
                   activeTab === tab
                     ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 shadow-xs'
-                    : 'bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 {tab}
@@ -109,14 +109,14 @@ export default function CapabilitiesGrid() {
           {filtered.map((cap, idx) => (
             <div
               key={idx}
-              className={`${cap.span} p-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-sm`}
+              className={`${cap.span} p-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-sm`}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 group-hover:scale-105 transition-transform duration-200">
+                  <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 group-hover:scale-105 transition-transform duration-200">
                     {cap.icon}
                   </div>
-                  <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 font-semibold px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
+                  <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 font-semibold px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60">
                     {cap.metric}
                   </span>
                 </div>

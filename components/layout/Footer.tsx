@@ -3,13 +3,13 @@ import { ExternalLink } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800 py-12 transition-colors duration-200">
+    <footer className="border-t border-neutral-200 dark:border-neutral-800/80 bg-white dark:bg-neutral-950 py-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo & tagline */}
           <div className="flex flex-col items-center md:items-start gap-1">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-950 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
                 <div className="w-2 h-2 rounded-full bg-neutral-800 dark:bg-white" />
               </div>
               <span className="font-semibold text-sm tracking-widest text-neutral-800 dark:text-white uppercase font-sans">FITCOACH AI</span>
