@@ -65,7 +65,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = loadMessages();
@@ -75,7 +75,12 @@ export default function ChatInterface() {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }, [messages, isLoading]);
 
   const sendMessage = useCallback(async (text: string) => {
@@ -172,8 +177,8 @@ export default function ChatInterface() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-950/40">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <div className="absolute inset-0 rounded-full bg-emerald-500/30 animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-neutral-900 dark:bg-white animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-neutral-900/20 dark:bg-white/20 animate-ping" />
           </div>
           <div>
             <div className="text-xs font-semibold text-neutral-900 dark:text-white uppercase tracking-wider font-sans">
@@ -196,7 +201,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center text-center gap-3 text-neutral-400 dark:text-neutral-500">
             <Sparkles className="w-8 h-8 opacity-40" />
@@ -281,7 +286,6 @@ export default function ChatInterface() {
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input bar */}
@@ -291,7 +295,12 @@ export default function ChatInterface() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(input);
+              }
+            }}
             placeholder="Ask about workouts, macros, habits..."
             className="flex-1 bg-transparent text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none"
             disabled={isLoading}

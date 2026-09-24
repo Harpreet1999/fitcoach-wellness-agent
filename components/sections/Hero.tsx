@@ -103,53 +103,59 @@ export default function Hero() {
  
 function AgentVisual() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isHoveringContainer, setIsHoveringContainer] = useState<boolean>(false);
   const [cycleIndex, setCycleIndex] = useState<number>(0);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
   const tools = [
-    { label: 'Macro Calc', id: 'calculate_macros', icon: Flame, angle: 0 },
-    { label: 'Workouts', id: 'list_workouts', icon: Dumbbell, angle: 60 },
-    { label: 'Nutrition', id: 'fruit_nutrition', icon: Apple, angle: 120 },
-    { label: 'Habits', id: 'recommend_habit', icon: Moon, angle: 180 },
-    { label: 'Intelligence', id: 'gemini_flash', icon: Sparkles, angle: 240 },
-    { label: 'Memory', id: 'session_store', icon: Brain, angle: 300 },
+    { label: 'Macro Calc', id: 'calculate_macros', icon: Flame, angle: 0, tooltip: 'BMR · TDEE · Macro Split' },
+    { label: 'Workouts', id: 'list_workouts', icon: Dumbbell, angle: 60, tooltip: '10+ Multi-Day Splits' },
+    { label: 'Nutrition', id: 'fruit_nutrition', icon: Apple, angle: 120, tooltip: 'Live Fruityvice API' },
+    { label: 'Habits', id: 'recommend_habit', icon: Moon, angle: 180, tooltip: '24 Science Protocols' },
+    { label: 'Intelligence', id: 'gemini_flash', icon: Sparkles, angle: 240, tooltip: 'Gemini 3.5 Flash Model' },
+    { label: 'Memory', id: 'session_store', icon: Brain, angle: 300, tooltip: 'In-Session Client Memory' },
   ];
 
-  // Auto-cycle active pulse when not manually hovered
+  // Auto-cycle active pulse only when user is NOT hovering anywhere over the container
   useEffect(() => {
-    if (hoveredIndex !== null) return;
+    if (isHoveringContainer) return;
     const interval = setInterval(() => {
       setCycleIndex((prev) => (prev + 1) % tools.length);
-    }, 2400);
+    }, 2500);
     return () => clearInterval(interval);
-  }, [hoveredIndex, tools.length]);
+  }, [isHoveringContainer, tools.length]);
 
-  const activeIndex = hoveredIndex !== null ? hoveredIndex : cycleIndex;
-  const activeTool = tools[activeIndex];
+  // When hovering container: only select tool if directly hovering that tool node (no forced animation selection)
+  const activeIndex = isHoveringContainer ? hoveredIndex : cycleIndex;
+  const activeTool = activeIndex !== null ? tools[activeIndex] : null;
 
   // Interactive 3D mouse tilt tracking
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 16;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -16;
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -14;
     setTilt({ x: parseFloat(y.toFixed(2)), y: parseFloat(x.toFixed(2)) });
   };
 
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-    setHoveredIndex(null);
+  const handleMouseEnter = () => {
+    setIsHoveringContainer(true);
   };
 
-  const CenterIcon = activeTool.icon;
+  const handleMouseLeave = () => {
+    setIsHoveringContainer(false);
+    setHoveredIndex(null);
+    setTilt({ x: 0, y: 0 });
+  };
 
   return (
     <div
       ref={containerRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] transition-transform duration-300 ease-out cursor-pointer select-none"
+      className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] transition-transform duration-300 ease-out cursor-default select-none"
       style={{
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
       }}
@@ -189,8 +195,8 @@ function AgentVisual() {
                 y2={`${cy * 100}%`}
                 className={`transition-all duration-300 ${
                   isCurrent
-                    ? 'stroke-neutral-950 dark:stroke-white stroke-[2]'
-                    : 'stroke-neutral-300 dark:stroke-neutral-800/90 stroke-[1]'
+                    ? 'stroke-neutral-950 dark:stroke-white stroke-[1.5] opacity-100'
+                    : 'stroke-neutral-300 dark:stroke-neutral-800/90 stroke-[1] opacity-60'
                 }`}
                 strokeDasharray={isCurrent ? 'none' : '3 4'}
               />
@@ -199,7 +205,7 @@ function AgentVisual() {
                 <circle
                   cx={`${(0.5 + (r * 0.65) * Math.cos(rad)) * 100}%`}
                   cy={`${(0.5 + (r * 0.65) * Math.sin(rad)) * 100}%`}
-                  r="3.5"
+                  r="3"
                   className="fill-neutral-950 dark:fill-white animate-pulse"
                 />
               )}
@@ -210,25 +216,29 @@ function AgentVisual() {
 
       {/* Center Holographic Agent Core */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-950/95 border-2 border-neutral-950 dark:border-white shadow-2xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-300">
-          {/* Subtle Rotating Accent Ring */}
-          <div className="absolute -inset-2 rounded-full border border-neutral-300 dark:border-neutral-700 animate-spin-slow pointer-events-none" />
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-950/95 border border-neutral-300 dark:border-neutral-700 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-300">
+          {/* Rotating Outer Accent Ring */}
+          <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/80 animate-spin-slow pointer-events-none" />
 
-          {/* Dynamic Active Icon */}
-          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1 transition-all duration-200">
-            <CenterIcon className="w-6 h-6 sm:w-7 sm:h-7 text-neutral-900 dark:text-white transition-all duration-200" />
+          {/* Center Icon Container (Non-Bold, strokeWidth 1.5) */}
+          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1 transition-all duration-300">
+            {activeTool ? (
+              <activeTool.icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-900 dark:text-white transition-all duration-200" />
+            ) : (
+              <Sparkles strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-900 dark:text-white transition-all duration-200" />
+            )}
           </div>
 
-          <div className="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest text-neutral-950 dark:text-white uppercase text-center line-clamp-1">
-            {activeTool.label}
+          <div className="text-[10px] sm:text-[11px] font-mono font-medium tracking-widest text-neutral-950 dark:text-white uppercase text-center line-clamp-1 transition-all duration-200">
+            {activeTool ? activeTool.label : 'FITCOACH AI'}
           </div>
-          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5">
-            ORCHESTRATING
+          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5 transition-all duration-200">
+            {activeTool ? 'ORCHESTRATING' : '6 TOOLS READY'}
           </div>
         </div>
       </div>
 
-      {/* Orbiting Tool Nodes with Enriched Larger Icons */}
+      {/* Orbiting Tool Nodes with Non-Bold Icons & Tooltips */}
       {tools.map((tool, i) => {
         const rad = ((tool.angle - 90) * Math.PI) / 180;
         const r = 160;
@@ -237,35 +247,46 @@ function AgentVisual() {
         const y = 50 + (r / divisor) * Math.sin(rad);
         const Icon = tool.icon;
         const isCurrent = i === activeIndex;
+        const isHovered = i === hoveredIndex;
+        const isTopHalf = tool.angle <= 60 || tool.angle >= 300;
 
         return (
           <div
             key={tool.label}
             onMouseEnter={() => setHoveredIndex(i)}
             onMouseLeave={() => setHoveredIndex(null)}
-            className="absolute flex flex-col items-center gap-1.5 transition-all duration-300"
+            className="absolute flex flex-col items-center gap-1.5 cursor-pointer z-10"
             style={{
               left: `${x}%`,
               top: `${y}%`,
               transform: 'translate(-50%, -50%)',
             }}
           >
-            {/* Larger Interactive Tool Box */}
+            {/* Tooltip on Hover */}
             <div
-              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ${
-                isCurrent
-                  ? 'scale-115 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-2 border-neutral-950 dark:border-white shadow-xl'
-                  : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white'
+              className={`absolute ${isTopHalf ? '-top-8' : '-bottom-8'} px-2.5 py-1 rounded-md text-[9px] font-mono tracking-wider bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border border-neutral-800 dark:border-neutral-200 shadow-md whitespace-nowrap pointer-events-none transition-all duration-200 ${
+                isHovered ? 'opacity-100 scale-100 -translate-y-0.5' : 'opacity-0 scale-95 pointer-events-none'
               }`}
             >
-              <Icon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-200" />
+              {tool.tooltip}
+            </div>
+
+            {/* Interactive Tool Box with Non-Bold Icon */}
+            <div
+              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center transition-all duration-300 ease-out ${
+                isCurrent
+                  ? 'scale-110 -translate-y-0.5 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border border-neutral-950 dark:border-white shadow-xl'
+                  : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white shadow-sm'
+              }`}
+            >
+              <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-200" />
             </div>
 
             {/* Monospace Badge Label */}
             <span
               className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-200 whitespace-nowrap ${
                 isCurrent
-                  ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-neutral-950 dark:border-white font-bold'
+                  ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-neutral-950 dark:border-white font-medium'
                   : 'bg-white/90 dark:bg-neutral-900/90 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800'
               }`}
             >
