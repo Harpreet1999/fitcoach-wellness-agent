@@ -2,9 +2,8 @@
 import { useState } from 'react';
 import { Layers, Copy, Check, GitFork } from 'lucide-react';
 import IsometricStackVisualizer from './IsometricStackVisualizer';
-import AgentFlowVisualizer from './AgentFlowVisualizer';
 
-type ArchTab = 'Agent' | 'Tools' | 'Frontend' | 'Cloud' | 'Visualizer' | 'Flowchart';
+type ArchTab = 'Agent' | 'Tools' | 'Frontend' | 'Cloud' | 'Visualizer';
 
 const archData: Record<'Agent' | 'Tools' | 'Frontend' | 'Cloud', { label: string; value: string; detail: string }[]> = {
   Agent: [
@@ -41,7 +40,7 @@ const archData: Record<'Agent' | 'Tools' | 'Frontend' | 'Cloud', { label: string
   ],
 };
 
-const TAB_ORDER: ArchTab[] = ['Agent', 'Tools', 'Frontend', 'Cloud', 'Visualizer', 'Flowchart'];
+const TAB_ORDER: ArchTab[] = ['Agent', 'Tools', 'Frontend', 'Cloud', 'Visualizer'];
 
 export default function ArchitectureSection() {
   const [activeTab, setActiveTab] = useState<ArchTab>('Agent');
@@ -51,8 +50,6 @@ export default function ArchitectureSection() {
     let text = '';
     if (activeTab === 'Visualizer') {
       text = 'FitCoach AI 5-Stage Architectural Pipeline (Left to Right): Stage 01 (Client Interface) -> Stage 02 (Context Assembly) -> Stage 03 (Gemini Reasoning Core) -> Stage 04 (Tool Dispatch Router) -> Stage 05 (Cloud & Data Vault)';
-    } else if (activeTab === 'Flowchart') {
-      text = 'FitCoach AI Architecture Flow: 1. Input Intake -> 2. Gemini Reasoning Core -> 3. Tool Dispatch Router -> 4. Deterministic Engine & APIs -> 5. Dual-Stream Response UI';
     } else {
       text = archData[activeTab].map(i => `${i.label}: ${i.value} — ${i.detail}`).join('\n');
     }
@@ -124,8 +121,6 @@ export default function ArchitectureSection() {
           <div className="lg:col-span-9 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/80 p-6 sm:p-8 backdrop-blur-sm shadow-xs transition-colors duration-200">
             {activeTab === 'Visualizer' ? (
               <IsometricStackVisualizer />
-            ) : activeTab === 'Flowchart' ? (
-              <AgentFlowVisualizer />
             ) : (
               <div>
                 <div className="border-b border-neutral-200 dark:border-neutral-800 pb-4 mb-6 flex items-center justify-between">

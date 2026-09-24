@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Brain, Sparkles, Cpu, Layers, Target, Flame, Dumbbell, Apple, Moon } from 'lucide-react';
 
 export default function Hero() {
@@ -16,7 +17,7 @@ export default function Hero() {
 
             {/* Status pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/70 backdrop-blur-sm text-xs font-mono shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-subtle" />
+              <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white animate-pulse-subtle" />
               <span className="text-neutral-600 dark:text-neutral-400">Google Build with Gemini 2026</span>
               <span className="text-neutral-300 dark:text-neutral-700">|</span>
               <span className="text-neutral-900 dark:text-white font-medium">Live Demo</span>
@@ -99,79 +100,180 @@ export default function Hero() {
     </section>
   );
 }
-
+ 
 function AgentVisual() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [cycleIndex, setCycleIndex] = useState<number>(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const tools = [
-    { label: 'Macro Calc', icon: Flame, angle: 0 },
-    { label: 'Workouts', icon: Dumbbell, angle: 60 },
-    { label: 'Nutrition', icon: Apple, angle: 120 },
-    { label: 'Habits', icon: Moon, angle: 180 },
-    { label: 'Intelligence', icon: Sparkles, angle: 240 },
-    { label: 'Memory', icon: Brain, angle: 300 },
+    { label: 'Macro Calc', id: 'calculate_macros', icon: Flame, angle: 0 },
+    { label: 'Workouts', id: 'list_workouts', icon: Dumbbell, angle: 60 },
+    { label: 'Nutrition', id: 'fruit_nutrition', icon: Apple, angle: 120 },
+    { label: 'Habits', id: 'recommend_habit', icon: Moon, angle: 180 },
+    { label: 'Intelligence', id: 'gemini_flash', icon: Sparkles, angle: 240 },
+    { label: 'Memory', id: 'session_store', icon: Brain, angle: 300 },
   ];
 
-  return (
-    <div className="relative w-80 h-80 md:w-96 md:h-96">
-      {/* Outer orbit ring */}
-      <div className="absolute inset-0 rounded-full border border-neutral-200 dark:border-neutral-800/60 animate-spin-slow" />
-      <div className="absolute inset-4 rounded-full border border-neutral-200/80 dark:border-neutral-800/40" style={{ animationDirection: 'reverse' }} />
+  // Auto-cycle active pulse when not manually hovered
+  useEffect(() => {
+    if (hoveredIndex !== null) return;
+    const interval = setInterval(() => {
+      setCycleIndex((prev) => (prev + 1) % tools.length);
+    }, 2400);
+    return () => clearInterval(interval);
+  }, [hoveredIndex, tools.length]);
 
-      {/* Center — Agent core */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-24 h-24 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-xl flex flex-col items-center justify-center gap-1">
-          <Sparkles className="w-6 h-6 text-neutral-800 dark:text-neutral-200" />
-          <span className="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 tracking-widest uppercase">Agent</span>
+  const activeIndex = hoveredIndex !== null ? hoveredIndex : cycleIndex;
+  const activeTool = tools[activeIndex];
+
+  // Interactive 3D mouse tilt tracking
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 16;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -16;
+    setTilt({ x: parseFloat(y.toFixed(2)), y: parseFloat(x.toFixed(2)) });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setHoveredIndex(null);
+  };
+
+  const CenterIcon = activeTool.icon;
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] transition-transform duration-300 ease-out cursor-pointer select-none"
+      style={{
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+      }}
+    >
+      {/* Blueprint Dotted Background Disc */}
+      <div
+        className="absolute inset-8 rounded-full opacity-[0.20] dark:opacity-[0.18] pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+          backgroundSize: '16px 16px',
+        }}
+      />
+
+      {/* Orbit Rings with Counter-Rotations */}
+      <div className="absolute inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-800/80 animate-spin-slow pointer-events-none" />
+      <div
+        className="absolute inset-10 rounded-full border border-dashed border-neutral-300 dark:border-neutral-800/60 pointer-events-none"
+        style={{ animation: 'spin 40s linear infinite reverse' }}
+      />
+      <div className="absolute inset-20 rounded-full border border-neutral-200 dark:border-neutral-800/40 pointer-events-none" />
+
+      {/* Connection Ray Lines (SVG) */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
+        {tools.map((tool, i) => {
+          const rad = ((tool.angle - 90) * Math.PI) / 180;
+          const r = 0.38;
+          const cx = 0.5 + r * Math.cos(rad);
+          const cy = 0.5 + r * Math.sin(rad);
+          const isCurrent = i === activeIndex;
+
+          return (
+            <g key={tool.id}>
+              <line
+                x1="50%"
+                y1="50%"
+                x2={`${cx * 100}%`}
+                y2={`${cy * 100}%`}
+                className={`transition-all duration-300 ${
+                  isCurrent
+                    ? 'stroke-neutral-950 dark:stroke-white stroke-[2]'
+                    : 'stroke-neutral-300 dark:stroke-neutral-800/90 stroke-[1]'
+                }`}
+                strokeDasharray={isCurrent ? 'none' : '3 4'}
+              />
+              {/* Traveling Packet on Active Ray */}
+              {isCurrent && (
+                <circle
+                  cx={`${(0.5 + (r * 0.65) * Math.cos(rad)) * 100}%`}
+                  cy={`${(0.5 + (r * 0.65) * Math.sin(rad)) * 100}%`}
+                  r="3.5"
+                  className="fill-neutral-950 dark:fill-white animate-pulse"
+                />
+              )}
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Center Holographic Agent Core */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-950/95 border-2 border-neutral-950 dark:border-white shadow-2xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-300">
+          {/* Subtle Rotating Accent Ring */}
+          <div className="absolute -inset-2 rounded-full border border-neutral-300 dark:border-neutral-700 animate-spin-slow pointer-events-none" />
+
+          {/* Dynamic Active Icon */}
+          <div className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 mb-1 transition-all duration-200">
+            <CenterIcon className="w-6 h-6 sm:w-7 sm:h-7 text-neutral-900 dark:text-white transition-all duration-200" />
+          </div>
+
+          <div className="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest text-neutral-950 dark:text-white uppercase text-center line-clamp-1">
+            {activeTool.label}
+          </div>
+          <div className="text-[8px] sm:text-[9px] font-mono tracking-wider text-neutral-500 uppercase mt-0.5">
+            ORCHESTRATING
+          </div>
         </div>
       </div>
 
-      {/* Tool nodes orbiting */}
+      {/* Orbiting Tool Nodes with Enriched Larger Icons */}
       {tools.map((tool, i) => {
         const rad = ((tool.angle - 90) * Math.PI) / 180;
-        const r = 140;
-        const divisor = 3.84;
+        const r = 160;
+        const divisor = 4.2;
         const x = 50 + (r / divisor) * Math.cos(rad);
         const y = 50 + (r / divisor) * Math.sin(rad);
         const Icon = tool.icon;
+        const isCurrent = i === activeIndex;
+
         return (
           <div
             key={tool.label}
-            className="absolute flex flex-col items-center gap-1.5"
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            className="absolute flex flex-col items-center gap-1.5 transition-all duration-300"
             style={{
               left: `${x}%`,
               top: `${y}%`,
               transform: 'translate(-50%, -50%)',
-              animationDelay: `${i * 0.1}s`,
             }}
           >
-            <div className="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center shadow-md hover:scale-110 transition-transform duration-200 hover:border-neutral-400 dark:hover:border-neutral-600">
-              <Icon className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />
+            {/* Larger Interactive Tool Box */}
+            <div
+              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ${
+                isCurrent
+                  ? 'scale-115 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-2 border-neutral-950 dark:border-white shadow-xl'
+                  : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white'
+              }`}
+            >
+              <Icon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-200" />
             </div>
-            <span className="text-[9px] font-mono text-neutral-500 dark:text-neutral-500 whitespace-nowrap">{tool.label}</span>
+
+            {/* Monospace Badge Label */}
+            <span
+              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-200 whitespace-nowrap ${
+                isCurrent
+                  ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 border-neutral-950 dark:border-white font-bold'
+                  : 'bg-white/90 dark:bg-neutral-900/90 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800'
+              }`}
+            >
+              {tool.label}
+            </span>
           </div>
         );
       })}
-
-      {/* Connection lines (SVG) */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
-        {tools.map((tool, i) => {
-          const rad = ((tool.angle - 90) * Math.PI) / 180;
-          const r = 0.365;
-          const cx = 0.5 + r * Math.cos(rad);
-          const cy = 0.5 + r * Math.sin(rad);
-          return (
-            <line
-              key={i}
-              x1="50%"
-              y1="50%"
-              x2={`${cx * 100}%`}
-              y2={`${cy * 100}%`}
-              className="stroke-neutral-300/60 dark:stroke-neutral-800"
-              strokeWidth="1"
-              strokeDasharray="3 4"
-            />
-          );
-        })}
-      </svg>
     </div>
   );
 }
