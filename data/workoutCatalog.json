@@ -1,0 +1,206 @@
+[
+  {
+    "id": "push_day_strength",
+    "name": "Push Day — Strength Focus",
+    "category": "Strength",
+    "difficulty": "Intermediate",
+    "equipment": ["Barbell", "Dumbbells", "Bench", "Cable Machine"],
+    "duration_mins": 60,
+    "primary_muscles": ["Chest", "Anterior Deltoids", "Triceps"],
+    "secondary_muscles": ["Core", "Serratus Anterior"],
+    "tags": ["Push", "PPL", "Strength", "Hypertrophy"],
+    "description": "A comprehensive push day targeting chest, shoulders, and triceps. Follows progressive overload principles for strength and size.",
+    "exercises": [
+      { "name": "Barbell Bench Press", "sets": 4, "reps": "5-6", "rest_seconds": 180, "intensity": "High", "tips": "Retract scapula, drive feet into floor, control eccentric for 3s", "muscle_group": "Chest" },
+      { "name": "Incline Dumbbell Press", "sets": 4, "reps": "8-10", "rest_seconds": 120, "intensity": "High", "tips": "30-45° incline, elbows at 75°, full range of motion", "muscle_group": "Upper Chest" },
+      { "name": "Cable Chest Fly", "sets": 3, "reps": "12-15", "rest_seconds": 90, "intensity": "Medium", "tips": "Keep slight elbow bend, squeeze at peak contraction", "muscle_group": "Chest" },
+      { "name": "Overhead Press (Barbell)", "sets": 4, "reps": "6-8", "rest_seconds": 150, "intensity": "High", "tips": "Brace core, bar path slightly back over head, lock out elbows", "muscle_group": "Anterior Deltoids" },
+      { "name": "Lateral Raises", "sets": 3, "reps": "15-20", "rest_seconds": 60, "intensity": "Low", "tips": "Lead with elbows, slight forward lean, controlled descent", "muscle_group": "Lateral Deltoids" },
+      { "name": "Tricep Rope Pushdown", "sets": 3, "reps": "12-15", "rest_seconds": 60, "intensity": "Medium", "tips": "Elbows pinned to sides, spread rope at bottom, full extension", "muscle_group": "Triceps" },
+      { "name": "Overhead Tricep Extension", "sets": 3, "reps": "10-12", "rest_seconds": 75, "intensity": "Medium", "tips": "Keep elbows close, lower slowly, feel the long head stretch", "muscle_group": "Triceps" }
+    ]
+  },
+  {
+    "id": "pull_day_hypertrophy",
+    "name": "Pull Day — Hypertrophy Focus",
+    "category": "Strength",
+    "difficulty": "Intermediate",
+    "equipment": ["Pull-up Bar", "Barbell", "Dumbbells", "Cable Machine"],
+    "duration_mins": 65,
+    "primary_muscles": ["Latissimus Dorsi", "Biceps", "Rear Deltoids"],
+    "secondary_muscles": ["Rhomboids", "Trapezius", "Forearms"],
+    "tags": ["Pull", "PPL", "Back", "Hypertrophy"],
+    "description": "A pull session designed for maximum lat width and bicep development. High volume with moderate loads.",
+    "exercises": [
+      { "name": "Weighted Pull-ups", "sets": 4, "reps": "6-8", "rest_seconds": 180, "intensity": "High", "tips": "Full dead hang start, pull elbows to hips, chin over bar", "muscle_group": "Lats" },
+      { "name": "Barbell Bent-Over Row", "sets": 4, "reps": "8-10", "rest_seconds": 120, "intensity": "High", "tips": "Hinge at hips, neutral spine, pull bar to lower sternum", "muscle_group": "Mid Back" },
+      { "name": "Seated Cable Row", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Medium", "tips": "Drive elbows back past torso, squeeze shoulder blades", "muscle_group": "Mid Back" },
+      { "name": "Single-Arm Dumbbell Row", "sets": 3, "reps": "10-12", "rest_seconds": 75, "intensity": "Medium", "tips": "Brace on bench, row to hip, rotate torso slightly at top", "muscle_group": "Lats" },
+      { "name": "Face Pulls", "sets": 3, "reps": "15-20", "rest_seconds": 60, "intensity": "Low", "tips": "Cable at head height, pull to forehead, externally rotate at end", "muscle_group": "Rear Deltoids" },
+      { "name": "Barbell Curl", "sets": 3, "reps": "10-12", "rest_seconds": 75, "intensity": "Medium", "tips": "Elbows fixed, supinate at top, control the negative", "muscle_group": "Biceps" },
+      { "name": "Hammer Curl", "sets": 3, "reps": "12-15", "rest_seconds": 60, "intensity": "Medium", "tips": "Neutral grip, both arms alternating, no swinging", "muscle_group": "Brachialis" }
+    ]
+  },
+  {
+    "id": "leg_day_complete",
+    "name": "Leg Day — Complete Lower Body",
+    "category": "Strength",
+    "difficulty": "Advanced",
+    "equipment": ["Barbell", "Squat Rack", "Leg Press", "Leg Curl Machine"],
+    "duration_mins": 75,
+    "primary_muscles": ["Quadriceps", "Hamstrings", "Glutes"],
+    "secondary_muscles": ["Calves", "Adductors", "Core"],
+    "tags": ["Legs", "PPL", "Strength", "Compound"],
+    "description": "A comprehensive leg session hitting all lower body muscle groups. Built around the squat as the primary movement.",
+    "exercises": [
+      { "name": "Back Squat", "sets": 5, "reps": "5", "rest_seconds": 240, "intensity": "High", "tips": "Bar on traps, brace core hard, break parallel, drive knees out", "muscle_group": "Quadriceps" },
+      { "name": "Romanian Deadlift", "sets": 4, "reps": "8-10", "rest_seconds": 150, "intensity": "High", "tips": "Hinge at hips, soft knee bend, bar drags down shins, feel hamstring stretch", "muscle_group": "Hamstrings" },
+      { "name": "Leg Press", "sets": 3, "reps": "12-15", "rest_seconds": 120, "intensity": "Medium", "tips": "High foot placement for glutes/hams, don't lock knees at top", "muscle_group": "Quadriceps" },
+      { "name": "Walking Lunges", "sets": 3, "reps": "10 each leg", "rest_seconds": 90, "intensity": "Medium", "tips": "Long stride, knee touches ground gently, torso upright", "muscle_group": "Glutes" },
+      { "name": "Leg Curl (Lying)", "sets": 3, "reps": "12-15", "rest_seconds": 75, "intensity": "Medium", "tips": "Toes pointed, curl all the way, pause at top, slow descent", "muscle_group": "Hamstrings" },
+      { "name": "Calf Raises (Standing)", "sets": 4, "reps": "15-20", "rest_seconds": 60, "intensity": "Low", "tips": "Full range of motion, pause at bottom stretch, explosive up", "muscle_group": "Calves" }
+    ]
+  },
+  {
+    "id": "upper_body_strength",
+    "name": "Upper Body — Strength Day",
+    "category": "Strength",
+    "difficulty": "Intermediate",
+    "equipment": ["Barbell", "Dumbbells", "Pull-up Bar", "Bench"],
+    "duration_mins": 60,
+    "primary_muscles": ["Chest", "Back", "Shoulders"],
+    "secondary_muscles": ["Biceps", "Triceps", "Core"],
+    "tags": ["Upper", "Upper-Lower", "Strength"],
+    "description": "Upper/Lower split — upper body strength session. Alternates push/pull patterns for balanced development.",
+    "exercises": [
+      { "name": "Barbell Bench Press", "sets": 4, "reps": "6-8", "rest_seconds": 150, "intensity": "High", "tips": "Control the eccentric, full range, scapula retracted", "muscle_group": "Chest" },
+      { "name": "Weighted Pull-ups", "sets": 4, "reps": "6-8", "rest_seconds": 150, "intensity": "High", "tips": "Full hang, pull elbows to hips, controlled descent", "muscle_group": "Lats" },
+      { "name": "Overhead Press", "sets": 3, "reps": "8-10", "rest_seconds": 120, "intensity": "High", "tips": "Standing, brace core, press bar overhead to lockout", "muscle_group": "Shoulders" },
+      { "name": "Pendlay Row", "sets": 3, "reps": "8-10", "rest_seconds": 120, "intensity": "High", "tips": "Bar starts on floor each rep, explosive pull, control down", "muscle_group": "Back" },
+      { "name": "Incline Dumbbell Curl", "sets": 3, "reps": "10-12", "rest_seconds": 75, "intensity": "Medium", "tips": "Arms hang fully extended, curl slowly, maximum stretch", "muscle_group": "Biceps" },
+      { "name": "Skull Crushers", "sets": 3, "reps": "10-12", "rest_seconds": 75, "intensity": "Medium", "tips": "Lower bar to forehead level, elbows fixed, full extension", "muscle_group": "Triceps" }
+    ]
+  },
+  {
+    "id": "lower_body_hypertrophy",
+    "name": "Lower Body — Hypertrophy Day",
+    "category": "Strength",
+    "difficulty": "Intermediate",
+    "equipment": ["Barbell", "Squat Rack", "Leg Press", "Dumbbells"],
+    "duration_mins": 55,
+    "primary_muscles": ["Quadriceps", "Hamstrings", "Glutes"],
+    "secondary_muscles": ["Calves", "Core"],
+    "tags": ["Lower", "Upper-Lower", "Hypertrophy"],
+    "description": "Upper/Lower split — lower body hypertrophy focus. Higher reps and more volume for muscle growth.",
+    "exercises": [
+      { "name": "Goblet Squat", "sets": 4, "reps": "12-15", "rest_seconds": 90, "intensity": "Medium", "tips": "Dumbbell at chest, elbows inside knees, deep squat", "muscle_group": "Quadriceps" },
+      { "name": "Dumbbell Romanian Deadlift", "sets": 4, "reps": "12-15", "rest_seconds": 90, "intensity": "Medium", "tips": "Dumbbells hang, hip hinge, feel hamstring load", "muscle_group": "Hamstrings" },
+      { "name": "Hip Thrust", "sets": 4, "reps": "12-15", "rest_seconds": 90, "intensity": "Medium", "tips": "Shoulder blades on bench, drive hips up, squeeze glutes at top", "muscle_group": "Glutes" },
+      { "name": "Leg Extension", "sets": 3, "reps": "15-20", "rest_seconds": 60, "intensity": "Low", "tips": "Control the descent, pause at full extension, 1s squeeze", "muscle_group": "Quadriceps" },
+      { "name": "Seated Leg Curl", "sets": 3, "reps": "15-20", "rest_seconds": 60, "intensity": "Low", "tips": "Full range, slow eccentric, pause at peak contraction", "muscle_group": "Hamstrings" },
+      { "name": "Calf Raises (Seated)", "sets": 4, "reps": "20-25", "rest_seconds": 45, "intensity": "Low", "tips": "Full stretch at bottom, slow and controlled, high volume", "muscle_group": "Calves" }
+    ]
+  },
+  {
+    "id": "full_body_beginner",
+    "name": "Full Body — Beginner Foundations",
+    "category": "Strength",
+    "difficulty": "Beginner",
+    "equipment": ["Barbell", "Dumbbells", "Bench", "Pull-up Bar"],
+    "duration_mins": 45,
+    "primary_muscles": ["Full Body"],
+    "secondary_muscles": ["Core"],
+    "tags": ["Full Body", "Beginner", "Compound"],
+    "description": "A 3x per week full body program for beginners. Focuses on mastering fundamental movement patterns with manageable loads.",
+    "exercises": [
+      { "name": "Goblet Squat", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Low", "tips": "Learn the squat pattern, feet shoulder-width, chest up", "muscle_group": "Quadriceps" },
+      { "name": "Dumbbell Bench Press", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Low", "tips": "Start light, find the groove, don't flare elbows", "muscle_group": "Chest" },
+      { "name": "Dumbbell Row", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Low", "tips": "Support yourself, pull elbow to ceiling, retract scapula", "muscle_group": "Back" },
+      { "name": "Dumbbell Overhead Press", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Low", "tips": "Seated for stability, brace core, press straight up", "muscle_group": "Shoulders" },
+      { "name": "Romanian Deadlift (Dumbbell)", "sets": 3, "reps": "10-12", "rest_seconds": 90, "intensity": "Low", "tips": "Hinge, don't squat, keep bar close to legs, neutral spine", "muscle_group": "Hamstrings" },
+      { "name": "Plank", "sets": 3, "reps": "30-45s", "rest_seconds": 60, "intensity": "Low", "tips": "Neutral spine, squeeze glutes, breathe steadily", "muscle_group": "Core" }
+    ]
+  },
+  {
+    "id": "hiit_metabolic",
+    "name": "HIIT — Metabolic Conditioning",
+    "category": "HIIT",
+    "difficulty": "Advanced",
+    "equipment": ["Bodyweight", "Kettlebell", "Jump Rope"],
+    "duration_mins": 35,
+    "primary_muscles": ["Full Body"],
+    "secondary_muscles": ["Cardiovascular System"],
+    "tags": ["HIIT", "Cardio", "Fat Loss", "Conditioning"],
+    "description": "High-intensity interval training protocol. 40s work / 20s rest. Burns maximum calories in minimum time.",
+    "exercises": [
+      { "name": "Burpees", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Full extension at top, chest to floor, explosive jump", "muscle_group": "Full Body" },
+      { "name": "Kettlebell Swings", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Hip hinge power, not a squat, let bell float at top", "muscle_group": "Posterior Chain" },
+      { "name": "Jump Rope", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Soft knees, wrists drive the rope, stay on balls of feet", "muscle_group": "Calves" },
+      { "name": "Mountain Climbers", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Hips level, fast alternating drives, keep core tight", "muscle_group": "Core" },
+      { "name": "Box Jumps", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Land softly with bent knees, step down (don't jump down)", "muscle_group": "Quadriceps" },
+      { "name": "Push-up to T Rotation", "sets": 4, "reps": "40s on / 20s off", "rest_seconds": 20, "intensity": "High", "tips": "Push up, rotate to side plank, reach arm up, alternate sides", "muscle_group": "Chest / Core" }
+    ]
+  },
+  {
+    "id": "hiit_bodyweight",
+    "name": "HIIT — Bodyweight Blast",
+    "category": "HIIT",
+    "difficulty": "Intermediate",
+    "equipment": ["Bodyweight"],
+    "duration_mins": 30,
+    "primary_muscles": ["Full Body"],
+    "secondary_muscles": ["Cardiovascular System"],
+    "tags": ["HIIT", "Bodyweight", "No Equipment", "Fat Loss"],
+    "description": "Zero equipment HIIT session. 30s work / 15s rest. Perfect for home workouts or travel.",
+    "exercises": [
+      { "name": "Squat Jumps", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "High", "tips": "Land softly, absorb impact through hips and knees", "muscle_group": "Quadriceps" },
+      { "name": "Push-ups", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "Medium", "tips": "Straight body line, chest touches floor, full lockout", "muscle_group": "Chest" },
+      { "name": "High Knees", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "High", "tips": "Knees to hip height, arms pump, stay on toes", "muscle_group": "Hip Flexors" },
+      { "name": "Tricep Dips (Chair)", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "Medium", "tips": "Hips close to chair, elbows go back not out, full range", "muscle_group": "Triceps" },
+      { "name": "Lateral Skaters", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "High", "tips": "Wide lateral bounds, touch floor lightly, drive off outside foot", "muscle_group": "Glutes" },
+      { "name": "Plank to Downdog", "sets": 4, "reps": "30s on / 15s off", "rest_seconds": 15, "intensity": "Medium", "tips": "Flow smoothly, push heels down in downdog, breathe", "muscle_group": "Core" }
+    ]
+  },
+  {
+    "id": "yoga_flow_morning",
+    "name": "Morning Yoga Flow",
+    "category": "Yoga",
+    "difficulty": "Beginner",
+    "equipment": ["Yoga Mat"],
+    "duration_mins": 30,
+    "primary_muscles": ["Full Body Flexibility"],
+    "secondary_muscles": ["Core", "Hip Flexors"],
+    "tags": ["Yoga", "Morning", "Flexibility", "Mindfulness"],
+    "description": "A gentle morning yoga sequence to awaken the body, improve flexibility, and set a calm, focused tone for the day.",
+    "exercises": [
+      { "name": "Child's Pose", "sets": 1, "reps": "60s", "rest_seconds": 0, "intensity": "Low", "tips": "Arms extended, forehead on mat, breathe into lower back", "muscle_group": "Lower Back" },
+      { "name": "Cat-Cow Stretch", "sets": 1, "reps": "10 cycles", "rest_seconds": 0, "intensity": "Low", "tips": "Slow rhythmic movement, sync with breath", "muscle_group": "Spine" },
+      { "name": "Downward Dog", "sets": 3, "reps": "30s", "rest_seconds": 15, "intensity": "Low", "tips": "Pedal feet to stretch calves, push heels toward floor", "muscle_group": "Hamstrings" },
+      { "name": "Warrior I", "sets": 2, "reps": "45s each side", "rest_seconds": 15, "intensity": "Low", "tips": "Front knee over ankle, back foot at 45°, hips square forward", "muscle_group": "Hip Flexors" },
+      { "name": "Warrior II", "sets": 2, "reps": "45s each side", "rest_seconds": 15, "intensity": "Low", "tips": "Hips open to side, arms parallel to floor, gaze over front hand", "muscle_group": "Inner Thighs" },
+      { "name": "Seated Forward Fold", "sets": 2, "reps": "60s", "rest_seconds": 0, "intensity": "Low", "tips": "Flex feet, hinge from hips not waist, hold shins or ankles", "muscle_group": "Hamstrings" },
+      { "name": "Supine Twist", "sets": 2, "reps": "45s each side", "rest_seconds": 0, "intensity": "Low", "tips": "Shoulders stay flat, let gravity do the work, breathe deeply", "muscle_group": "Lower Back" }
+    ]
+  },
+  {
+    "id": "mobility_full_body",
+    "name": "Full Body Mobility & Recovery",
+    "category": "Mobility",
+    "difficulty": "Beginner",
+    "equipment": ["Foam Roller", "Resistance Band", "Yoga Mat"],
+    "duration_mins": 40,
+    "primary_muscles": ["Hips", "Thoracic Spine", "Shoulders"],
+    "secondary_muscles": ["Ankles", "Hamstrings", "Lats"],
+    "tags": ["Mobility", "Recovery", "Flexibility", "Prehab"],
+    "description": "A full-body mobility session combining foam rolling, dynamic stretching, and joint CARs (Controlled Articular Rotations). Ideal as active recovery.",
+    "exercises": [
+      { "name": "Foam Roll Quads", "sets": 1, "reps": "60s each leg", "rest_seconds": 0, "intensity": "Low", "tips": "Pause on tender spots, rotate leg slightly to hit all angles", "muscle_group": "Quadriceps" },
+      { "name": "Foam Roll Thoracic Spine", "sets": 1, "reps": "90s", "rest_seconds": 0, "intensity": "Low", "tips": "Arms crossed, pause at each thoracic segment, breathe into it", "muscle_group": "Upper Back" },
+      { "name": "Hip 90/90 Stretch", "sets": 2, "reps": "60s each side", "rest_seconds": 15, "intensity": "Low", "tips": "Both legs at 90°, sit tall, feel deep hip stretch", "muscle_group": "Hips" },
+      { "name": "World's Greatest Stretch", "sets": 3, "reps": "5 each side", "rest_seconds": 0, "intensity": "Low", "tips": "Lunge, rotate elbow to floor, reach arm to ceiling, slow and controlled", "muscle_group": "Full Body" },
+      { "name": "Band Pull-Apart", "sets": 3, "reps": "15", "rest_seconds": 30, "intensity": "Low", "tips": "Arms straight, pull band to chest, squeeze shoulder blades", "muscle_group": "Rear Deltoids" },
+      { "name": "Ankle CARs", "sets": 2, "reps": "8 circles each ankle", "rest_seconds": 15, "intensity": "Low", "tips": "Full range circles, slow and deliberate, maximize range", "muscle_group": "Ankles" },
+      { "name": "Doorframe Chest Stretch", "sets": 3, "reps": "45s", "rest_seconds": 15, "intensity": "Low", "tips": "Arm at 90°, step through doorway, feel chest open", "muscle_group": "Chest" }
+    ]
+  }
+]
