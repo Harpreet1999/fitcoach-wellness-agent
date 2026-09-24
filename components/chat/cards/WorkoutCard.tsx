@@ -30,38 +30,32 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
 
   if (data.error) {
     return (
-      <div className="my-2 p-4 rounded-2xl border border-neutral-700 bg-neutral-900 animate-fade-up">
-        <p className="text-sm text-neutral-400">{data.error}</p>
+      <div className="my-2 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+        <p className="text-sm text-neutral-500">{data.error}</p>
       </div>
     );
   }
 
-  const difficultyColor: Record<string, string> = {
-    Beginner: 'text-emerald-400 bg-emerald-500/10',
-    Intermediate: 'text-amber-400 bg-amber-500/10',
-    Advanced: 'text-red-400 bg-red-500/10',
-  };
-
   return (
-    <div className="my-2 rounded-2xl border border-neutral-700 bg-neutral-900 overflow-hidden animate-fade-up">
+    <div className="my-2 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden shadow-sm animate-fade-up">
       {/* Header */}
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-neutral-800">
-              <Dumbbell className="w-4 h-4 text-neutral-300" />
+            <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60">
+              <Dumbbell className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />
             </div>
             <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-neutral-500">{data.category}</div>
-              <div className="text-base font-semibold text-white">{data.name}</div>
+              <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">{data.category}</div>
+              <div className="text-base font-semibold text-neutral-900 dark:text-white">{data.name}</div>
             </div>
           </div>
-          <span className={`text-[10px] font-mono uppercase px-2 py-1 rounded-md ${difficultyColor[data.difficulty] || 'text-neutral-400 bg-neutral-800'}`}>
+          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
             {data.difficulty}
           </span>
         </div>
 
-        <p className="mt-3 text-sm text-neutral-400 font-light leading-relaxed">{data.description}</p>
+        <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-300 font-light leading-relaxed">{data.description}</p>
 
         <div className="flex items-center gap-4 mt-3 text-xs font-mono text-neutral-500">
           <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{data.duration_mins} min</span>
@@ -70,7 +64,7 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
 
         <div className="flex flex-wrap gap-1.5 mt-3">
           {data.tags?.map((tag) => (
-            <span key={tag} className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-400">
+            <span key={tag} className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200/60 dark:border-neutral-700/60">
               {tag}
             </span>
           ))}
@@ -82,23 +76,23 @@ export default function WorkoutCard({ data }: { data: WorkoutData }) {
         <>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full flex items-center justify-between px-5 py-3 border-t border-neutral-800 text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800/50 transition-colors"
+            className="w-full flex items-center justify-between px-5 py-3 border-t border-neutral-200 dark:border-neutral-800 text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors"
           >
-            <span>{data.exercises.length} Exercises</span>
+            <span>{data.exercises.length} Exercises Included</span>
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
 
           {expanded && (
-            <div className="border-t border-neutral-800 divide-y divide-neutral-800/60 animate-fade-in">
+            <div className="border-t border-neutral-200 dark:border-neutral-800 divide-y divide-neutral-200/70 dark:divide-neutral-800/60 bg-neutral-50/40 dark:bg-neutral-950/20 animate-fade-in">
               {data.exercises.map((ex, i) => (
                 <div key={i} className="px-5 py-3 grid grid-cols-3 gap-2 text-xs">
                   <div className="col-span-2">
-                    <div className="font-medium text-neutral-200">{ex.name}</div>
-                    <div className="text-neutral-500 mt-0.5 font-light">{ex.tips}</div>
+                    <div className="font-medium text-neutral-900 dark:text-neutral-100">{ex.name}</div>
+                    <div className="text-neutral-500 mt-0.5 font-light leading-relaxed">{ex.tips}</div>
                   </div>
-                  <div className="text-right text-neutral-400 font-mono">
-                    <div>{ex.sets} × {ex.reps}</div>
-                    <div className="text-neutral-600">{ex.rest_seconds}s rest</div>
+                  <div className="text-right text-neutral-600 dark:text-neutral-400 font-mono">
+                    <div className="font-semibold text-neutral-800 dark:text-neutral-200">{ex.sets} × {ex.reps}</div>
+                    <div className="text-[10px] text-neutral-400 dark:text-neutral-500">{ex.rest_seconds}s rest</div>
                   </div>
                 </div>
               ))}

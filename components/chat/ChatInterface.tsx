@@ -1,6 +1,8 @@
 'use client';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Trash2, Sparkles } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Send, Trash2, Sparkles, Cpu } from 'lucide-react';
 import MacroCard from './cards/MacroCard';
 import WorkoutCard from './cards/WorkoutCard';
 import HabitCard from './cards/HabitCard';
@@ -20,22 +22,13 @@ interface Message {
   toolsUsed?: string[];
 }
 
-const QUICK_PROMPTS = [
-  { label: '🏋️ Log PPL Split', prompt: 'Log my PPL split: Push on Monday/Thursday, Pull on Tuesday/Friday, Legs on Wednesday/Saturday' },
-  { label: '📊 Calculate Macros', prompt: "I'm 75kg, 178cm, 25 years old male, moderate activity. Calculate macros for cutting." },
-  { label: '💪 Chest Workout', prompt: 'Show me the chest & triceps strength workout from your database' },
-  { label: '🍌 Banana Nutrition', prompt: 'What is the nutritional breakdown of a banana?' },
-  { label: '😴 Sleep Habit', prompt: 'Give me a science-backed sleep habit recommendation' },
-  { label: '🖼️ Generate Image', prompt: 'Generate a motivational image of a dumbbell bench press exercise' },
-];
-
 function TypingIndicator() {
   return (
     <div className="flex items-center gap-1.5 px-4 py-3">
       {[0, 1, 2].map(i => (
         <div
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-neutral-500 animate-dots"
+          className="w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-500 animate-dots"
           style={{ animationDelay: `${i * 0.15}s` }}
         />
       ))}
@@ -142,79 +135,88 @@ export default function ChatInterface() {
 
       const finalMessages = [...newMessages, agentMsg];
       setMessages(finalMessages);
-      saveMessages(finalMessages.map(m => ({ role: m.role, parts: m.parts })));
-    } catch (err) {
-      const errMsg: Message = {
+      saveMessages(finalMessages);
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : 'Something went wrong';
+      const errorMsg: Message = {
         role: 'model',
-        parts: [{ text: `Sorry, I encountered an error: ${err instanceof Error ? err.message : 'Unknown error'}. Please try again.` }],
+        parts: [{ text: `Error: ${errMsg}` }],
       };
-      setMessages(prev => [...prev, errMsg]);
+      setMessages([...newMessages, errorMsg]);
     } finally {
       setIsLoading(false);
     }
   }, [messages, isLoading]);
 
-  // Listen for quick-prompt chip events from DemoSection
   useEffect(() => {
-    const handler = (e: Event) => {
-      const prompt = (e as CustomEvent<string>).detail;
-      if (prompt) sendMessage(prompt);
+    const handleQuickPrompt = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      if (customEvent.detail) {
+        sendMessage(customEvent.detail);
+      }
     };
-    window.addEventListener('fitcoach-prompt', handler);
-    return () => window.removeEventListener('fitcoach-prompt', handler);
+
+    window.addEventListener('fitcoach-prompt', handleQuickPrompt);
+    return () => window.removeEventListener('fitcoach-prompt', handleQuickPrompt);
   }, [sendMessage]);
 
-  const clearChat = () => {
+  const clearSession = () => {
     setMessages([]);
-    saveMessages([]);
+    localStorage.removeItem('fitcoach_session_messages');
+    localStorage.removeItem('fitcoach_profile');
   };
 
   return (
-    <div className="flex flex-col h-[680px] rounded-2xl border border-neutral-800 bg-neutral-900/60 backdrop-blur-sm overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-800">
+    <div className="flex flex-col h-[640px] rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-200">
+      {/* Chat header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-950/40">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-neutral-300" />
+          <div className="relative">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-emerald-500/30 animate-ping" />
           </div>
           <div>
-            <div className="text-sm font-semibold text-white">FitCoach AI</div>
-            <div className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-subtle" />
-              gemini-2.0-flash · in-session memory
+            <div className="text-xs font-semibold text-neutral-900 dark:text-white uppercase tracking-wider font-sans">
+              FitCoach Agent
+            </div>
+            <div className="text-[10px] font-mono text-neutral-500">
+              Gemini 3.5 Flash · In-Session Memory
             </div>
           </div>
         </div>
+
         <button
-          onClick={clearChat}
-          className="p-2 text-neutral-600 hover:text-neutral-300 transition-colors rounded-lg hover:bg-neutral-800"
+          onClick={clearSession}
+          className="p-2 text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
           title="Clear session"
+          aria-label="Clear session"
         >
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center text-center gap-3 text-neutral-600">
-            <Sparkles className="w-8 h-8" />
+          <div className="h-full flex flex-col items-center justify-center text-center gap-3 text-neutral-400 dark:text-neutral-500">
+            <Sparkles className="w-8 h-8 opacity-40" />
             <div>
-              <p className="text-sm font-medium text-neutral-400">Ask FitCoach anything</p>
-              <p className="text-xs font-mono mt-1">Try a quick prompt or type your own →</p>
+              <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Ask FitCoach anything</p>
+              <p className="text-xs font-mono mt-1 opacity-70">Select a prompt on the left or type your own</p>
             </div>
           </div>
         )}
 
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-up`}>
-            <div className={`max-w-[85%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
+            <div className={`max-w-[88%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
               {/* Tools used badge */}
               {msg.role === 'model' && msg.toolsUsed && msg.toolsUsed.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-1">
                   {msg.toolsUsed.map(tool => (
-                    <span key={tool} className="text-[9px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-500 border border-neutral-700">
-                      ⚙ {tool}
+                    <span key={tool} className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 flex items-center gap-1">
+                      <Cpu className="w-2.5 h-2.5 opacity-70" />
+                      {tool}
                     </span>
                   ))}
                 </div>
@@ -229,12 +231,43 @@ export default function ChatInterface() {
 
               {/* Message bubble */}
               {msg.parts[0].text && (
-                <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed font-light ${
-                  msg.role === 'user'
-                    ? 'bg-white text-neutral-950 rounded-br-sm'
-                    : 'bg-neutral-800 text-neutral-200 rounded-bl-sm border border-neutral-700'
-                }`}>
-                  {msg.parts[0].text}
+                <div
+                  className={`px-4 py-3 rounded-2xl text-sm leading-relaxed font-light ${
+                    msg.role === 'user'
+                      ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 rounded-br-xs shadow-xs'
+                      : 'bg-neutral-50 dark:bg-neutral-800/80 text-neutral-800 dark:text-neutral-200 rounded-bl-xs border border-neutral-200 dark:border-neutral-700/60 shadow-xs'
+                  }`}
+                >
+                  {msg.role === 'user' ? (
+                    <div className="whitespace-pre-wrap">{msg.parts[0].text}</div>
+                  ) : (
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+                        strong: ({ children }) => <strong className="font-semibold text-neutral-950 dark:text-white">{children}</strong>,
+                        em: ({ children }) => <em className="italic text-neutral-600 dark:text-neutral-400">{children}</em>,
+                        h1: ({ children }) => <h1 className="text-base font-semibold text-neutral-950 dark:text-white mt-3 mb-1 first:mt-0">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-sm font-semibold text-neutral-950 dark:text-white mt-2.5 mb-1 first:mt-0">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-sm font-semibold text-neutral-950 dark:text-white mt-2 mb-0.5 first:mt-0">{children}</h3>,
+                        ul: ({ children }) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
+                        li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                        code: ({ children }) => (
+                          <code className="font-mono text-xs bg-neutral-200/70 dark:bg-neutral-700/60 text-neutral-900 dark:text-neutral-200 px-1 py-0.5 rounded">
+                            {children}
+                          </code>
+                        ),
+                        blockquote: ({ children }) => (
+                          <blockquote className="border-l-2 border-neutral-300 dark:border-neutral-600 pl-3 my-2 text-neutral-600 dark:text-neutral-400 italic">
+                            {children}
+                          </blockquote>
+                        ),
+                      }}
+                    >
+                      {msg.parts[0].text}
+                    </ReactMarkdown>
+                  )}
                 </div>
               )}
             </div>
@@ -243,7 +276,7 @@ export default function ChatInterface() {
 
         {isLoading && (
           <div className="flex justify-start animate-fade-in">
-            <div className="bg-neutral-800 border border-neutral-700 rounded-2xl rounded-bl-sm">
+            <div className="bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/60 rounded-2xl rounded-bl-xs">
               <TypingIndicator />
             </div>
           </div>
@@ -251,22 +284,22 @@ export default function ChatInterface() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="px-4 pb-4 pt-2 border-t border-neutral-800">
-        <div className="flex items-center gap-2 bg-neutral-800 rounded-full border border-neutral-700 px-4 py-2.5 focus-within:border-neutral-600 transition-colors">
+      {/* Input bar */}
+      <div className="px-5 pb-5 pt-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-950/30">
+        <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800/90 rounded-full border border-neutral-200 dark:border-neutral-700/70 px-4 py-2 focus-within:border-neutral-400 dark:focus-within:border-neutral-500 transition-colors">
           <input
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
             placeholder="Ask about workouts, macros, habits..."
-            className="flex-1 bg-transparent text-sm text-neutral-200 placeholder-neutral-600 outline-none"
+            className="flex-1 bg-transparent text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none"
             disabled={isLoading}
           />
           <button
             onClick={() => sendMessage(input)}
             disabled={!input.trim() || isLoading}
-            className="p-1.5 rounded-full bg-white text-neutral-950 disabled:opacity-30 hover:opacity-90 active:scale-95 transition-all duration-200 shrink-0"
+            className="p-2 rounded-full bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 disabled:opacity-20 hover:opacity-90 active:scale-95 transition-all duration-200 shrink-0"
             aria-label="Send message"
           >
             <Send className="w-3.5 h-3.5" />

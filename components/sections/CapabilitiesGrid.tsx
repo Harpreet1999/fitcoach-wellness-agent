@@ -10,7 +10,7 @@ const capabilities = [
     title: 'Weekly Split Tracking',
     description: 'Log and persist your training schedule. Tell FitCoach your push/pull/legs split and it remembers across your session — Monday: Chest & Triceps, Tuesday: Back & Biceps, and so on.',
     metric: 'Memory Persistent',
-    icon: <Dumbbell className="w-5 h-5" />,
+    icon: <Dumbbell className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'log_workout_routine',
     span: 'md:col-span-8',
   },
@@ -19,7 +19,7 @@ const capabilities = [
     title: 'BMR & Macro Engine',
     description: 'Calculates your Basal Metabolic Rate and daily macro targets using the Mifflin-St Jeor equation — the gold standard in sports nutrition.',
     metric: 'Mifflin-St Jeor',
-    icon: <Calculator className="w-5 h-5" />,
+    icon: <Calculator className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'calculate_macros_and_bmr',
     span: 'md:col-span-4',
   },
@@ -28,7 +28,7 @@ const capabilities = [
     title: 'Workout Catalog',
     description: 'Access 10+ full workout routines across Strength, HIIT, Yoga, and Mobility. Each with exercises, sets, reps, rest, and coaching tips.',
     metric: '50+ Exercises',
-    icon: <Database className="w-5 h-5" />,
+    icon: <Database className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'list_workouts / get_workout',
     span: 'md:col-span-4',
   },
@@ -37,7 +37,7 @@ const capabilities = [
     title: 'Live Nutrition Data',
     description: 'Fetch real-time nutritional breakdown for any fruit — calories, protein, carbs, fat, and sugar via the Fruityvice public API.',
     metric: 'Live API',
-    icon: <Leaf className="w-5 h-5" />,
+    icon: <Leaf className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'get_fruit_nutrition',
     span: 'md:col-span-4',
   },
@@ -46,17 +46,17 @@ const capabilities = [
     title: 'Habit Recommendations',
     description: 'Evidence-based wellness habits across 6 categories: sleep, hydration, nutrition, recovery, mindset, and movement — all sourced from ACSM and NASM guidelines.',
     metric: '24 Habits · 6 Categories',
-    icon: <Lightbulb className="w-5 h-5" />,
+    icon: <Lightbulb className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'get_recommended_habit',
     span: 'md:col-span-4',
   },
   {
     category: 'generation' as FilterTab,
-    title: 'AI Image Generation',
-    description: 'Generate motivational workout visuals and healthy meal inspiration on demand using Gemini\'s multimodal image generation capabilities.',
-    metric: 'Gemini Vision',
-    icon: <Image className="w-5 h-5" />,
-    tool: 'generate_domain_image',
+    title: 'AI Intelligence & Reasoning',
+    description: 'Contextual, multi-turn reasoning that adapts workout protocols and nutrition targets dynamically to user profile constraints.',
+    metric: 'Gemini 3.5 Flash',
+    icon: <Image className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
+    tool: 'gemini_multiturn_reasoning',
     span: 'md:col-span-8',
   },
 ];
@@ -69,7 +69,7 @@ export default function CapabilitiesGrid() {
     : capabilities.filter(c => c.category === activeTab);
 
   return (
-    <section id="capabilities" className="py-24 border-t border-neutral-800/80">
+    <section id="capabilities" className="py-24 border-t border-neutral-200 dark:border-neutral-800/80 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
@@ -78,11 +78,11 @@ export default function CapabilitiesGrid() {
             <span className="text-xs font-mono uppercase tracking-widest text-neutral-500">
               Agent Capabilities
             </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white tracking-tight">
               Six Tools. One Agent.
             </h2>
-            <p className="text-sm text-neutral-400 leading-relaxed font-light">
-              Every capability is wired as a function-callable tool — the same architecture as Google&apos;s ADK, running on Gemini 2.0 Flash.
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">
+              Every capability is wired as a function-callable tool — adhering to Google&apos;s ADK patterns, running live on Gemini 3.5 Flash.
             </p>
           </div>
 
@@ -94,8 +94,8 @@ export default function CapabilitiesGrid() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 ${
                   activeTab === tab
-                    ? 'bg-white text-neutral-950 shadow-sm'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800 hover:border-neutral-700'
+                    ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 shadow-xs'
+                    : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 {tab}
@@ -109,23 +109,23 @@ export default function CapabilitiesGrid() {
           {filtered.map((cap, idx) => (
             <div
               key={idx}
-              className={`${cap.span} p-7 rounded-2xl border border-neutral-800 bg-neutral-900/40 backdrop-blur-sm hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-sm`}
+              className={`${cap.span} p-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-sm hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-xs`}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="p-3 rounded-xl bg-neutral-800 text-neutral-200 group-hover:scale-105 transition-transform duration-200">
+                  <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 group-hover:scale-105 transition-transform duration-200">
                     {cap.icon}
                   </div>
-                  <span className="font-mono text-xs text-neutral-500 font-semibold px-2.5 py-1 rounded-md bg-neutral-800/80">
+                  <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 font-semibold px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60">
                     {cap.metric}
                   </span>
                 </div>
-                <h3 className="text-xl font-medium text-white">{cap.title}</h3>
-                <p className="text-sm text-neutral-400 leading-relaxed font-light">{cap.description}</p>
+                <h3 className="text-xl font-medium text-neutral-900 dark:text-white">{cap.title}</h3>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">{cap.description}</p>
               </div>
-              <div className="mt-8 pt-4 border-t border-neutral-800/60 flex items-center gap-2 text-xs font-mono text-neutral-600">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span>Tool: <code className="text-neutral-500">{cap.tool}</code></span>
+              <div className="mt-8 pt-4 border-t border-neutral-200/70 dark:border-neutral-800/60 flex items-center gap-2 text-xs font-mono text-neutral-500">
+                <CheckCircle2 className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300" />
+                <span>Tool: <code className="text-neutral-700 dark:text-neutral-400">{cap.tool}</code></span>
               </div>
             </div>
           ))}
