@@ -59,41 +59,39 @@ export default function DemoSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
           {/* Quick prompt chips */}
-          <div className="lg:col-span-4">
-            <div className="sticky top-28 space-y-4">
-              <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">
-                Preset Inquiries
-              </div>
-              <div className="flex flex-col gap-2.5">
-                {QUICK_PROMPTS.map((p) => {
-                  const Icon = p.icon;
-                  return (
-                    <button
-                      key={p.title}
-                      onClick={() => handlePromptClick(p.prompt)}
-                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-neutral-950/60 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-110 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 group-hover:border-neutral-300 dark:group-hover:border-neutral-500 transition-all duration-250 ease-out">
-                          <Icon className="w-3.5 h-3.5" />
-                        </div>
-                        <div className="text-xs font-semibold text-neutral-800 dark:text-white group-hover:text-neutral-900 dark:group-hover:text-neutral-50 transition-colors duration-200">
-                          {p.title}
-                        </div>
+          <div className="lg:col-span-4 flex flex-col">
+            <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-3.5 h-4 flex items-center">
+              Preset Inquiries
+            </div>
+            <div className="flex flex-col gap-2.5 flex-1">
+              {QUICK_PROMPTS.map((p) => {
+                const Icon = p.icon;
+                return (
+                  <button
+                    key={p.title}
+                    onClick={() => handlePromptClick(p.prompt)}
+                    className="text-left p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-neutral-950/60 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-110 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 group-hover:border-neutral-300 dark:group-hover:border-neutral-500 transition-all duration-250 ease-out">
+                        <Icon className="w-3.5 h-3.5" />
                       </div>
-                      <div className="text-[11px] text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 font-mono mt-2 leading-relaxed line-clamp-2 transition-colors duration-200">
-                        {p.prompt}
+                      <div className="text-xs font-semibold text-neutral-800 dark:text-white group-hover:text-neutral-900 dark:group-hover:text-neutral-50 transition-colors duration-200">
+                        {p.title}
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
+                    </div>
+                    <div className="text-[11px] text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 font-mono mt-2 leading-relaxed line-clamp-2 transition-colors duration-200">
+                      {p.prompt}
+                    </div>
+                  </button>
+                );
+              })}
 
               {/* Note */}
-              <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-900/70">
+              <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-[#f8f7f5] dark:bg-neutral-900/70 mt-1">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1">In-Session Memory</div>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
                   Conversation history and calculated metrics persist locally in your session storage. Refresh to reset.
@@ -103,7 +101,7 @@ export default function DemoSection() {
           </div>
 
           {/* Chat */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 flex flex-col lg:pt-[30px]">
             <ChatInterface />
           </div>
 
