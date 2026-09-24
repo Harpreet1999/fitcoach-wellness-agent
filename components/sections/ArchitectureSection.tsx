@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { Layers, Copy, Check, GitFork } from 'lucide-react';
+import IsometricStackVisualizer from './IsometricStackVisualizer';
 import AgentFlowVisualizer from './AgentFlowVisualizer';
 
-type ArchTab = 'Architecture' | 'Agent' | 'Tools' | 'Frontend' | 'Cloud';
+type ArchTab = 'Visualizer' | 'Flowchart' | 'Agent' | 'Tools' | 'Frontend' | 'Cloud';
 
-const archData: Record<Exclude<ArchTab, 'Architecture'>, { label: string; value: string; detail: string }[]> = {
+const archData: Record<'Agent' | 'Tools' | 'Frontend' | 'Cloud', { label: string; value: string; detail: string }[]> = {
   Agent: [
     { label: 'Framework', value: 'Google ADK Patterns', detail: 'Agent Development Kit tool orchestration architecture' },
     { label: 'Model', value: 'gemini-3.5-flash', detail: 'Google Gemini 3.5 Flash via AI Studio API' },
@@ -40,15 +41,17 @@ const archData: Record<Exclude<ArchTab, 'Architecture'>, { label: string; value:
   ],
 };
 
-const TAB_ORDER: ArchTab[] = ['Architecture', 'Agent', 'Tools', 'Frontend', 'Cloud'];
+const TAB_ORDER: ArchTab[] = ['Visualizer', 'Flowchart', 'Agent', 'Tools', 'Frontend', 'Cloud'];
 
 export default function ArchitectureSection() {
-  const [activeTab, setActiveTab] = useState<ArchTab>('Architecture');
+  const [activeTab, setActiveTab] = useState<ArchTab>('Visualizer');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     let text = '';
-    if (activeTab === 'Architecture') {
+    if (activeTab === 'Visualizer') {
+      text = 'FitCoach AI 3D Isometric Stack: Layer 04 (Interface: Reactive Cards & Local State) -> Layer 03 (Agent Logic: Gemini 3.5 Flash & Zero-Emoji Reasoning) -> Layer 02 (Pipeline: 6 Native Function Declarations & Tool Bus) -> Layer 01 (Cloud: Google AI Studio & Vertex AI Reasoning Engine)';
+    } else if (activeTab === 'Flowchart') {
       text = 'FitCoach AI Architecture Flow: 1. Input Intake -> 2. Gemini Reasoning Core -> 3. Tool Dispatch Router -> 4. Deterministic Engine & APIs -> 5. Dual-Stream Response UI';
     } else {
       text = archData[activeTab].map(i => `${i.label}: ${i.value} — ${i.detail}`).join('\n');
@@ -77,7 +80,7 @@ export default function ArchitectureSection() {
               How FitCoach Thinks.
             </h2>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 font-light max-w-xl">
-              Inspect the interactive cognitive execution pipeline or explore technical specifications across agent orchestration, tools, and cloud services.
+              Inspect the interactive 3D architectural stack, explore the end-to-end cognitive execution pipeline, or examine technical specifications across agent orchestration and cloud services.
             </p>
           </div>
           <button
@@ -119,7 +122,9 @@ export default function ArchitectureSection() {
 
           {/* Detail panel */}
           <div className="lg:col-span-9 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/80 p-6 sm:p-8 backdrop-blur-sm shadow-xs transition-colors duration-200">
-            {activeTab === 'Architecture' ? (
+            {activeTab === 'Visualizer' ? (
+              <IsometricStackVisualizer />
+            ) : activeTab === 'Flowchart' ? (
               <AgentFlowVisualizer />
             ) : (
               <div>
