@@ -4,7 +4,7 @@ import { Layers, Copy, Check, GitFork } from 'lucide-react';
 import IsometricStackVisualizer from './IsometricStackVisualizer';
 import AgentFlowVisualizer from './AgentFlowVisualizer';
 
-type ArchTab = 'Visualizer' | 'Flowchart' | 'Agent' | 'Tools' | 'Frontend' | 'Cloud';
+type ArchTab = 'Agent' | 'Tools' | 'Frontend' | 'Cloud' | 'Visualizer' | 'Flowchart';
 
 const archData: Record<'Agent' | 'Tools' | 'Frontend' | 'Cloud', { label: string; value: string; detail: string }[]> = {
   Agent: [
@@ -41,16 +41,16 @@ const archData: Record<'Agent' | 'Tools' | 'Frontend' | 'Cloud', { label: string
   ],
 };
 
-const TAB_ORDER: ArchTab[] = ['Visualizer', 'Flowchart', 'Agent', 'Tools', 'Frontend', 'Cloud'];
+const TAB_ORDER: ArchTab[] = ['Agent', 'Tools', 'Frontend', 'Cloud', 'Visualizer', 'Flowchart'];
 
 export default function ArchitectureSection() {
-  const [activeTab, setActiveTab] = useState<ArchTab>('Visualizer');
+  const [activeTab, setActiveTab] = useState<ArchTab>('Agent');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     let text = '';
     if (activeTab === 'Visualizer') {
-      text = 'FitCoach AI 3D Isometric Stack: Layer 04 (Interface: Reactive Cards & Local State) -> Layer 03 (Agent Logic: Gemini 3.5 Flash & Zero-Emoji Reasoning) -> Layer 02 (Pipeline: 6 Native Function Declarations & Tool Bus) -> Layer 01 (Cloud: Google AI Studio & Vertex AI Reasoning Engine)';
+      text = 'FitCoach AI 5-Stage Architectural Pipeline (Left to Right): Stage 01 (Client Interface) -> Stage 02 (Context Assembly) -> Stage 03 (Gemini Reasoning Core) -> Stage 04 (Tool Dispatch Router) -> Stage 05 (Cloud & Data Vault)';
     } else if (activeTab === 'Flowchart') {
       text = 'FitCoach AI Architecture Flow: 1. Input Intake -> 2. Gemini Reasoning Core -> 3. Tool Dispatch Router -> 4. Deterministic Engine & APIs -> 5. Dual-Stream Response UI';
     } else {

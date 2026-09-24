@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { Sparkles, Layers, Cpu, Database, Activity, ExternalLink } from 'lucide-react';
+import { Sparkles, Layers, Cpu, Database, Activity, GitFork, ArrowRight, ShieldCheck } from 'lucide-react';
 
-interface LayerDetail {
+interface StageDetail {
   id: string;
+  number: string;
   name: string;
   code: string;
   tagline: string;
@@ -12,53 +13,71 @@ interface LayerDetail {
   specs: { label: string; value: string }[];
 }
 
-const LAYER_DETAILS: Record<string, LayerDetail> = {
+const STAGE_DETAILS: Record<string, StageDetail> = {
   interface: {
     id: 'interface',
-    name: 'Interface Surface',
-    code: 'LAYER 04 // INTERFACE',
-    tagline: 'Reactive Client & Visual Card Runtime',
-    role: 'Renders the conversational interface, stream parsing, and reactive visual cards (MacroCard, WorkoutCard, HabitCard, NutritionCard). Persists session state locally in browser storage.',
-    tech: ['Next.js 16 App Router', 'React 19 Hooks', 'ReactMarkdown + remarkGfm', 'Tailwind CSS Class-Mode'],
+    number: '01',
+    name: 'Client Interface & A2UI Cards',
+    code: 'STAGE 01 // CLIENT_SURFACE',
+    tagline: 'Reactive Web Client & Local Session Memory',
+    role: 'Next.js 16 App Router interface rendering stream chunks and dynamic reactive cards (MacroCard, WorkoutCard, HabitCard, NutritionCard). Persists multi-turn session history in browser storage with instant hydration.',
+    tech: ['Next.js 16 App Router', 'React 19 Hooks', 'A2UI Reactive Cards', 'localStorage Memory'],
     specs: [
-      { label: 'Render Protocol', value: 'Hydrated Dynamic Cards' },
-      { label: 'Storage Sync', value: 'localStorage (fitcoach_session_messages)' },
-      { label: 'Theme Architecture', value: 'Kanso Dual-Mode (Light/Dark)' },
+      { label: 'Render Protocol', value: 'Streaming Token Parser' },
+      { label: 'State Sync', value: 'localStorage (fitcoach_session_messages)' },
+      { label: 'Design System', value: 'Monochromatic Kanso (Light/Dark)' },
     ],
   },
-  agent: {
-    id: 'agent',
-    name: 'Agent Logic Core',
-    code: 'LAYER 03 // AGENT_LOGIC',
-    tagline: 'Gemini 3.5 Flash Reasoning Engine',
-    role: 'Evaluates user queries, applies strict zero-emoji tone constraints, and autonomously decides when to trigger tool calls versus returning conversational fitness commentary.',
-    tech: ['Google Gemini 3.5 Flash', 'Google Generative AI SDK', 'Role-tuned System Instructions', 'Dynamic Profile Memory Injection'],
+  context: {
+    id: 'context',
+    number: '02',
+    name: 'Context Assembly & Profile Buffer',
+    code: 'STAGE 02 // CONTEXT_ASSEMBLY',
+    tagline: 'Dynamic Profile Injection & Sliding History Window',
+    role: 'Synthesizes raw user prompts with the stored physical fitness profile (age, weight, height, gender, activity level). Enforces sliding context window boundaries before sending payload to the reasoning core.',
+    tech: ['Profile Memory Store', 'Sliding Context Window', 'Payload Normalizer', 'Type-Safe Guards'],
+    specs: [
+      { label: 'Profile Payload', value: '5 Key Biomarkers + Goal Vector' },
+      { label: 'Context Buffer', value: 'Rolling Multi-Turn Messages' },
+      { label: 'Payload Overhead', value: '< 2.4 KB per request' },
+    ],
+  },
+  reasoning: {
+    id: 'reasoning',
+    number: '03',
+    name: 'Gemini 3.5 Flash Reasoning Core',
+    code: 'STAGE 03 // GEMINI_REASONING_CORE',
+    tagline: 'Autonomous Tool Selection & Strict Editorial Tone',
+    role: 'Evaluates user queries under strict zero-emoji tone constraints. Employs multi-candidate reasoning to autonomously decide whether to dispatch tool calls or synthesize evidence-backed athletic advice.',
+    tech: ['Google Gemini 3.5 Flash', 'Google Generative AI SDK', 'Role-tuned System Instructions', 'Zero-Emoji Tone Guardrails'],
     specs: [
       { label: 'Inference Latency', value: '~550ms - 850ms' },
       { label: 'Context Window', value: '1M Tokens' },
-      { label: 'Tone Constraints', value: 'Strict Zero-Emoji, Editorial Monochromatic' },
+      { label: 'Tone Constraints', value: 'Strict Monochromatic Editorial' },
     ],
   },
   pipeline: {
     id: 'pipeline',
-    name: 'Pipeline & Tool Bus',
-    code: 'LAYER 02 // PIPELINE',
-    tagline: 'Autonomous Function Calling Dispatcher',
-    role: 'Coordinates 6 native function declarations. Validates typed parameters and dispatches execution between sports nutrition formulas, catalog filtering, and public APIs.',
-    tech: ['Google ADK Patterns', 'Gemini FunctionDeclarations', 'Mifflin-St Jeor Engine', 'Fruityvice REST Bridge'],
+    number: '04',
+    name: 'Tool Dispatch Router & ADK Bus',
+    code: 'STAGE 04 // FUNCTION_ROUTER',
+    tagline: 'Type-Safe Function Declarations & API Dispatch',
+    role: 'Coordinates 6 native function declarations. Validates typed parameters, executes deterministic math formulas (Mifflin-St Jeor), filters workout routines, and bridges live external APIs (Fruityvice).',
+    tech: ['Google ADK Patterns', '6 Native FunctionDeclarations', 'Mifflin-St Jeor Engine', 'Fruityvice REST Bridge'],
     specs: [
-      { label: 'Registered Tools', value: '6 Native Functions' },
-      { label: 'Schema Validation', value: 'Strict Type-Safe SchemaType' },
-      { label: 'Failover Policy', value: 'Multi-Candidate Fallback + Local Dispatcher' },
+      { label: 'Registered Tools', value: '6 Function Declarations' },
+      { label: 'Execution Mode', value: 'Deterministic Function Dispatch' },
+      { label: 'Failover Policy', value: 'Automatic Multi-Model Fallback' },
     ],
   },
   cloud: {
     id: 'cloud',
-    name: 'Cloud & Data Layer',
-    code: 'LAYER 01 // CLOUD',
-    tagline: 'Google Cloud & AI Studio Infrastructure',
-    role: 'Originally deployed on Vertex AI Reasoning Engine with Firestore and Cloud Run at the Google Build with Gemini workshop. Now runs on Google AI Studio Free Tier.',
-    tech: ['Google AI Studio (Free Tier)', 'Vertex AI Reasoning Engine (Original)', 'Cloud Firestore (Workout Catalog)', 'Cloud Run (FastAPI Proxy)'],
+    number: '05',
+    name: 'Cloud Infrastructure & Data Vault',
+    code: 'STAGE 05 // CLOUD_FOUNDATION',
+    tagline: 'Google AI Studio & Vertex AI Heritage',
+    role: 'Powers serverless Gemini inference on Google AI Studio. Maintains heritage architecture from the Google Build with Gemini workshop with Cloud Firestore catalogs and Cloud Run proxy deployment.',
+    tech: ['Google AI Studio (Free Tier)', 'Vertex AI Reasoning Engine', 'Cloud Firestore (Catalog JSON)', 'Cloud Run Proxy Service'],
     specs: [
       { label: 'API Provider', value: 'Google AI Studio (1,500 req/day)' },
       { label: 'Workout Catalog', value: '10+ Structured Multi-Exercise Splits' },
@@ -67,52 +86,57 @@ const LAYER_DETAILS: Record<string, LayerDetail> = {
   },
 };
 
+const STAGE_KEYS = ['interface', 'context', 'reasoning', 'pipeline', 'cloud'];
+
 export default function IsometricStackVisualizer() {
-  const [selectedLayer, setSelectedLayer] = useState<string>('agent');
-  const active = LAYER_DETAILS[selectedLayer];
+  const [selectedStage, setSelectedStage] = useState<string>('reasoning');
+  const active = STAGE_DETAILS[selectedStage];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Top Header Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white animate-pulse" />
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
-            FIG_01 · THE FITCOACH ARCHITECTURE STACK
+            FIG_01 · LEFT-TO-RIGHT HORIZONTAL ARCHITECTURAL PIPELINE
           </span>
         </div>
         <div className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
-          Isometric 3D Projection · Interactive
+          5-Stage Isometric Flow · Pure Monochromatic
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        {/* Isometric 3D SVG Canvas (Matching screenshot reference) */}
-        <div className="lg:col-span-7 relative flex items-center justify-center p-4 sm:p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-950 overflow-hidden shadow-xs group">
-          {/* Blueprint Dotted Background Grid */}
-          <div
-            className="absolute inset-0 opacity-[0.25] dark:opacity-[0.20] pointer-events-none"
-            style={{
-              backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
-              backgroundSize: '24px 24px',
-            }}
-          />
+      {/* Main Left-to-Right 3D Isometric SVG Canvas */}
+      <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-950 p-4 sm:p-8 overflow-hidden shadow-xs">
+        {/* Blueprint Dotted Matrix Background */}
+        <div
+          className="absolute inset-0 opacity-[0.25] dark:opacity-[0.20] pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
 
-          {/* Central Ambient Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient Center Glow (Pure Monochromatic White/Gray) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-neutral-400/10 dark:bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Fig Number Label */}
-          <div className="absolute top-4 left-5 text-[10px] font-mono tracking-widest text-neutral-400 dark:text-neutral-500 uppercase select-none">
-            FIG_01 // THE STACK
-          </div>
+        {/* Figure & Axis Label */}
+        <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-neutral-400 dark:text-neutral-500 uppercase select-none mb-2">
+          <span>FIG_01 // THE HORIZONTAL ARCHITECTURE PIPELINE</span>
+          <span className="hidden sm:inline">DIRECTION OF DATA FLOW: STAGE 01 → STAGE 05</span>
+        </div>
 
+        {/* SVG Diagram: Widescreen Left-to-Right Isometric Pipeline */}
+        <div className="w-full overflow-x-auto pb-2">
           <svg
-            viewBox="0 0 600 680"
-            className="w-full max-w-[500px] h-auto drop-shadow-sm select-none"
+            viewBox="0 0 940 440"
+            className="w-full min-w-[760px] h-auto drop-shadow-sm select-none"
             style={{ overflow: 'visible' }}
           >
             <defs>
-              <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+              {/* Monochromatic Specular Glow Filter */}
+              <filter id="glow-mono" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="3" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
@@ -121,451 +145,471 @@ export default function IsometricStackVisualizer() {
               </filter>
             </defs>
 
-            {/* Vertical Stack Corner Connecting Lines */}
-            <g
-              className="stroke-neutral-300 dark:stroke-neutral-800"
-              strokeWidth="1"
-              strokeDasharray="3 3"
-            >
-              <line x1="300" y1="90" x2="300" y2="450" />
-              <line x1="450" y1="165" x2="450" y2="525" />
-              <line x1="300" y1="240" x2="300" y2="600" />
-              <line x1="150" y1="165" x2="150" y2="525" />
+            {/* ========================================================= */}
+            {/* CONTINUOUS DATA HIGHWAY / BUS RAILS (Left to Right)       */}
+            {/* ========================================================= */}
+            <g className="stroke-neutral-300 dark:stroke-neutral-800" strokeWidth="1">
+              {/* Upper Rail */}
+              <line x1="60" y1="218" x2="880" y2="218" strokeDasharray="3 3" />
+              {/* Main Ground Center Highway */}
+              <line x1="60" y1="250" x2="880" y2="250" strokeWidth="1.5" />
+              {/* Lower Rail */}
+              <line x1="60" y1="282" x2="880" y2="282" strokeDasharray="3 3" />
+            </g>
+
+            {/* Directional Chevrons along Highway */}
+            <g className="fill-neutral-400 dark:fill-neutral-600">
+              <path d="M 200,247 L 206,250 L 200,253 Z" />
+              <path d="M 375,247 L 381,250 L 375,253 Z" />
+              <path d="M 550,247 L 556,250 L 550,253 Z" />
+              <path d="M 725,247 L 731,250 L 725,253 Z" />
             </g>
 
             {/* ========================================================= */}
-            {/* LAYER 01: CLOUD & INFRASTRUCTURE (Bottom Extruded Base)  */}
+            {/* STAGE 01: CLIENT INTERFACE (X = 110, Y = 250)             */}
             {/* ========================================================= */}
             <g
-              onClick={() => setSelectedLayer('cloud')}
-              className="cursor-pointer transition-all duration-300 group/l1"
+              onClick={() => setSelectedStage('interface')}
+              className="cursor-pointer transition-all duration-200 group"
             >
-              {/* Slab Side Faces */}
+              {/* Base Platform */}
               <polygon
-                points="150,525 300,600 300,630 150,555"
-                className={`transition-colors ${
-                  selectedLayer === 'cloud'
-                    ? 'fill-neutral-200 dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-neutral-200/60 dark:fill-neutral-900/60 stroke-neutral-400 dark:stroke-neutral-700'
+                points="110,218 175,250 110,282 45,250"
+                className={`transition-colors duration-200 ${
+                  selectedStage === 'interface'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
                 }`}
-                strokeWidth="1.2"
+              />
+              {/* Extruded Front Faces */}
+              <polygon
+                points="45,250 110,282 110,296 45,264"
+                className="fill-neutral-200 dark:fill-neutral-950 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
               />
               <polygon
-                points="300,600 450,525 450,555 300,630"
-                className={`transition-colors ${
-                  selectedLayer === 'cloud'
-                    ? 'fill-neutral-300 dark:fill-neutral-850 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-neutral-300/60 dark:fill-neutral-850/60 stroke-neutral-400 dark:stroke-neutral-700'
-                }`}
-                strokeWidth="1.2"
-              />
-
-              {/* Slab Top Face */}
-              <polygon
-                points="300,450 450,525 300,600 150,525"
-                className={`transition-colors ${
-                  selectedLayer === 'cloud'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-white/80 dark:fill-neutral-900/70 stroke-neutral-300 dark:stroke-neutral-700 hover:stroke-neutral-500'
-                }`}
-                strokeWidth="1.2"
+                points="110,282 175,250 175,264 110,296"
+                className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
               />
 
-              {/* Text Tag on Face */}
-              <text
-                x="220"
-                y="570"
-                transform="rotate(26, 220, 570) skewX(-20)"
-                className="text-[9px] font-mono tracking-widest uppercase fill-neutral-400 dark:fill-neutral-500 pointer-events-none"
-              >
-                LAYER 01 // CLOUD
+              {/* Isometric Client UI Screen Window (Floating) */}
+              <g transform="translate(0, -25)">
+                {/* Slanted Card Backing */}
+                <polygon
+                  points="110,180 160,205 110,230 60,205"
+                  className={`transition-colors duration-200 ${
+                    selectedStage === 'interface'
+                      ? 'fill-white dark:fill-neutral-800 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      : 'fill-white/90 dark:fill-neutral-900/80 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
+                  }`}
+                />
+                {/* Active Header Bar */}
+                <polygon
+                  points="110,186 148,205 110,216 72,197"
+                  className={selectedStage === 'interface' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-300 dark:fill-neutral-700'}
+                />
+                {/* Simulated Content Bars */}
+                <line x1="82" y1="212" x2="118" y2="223" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="2" />
+                <line x1="90" y1="220" x2="128" y2="228" className="stroke-neutral-300 dark:stroke-neutral-600" strokeWidth="2" />
+              </g>
+
+              {/* Stage Pin & Monospace Labels */}
+              <line x1="110" y1="145" x2="110" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
+              <circle cx="110" cy="145" r="2.5" className={selectedStage === 'interface' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="110" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'interface' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                STAGE 01
               </text>
-
-              {/* 3 Cylindrical Canisters (Storage & DB) */}
-              {/* Left Cylinder */}
-              <g className="stroke-neutral-400 dark:stroke-neutral-600 fill-white dark:fill-neutral-900" strokeWidth="1">
-                <path d="M 210,505 v 20 a 16 8 0 0 0 32 0 v -20" />
-                <ellipse cx="226" cy="505" rx="16" ry="8" />
-              </g>
-
-              {/* Middle Cylinder (ACTIVE NEON DATABASE) */}
-              <g className="stroke-emerald-400 dark:stroke-emerald-500 fill-emerald-500/20 dark:fill-emerald-950/60" strokeWidth="1.5">
-                <path d="M 284,525 v 25 a 20 10 0 0 0 40 0 v -25" />
-                <ellipse cx="304" cy="525" rx="20" ry="10" className="fill-emerald-500 dark:fill-emerald-600" />
-              </g>
-
-              {/* Right Cylinder */}
-              <g className="stroke-neutral-400 dark:stroke-neutral-600 fill-white dark:fill-neutral-900" strokeWidth="1">
-                <path d="M 360,490 v 20 a 16 8 0 0 0 32 0 v -20" />
-                <ellipse cx="376" cy="490" rx="16" ry="8" />
-              </g>
-
-              {/* Bottom Support Block */}
-              <polygon
-                points="380,530 420,510 440,520 400,540"
-                className="stroke-neutral-400 dark:stroke-neutral-700 fill-white dark:fill-neutral-900"
-                strokeWidth="1"
-              />
-            </g>
-
-            {/* ========================================================= */}
-            {/* LAYER 02: PIPELINE & TOOL BUS                            */}
-            {/* ========================================================= */}
-            <g
-              onClick={() => setSelectedLayer('pipeline')}
-              className="cursor-pointer transition-all duration-300"
-            >
-              {/* Pipeline Plane */}
-              <polygon
-                points="300,330 450,405 300,480 150,405"
-                className={`transition-colors ${
-                  selectedLayer === 'pipeline'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-white/80 dark:fill-neutral-900/60 stroke-neutral-300 dark:stroke-neutral-700 hover:stroke-neutral-500'
-                }`}
-                strokeWidth="1.2"
-              />
-
-              {/* Text on Layer */}
-              <text
-                x="220"
-                y="450"
-                transform="rotate(26, 220, 450) skewX(-20)"
-                className="text-[9px] font-mono tracking-widest uppercase fill-neutral-400 dark:fill-neutral-500 pointer-events-none"
-              >
-                LAYER 02 // PIPELINE
-              </text>
-
-              {/* Dual Bus Rails */}
-              <g className="stroke-neutral-400 dark:stroke-neutral-600" strokeWidth="1">
-                <line x1="200" y1="380" x2="380" y2="470" />
-                <line x1="215" y1="375" x2="395" y2="465" />
-                <line x1="230" y1="370" x2="410" y2="460" />
-              </g>
-
-              {/* Moving Neon Data Packet Box */}
-              <g filter="url(#glow-green)">
-                <polygon
-                  points="295,415 315,405 325,410 305,420"
-                  className="fill-emerald-400 stroke-emerald-500"
-                  strokeWidth="1"
-                />
-                <polygon
-                  points="295,415 305,420 305,426 295,421"
-                  className="fill-emerald-500 stroke-emerald-600"
-                  strokeWidth="1"
-                />
-                <polygon
-                  points="305,420 325,410 325,416 305,426"
-                  className="fill-emerald-600 stroke-emerald-700"
-                  strokeWidth="1"
-                />
-              </g>
-
-              {/* Channel Junction Boxes */}
-              <polygon
-                points="330,430 365,412 385,422 350,440"
-                className="stroke-neutral-400 dark:stroke-neutral-600 fill-neutral-100 dark:fill-neutral-800"
-                strokeWidth="1"
-              />
-              <polygon
-                points="390,445 420,430 435,438 405,453"
-                className="stroke-neutral-400 dark:stroke-neutral-600 fill-neutral-100 dark:fill-neutral-800"
-                strokeWidth="1"
-              />
-            </g>
-
-            {/* ========================================================= */}
-            {/* LAYER 03: AGENT LOGIC (Center Neon Cube Node)            */}
-            {/* ========================================================= */}
-            <g
-              onClick={() => setSelectedLayer('agent')}
-              className="cursor-pointer transition-all duration-300"
-            >
-              {/* Agent Plane */}
-              <polygon
-                points="300,210 450,285 300,360 150,285"
-                className={`transition-colors ${
-                  selectedLayer === 'agent'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-white/80 dark:fill-neutral-900/60 stroke-neutral-300 dark:stroke-neutral-700 hover:stroke-neutral-500'
-                }`}
-                strokeWidth="1.2"
-              />
-
-              {/* Text on Layer */}
-              <text
-                x="220"
-                y="330"
-                transform="rotate(26, 220, 330) skewX(-20)"
-                className="text-[9px] font-mono tracking-widest uppercase fill-neutral-400 dark:fill-neutral-500 pointer-events-none"
-              >
-                LAYER 03 // AGENT_LOGIC
-              </text>
-
-              {/* Logic Bus Channels */}
-              <g className="stroke-neutral-300 dark:stroke-neutral-700" strokeWidth="1">
-                <line x1="220" y1="260" x2="380" y2="340" />
-                <line x1="235" y1="255" x2="395" y2="335" />
-              </g>
-
-              {/* Auxiliary Wireframe Node Cubes */}
-              <g className="stroke-neutral-400 dark:stroke-neutral-600 fill-white/80 dark:fill-neutral-800/80" strokeWidth="1">
-                {/* Secondary module box */}
-                <polygon points="380,290 415,272 430,280 395,298" />
-                <polygon points="380,290 395,298 395,308 380,300" />
-                <polygon points="395,298 430,280 430,290 395,308" />
-              </g>
-
-              {/* PROMINENT GLOWING NEON AGENT NODE (Matches Screenshot Center Cube) */}
-              <g filter="url(#glow-green)" className="transition-transform duration-300">
-                {/* Cube Top Face */}
-                <polygon
-                  points="300,240 335,222 300,204 265,222"
-                  className="fill-emerald-400/90 dark:fill-emerald-400 stroke-emerald-300 dark:stroke-emerald-300"
-                  strokeWidth="1.5"
-                />
-                {/* Cube Left Face */}
-                <polygon
-                  points="265,222 300,240 300,280 265,262"
-                  className="fill-emerald-500/90 dark:fill-emerald-600 stroke-emerald-400 dark:stroke-emerald-400"
-                  strokeWidth="1.5"
-                />
-                {/* Cube Right Face */}
-                <polygon
-                  points="300,240 335,222 335,262 300,280"
-                  className="fill-emerald-600/90 dark:fill-emerald-700 stroke-emerald-400 dark:stroke-emerald-400"
-                  strokeWidth="1.5"
-                />
-              </g>
-            </g>
-
-            {/* ========================================================= */}
-            {/* LAYER 04: INTERFACE (Top Surface & Selected Neon Bar)     */}
-            {/* ========================================================= */}
-            <g
-              onClick={() => setSelectedLayer('interface')}
-              className="cursor-pointer transition-all duration-300"
-            >
-              {/* Interface Plane */}
-              <polygon
-                points="300,90 450,165 300,240 150,165"
-                className={`transition-colors ${
-                  selectedLayer === 'interface'
-                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white'
-                    : 'fill-white/80 dark:fill-neutral-900/60 stroke-neutral-300 dark:stroke-neutral-700 hover:stroke-neutral-500'
-                }`}
-                strokeWidth="1.2"
-              />
-
-              {/* Text on Layer */}
-              <text
-                x="220"
-                y="210"
-                transform="rotate(26, 220, 210) skewX(-20)"
-                className="text-[9px] font-mono tracking-widest uppercase fill-neutral-400 dark:fill-neutral-500 pointer-events-none"
-              >
-                LAYER 04 // INTERFACE
-              </text>
-
-              {/* Top Controls: Circular pill & slots */}
-              <g className="stroke-neutral-400 dark:stroke-neutral-600 fill-none" strokeWidth="1">
-                <ellipse cx="270" cy="130" rx="6" ry="3" />
-                <line x1="280" y1="135" x2="300" y2="145" />
-                {/* Secondary Slot */}
-                <polygon points="260,115 380,175 365,183 245,123" />
-              </g>
-
-              {/* VIBRANT NEON GREEN ACTIVE BAR (Matches "SELECTED ITEM" in Screenshot) */}
-              <g filter="url(#glow-green)">
-                <polygon
-                  points="230,135 390,215 375,225 215,145"
-                  className="fill-emerald-400 stroke-emerald-300"
-                  strokeWidth="1.5"
-                />
-                {/* Left facet */}
-                <polygon
-                  points="215,145 230,135 230,140 215,150"
-                  className="fill-emerald-500"
-                />
-                {/* Front facet */}
-                <polygon
-                  points="215,145 375,225 375,230 215,150"
-                  className="fill-emerald-600 stroke-emerald-500"
-                  strokeWidth="1"
-                />
-              </g>
-
-              {/* Wireframe Card Slot */}
-              <polygon
-                points="195,155 215,145 225,150 205,160"
-                className="stroke-neutral-400 dark:stroke-neutral-600 fill-white dark:fill-neutral-900"
-                strokeWidth="1"
-              />
-            </g>
-
-            {/* ========================================================= */}
-            {/* LEADER LINES & MONOSPACE CALLOUT ANNOTATIONS              */}
-            {/* ========================================================= */}
-            {/* Left Annotations */}
-            <g
-              className="text-[10px] font-mono tracking-widest uppercase fill-neutral-700 dark:fill-neutral-300"
-              strokeWidth="1"
-            >
-              {/* Interface callout */}
-              <line
-                x1="80"
-                y1="165"
-                x2="150"
-                y2="165"
-                className="stroke-neutral-400 dark:stroke-neutral-600"
-                strokeDasharray="2 2"
-              />
-              <circle cx="150" cy="165" r="2.5" className="fill-neutral-900 dark:fill-white" />
-              <text x="10" y="169">
+              <text x="110" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
                 INTERFACE
               </text>
 
-              {/* Agent Logic callout */}
-              <line
-                x1="80"
-                y1="285"
-                x2="150"
-                y2="285"
-                className="stroke-neutral-400 dark:stroke-neutral-600"
-                strokeDasharray="2 2"
-              />
-              <circle cx="150" cy="285" r="2.5" className="fill-neutral-900 dark:fill-white" />
-              <text x="5" y="289">
-                AGENT LOGIC
-              </text>
-
-              {/* Pipeline callout */}
-              <line
-                x1="80"
-                y1="405"
-                x2="150"
-                y2="405"
-                className="stroke-neutral-400 dark:stroke-neutral-600"
-                strokeDasharray="2 2"
-              />
-              <circle cx="150" cy="405" r="2.5" className="fill-neutral-900 dark:fill-white" />
-              <text x="18" y="409">
-                PIPELINE
-              </text>
-
-              {/* Cloud callout */}
-              <line
-                x1="80"
-                y1="525"
-                x2="150"
-                y2="525"
-                className="stroke-neutral-400 dark:stroke-neutral-600"
-                strokeDasharray="2 2"
-              />
-              <circle cx="150" cy="525" r="2.5" className="fill-neutral-900 dark:fill-white" />
-              <text x="32" y="529">
-                CLOUD
+              {/* Sub-label inside platform */}
+              <text x="110" y="320" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-500 dark:fill-neutral-400">
+                REACTIVE A2UI
               </text>
             </g>
 
-            {/* Right Annotations */}
+            {/* ========================================================= */}
+            {/* STAGE 02: CONTEXT ASSEMBLY (X = 285, Y = 250)             */}
+            {/* ========================================================= */}
             <g
-              className="text-[10px] font-mono tracking-widest uppercase fill-neutral-700 dark:fill-neutral-300"
-              strokeWidth="1"
+              onClick={() => setSelectedStage('context')}
+              className="cursor-pointer transition-all duration-200 group"
             >
-              {/* Selected Item callout */}
-              <line
-                x1="380"
-                y1="220"
-                x2="490"
-                y2="220"
-                className="stroke-emerald-500"
-                strokeDasharray="2 2"
+              {/* Base Platform */}
+              <polygon
+                points="285,218 350,250 285,282 220,250"
+                className={`transition-colors duration-200 ${
+                  selectedStage === 'context'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
+                }`}
               />
-              <circle cx="380" cy="220" r="2.5" className="fill-emerald-500" />
-              <text x="495" y="224" className="fill-emerald-600 dark:fill-emerald-400 font-bold">
-                SELECTED ITEM
+              <polygon
+                points="220,250 285,282 285,296 220,264"
+                className="fill-neutral-200 dark:fill-neutral-950 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+              <polygon
+                points="285,282 350,250 350,264 285,296"
+                className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+
+              {/* Stacked Context Memory Wafers */}
+              <g transform="translate(0, -15)">
+                {/* Lower Wafer: Profile Memory */}
+                <polygon
+                  points="285,225 325,245 285,265 245,245"
+                  className="fill-neutral-200 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]"
+                />
+                {/* Upper Wafer: User Prompt */}
+                <polygon
+                  points="285,200 325,220 285,240 245,220"
+                  className={`transition-colors duration-200 ${
+                    selectedStage === 'context'
+                      ? 'fill-white dark:fill-neutral-700 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      : 'fill-white/90 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
+                  }`}
+                />
+                {/* Injected Vector Indicator */}
+                <polygon
+                  points="285,206 310,218 285,230 260,218"
+                  className={selectedStage === 'context' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'}
+                />
+              </g>
+
+              {/* Stage Pin & Monospace Labels */}
+              <line x1="285" y1="170" x2="285" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
+              <circle cx="285" cy="170" r="2.5" className={selectedStage === 'context' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="285" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'context' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                STAGE 02
+              </text>
+              <text x="285" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
+                CONTEXT
               </text>
 
-              {/* Agent Node callout */}
-              <line
-                x1="300"
-                y1="240"
-                x2="490"
-                y2="240"
-                className="stroke-emerald-500"
-                strokeDasharray="2 2"
-              />
-              <circle cx="300" cy="240" r="3" className="fill-white dark:fill-white stroke-emerald-500" />
-              <text x="495" y="244" className="fill-neutral-900 dark:fill-white font-semibold">
-                AGENT NODE
+              <text x="285" y="320" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-500 dark:fill-neutral-400">
+                PROFILE INJECT
               </text>
             </g>
+
+            {/* ========================================================= */}
+            {/* STAGE 03: REASONING CORE - GEMINI 3.5 FLASH (X = 460)     */}
+            {/* ========================================================= */}
+            <g
+              onClick={() => setSelectedStage('reasoning')}
+              className="cursor-pointer transition-all duration-200 group"
+            >
+              {/* Base Platform with highlighted double border */}
+              <polygon
+                points="460,218 530,250 460,282 390,250"
+                className={`transition-colors duration-200 ${
+                  selectedStage === 'reasoning'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-950 dark:stroke-white stroke-[2]'
+                    : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-400 dark:stroke-neutral-700 stroke-[1.2] group-hover:stroke-neutral-500'
+                }`}
+              />
+              <polygon
+                points="390,250 460,282 460,300 390,268"
+                className="fill-neutral-200 dark:fill-neutral-950 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+              <polygon
+                points="460,282 530,250 530,268 460,300"
+                className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+
+              {/* Vertical Laser Guidance Axis */}
+              <line x1="460" y1="130" x2="460" y2="250" className="stroke-neutral-400 dark:stroke-neutral-500" strokeDasharray="3 3" strokeWidth="1" />
+
+              {/* ELEVATED 3D ISOMETRIC AGENT CUBE */}
+              <g transform="translate(460, 160)" filter={selectedStage === 'reasoning' ? 'url(#glow-mono)' : undefined}>
+                {/* Top Face */}
+                <polygon
+                  points="0,-24 35,-6 0,12 -35,-6"
+                  className={`transition-colors duration-200 ${
+                    selectedStage === 'reasoning'
+                      ? 'fill-white dark:fill-neutral-100 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      : 'fill-neutral-200 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
+                  }`}
+                />
+                {/* Left Face */}
+                <polygon
+                  points="-35,-6 0,12 0,44 -35,26"
+                  className={`transition-colors duration-200 ${
+                    selectedStage === 'reasoning'
+                      ? 'fill-neutral-300 dark:fill-neutral-300 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      : 'fill-neutral-300 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
+                  }`}
+                />
+                {/* Right Face */}
+                <polygon
+                  points="0,12 35,-6 35,26 0,44"
+                  className={`transition-colors duration-200 ${
+                    selectedStage === 'reasoning'
+                      ? 'fill-neutral-800 dark:fill-neutral-700 stroke-neutral-950 dark:stroke-white stroke-[1.5]'
+                      : 'fill-neutral-400 dark:fill-neutral-950 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]'
+                  }`}
+                />
+
+                {/* Core Inset Chip */}
+                <polygon
+                  points="0,-14 20,-4 0,6 -20,-4"
+                  className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-black' : 'fill-neutral-400 dark:fill-neutral-700'}
+                />
+              </g>
+
+              {/* Callout Indicator to Agent Node */}
+              <line x1="495" y1="165" x2="550" y2="165" className="stroke-neutral-400 dark:stroke-neutral-600" strokeWidth="1" />
+              <circle cx="495" cy="165" r="2.5" className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'} />
+              <text x="555" y="168" className={`font-mono text-[9px] tracking-wider uppercase font-semibold ${selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                GEMINI NODE
+              </text>
+
+              {/* Stage Pin & Monospace Labels */}
+              <line x1="460" y1="130" x2="460" y2="60" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
+              <circle cx="460" cy="130" r="3" className={selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="460" y="42" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-bold uppercase ${selectedStage === 'reasoning' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                STAGE 03
+              </text>
+              <text x="460" y="54" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
+                REASONING CORE
+              </text>
+
+              <text x="460" y="324" textAnchor="middle" className="font-mono text-[9px] tracking-wider font-semibold fill-neutral-950 dark:fill-white">
+                GEMINI 3.5 FLASH
+              </text>
+            </g>
+
+            {/* ========================================================= */}
+            {/* STAGE 04: TOOL DISPATCH BUS (X = 635, Y = 250)            */}
+            {/* ========================================================= */}
+            <g
+              onClick={() => setSelectedStage('pipeline')}
+              className="cursor-pointer transition-all duration-200 group"
+            >
+              {/* Base Platform */}
+              <polygon
+                points="635,218 700,250 635,282 570,250"
+                className={`transition-colors duration-200 ${
+                  selectedStage === 'pipeline'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
+                }`}
+              />
+              <polygon
+                points="570,250 635,282 635,296 570,264"
+                className="fill-neutral-200 dark:fill-neutral-950 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+              <polygon
+                points="635,282 700,250 700,264 635,296"
+                className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+
+              {/* Function Dispatch Hub & 4 Bus Pins */}
+              <g transform="translate(0, -18)">
+                {/* Central Router Block */}
+                <polygon
+                  points="635,225 665,240 635,255 605,240"
+                  className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white stroke-neutral-950 dark:stroke-white' : 'fill-neutral-300 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600'}
+                  strokeWidth="1"
+                />
+                {/* Branching Traces */}
+                <line x1="605" y1="240" x2="585" y2="230" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
+                <line x1="665" y1="240" x2="685" y2="230" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
+                <line x1="635" y1="225" x2="635" y2="208" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
+                <line x1="635" y1="255" x2="635" y2="270" className="stroke-neutral-400 dark:stroke-neutral-500" strokeWidth="1.5" />
+                {/* Tool Chip Nodes */}
+                <circle cx="585" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="685" cy="230" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="635" cy="208" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
+                <circle cx="635" cy="270" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400'} />
+              </g>
+
+              {/* Stage Pin & Monospace Labels */}
+              <line x1="635" y1="185" x2="635" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
+              <circle cx="635" cy="185" r="2.5" className={selectedStage === 'pipeline' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="635" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'pipeline' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                STAGE 04
+              </text>
+              <text x="635" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
+                TOOL BUS
+              </text>
+
+              <text x="635" y="320" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-500 dark:fill-neutral-400">
+                6 ADK FUNCTIONS
+              </text>
+            </g>
+
+            {/* ========================================================= */}
+            {/* STAGE 05: CLOUD & DATA VAULT (X = 810, Y = 250)           */}
+            {/* ========================================================= */}
+            <g
+              onClick={() => setSelectedStage('cloud')}
+              className="cursor-pointer transition-all duration-200 group"
+            >
+              {/* Base Platform */}
+              <polygon
+                points="810,218 875,250 810,282 745,250"
+                className={`transition-colors duration-200 ${
+                  selectedStage === 'cloud'
+                    ? 'fill-white dark:fill-neutral-900 stroke-neutral-900 dark:stroke-white stroke-[1.75]'
+                    : 'fill-white/80 dark:fill-neutral-900/50 stroke-neutral-300 dark:stroke-neutral-700 stroke-[1] group-hover:stroke-neutral-500'
+                }`}
+              />
+              <polygon
+                points="745,250 810,282 810,296 745,264"
+                className="fill-neutral-200 dark:fill-neutral-950 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+              <polygon
+                points="810,282 875,250 875,264 810,296"
+                className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-300 dark:stroke-neutral-800 stroke-[1]"
+              />
+
+              {/* 3 Isometric Database Canisters (Matching reference) */}
+              <g transform="translate(0, -20)">
+                {/* Left Cylinder */}
+                <ellipse cx="780" cy="235" rx="12" ry="6" className="fill-neutral-200 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]" />
+                <path d="M 768,235 v 14 a 12,6 0 0 0 24,0 v -14" className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]" />
+
+                {/* Right Cylinder */}
+                <ellipse cx="840" cy="235" rx="12" ry="6" className="fill-neutral-200 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]" />
+                <path d="M 828,235 v 14 a 12,6 0 0 0 24,0 v -14" className="fill-neutral-300 dark:fill-neutral-900 stroke-neutral-400 dark:stroke-neutral-600 stroke-[1]" />
+
+                {/* Center Illuminated Primary Canister */}
+                <ellipse
+                  cx="810"
+                  cy="215"
+                  rx="15"
+                  ry="7.5"
+                  className={selectedStage === 'cloud' ? 'fill-neutral-950 dark:fill-white stroke-neutral-950 dark:stroke-white stroke-[1.5]' : 'fill-neutral-300 dark:fill-neutral-700 stroke-neutral-400 dark:stroke-neutral-500'}
+                />
+                <path
+                  d="M 795,215 v 20 a 15,7.5 0 0 0 30,0 v -20"
+                  className={selectedStage === 'cloud' ? 'fill-neutral-900 dark:fill-neutral-100 stroke-neutral-950 dark:stroke-white stroke-[1.5]' : 'fill-neutral-400 dark:fill-neutral-800 stroke-neutral-400 dark:stroke-neutral-500'}
+                />
+              </g>
+
+              {/* Stage Pin & Monospace Labels */}
+              <line x1="810" y1="185" x2="810" y2="105" className="stroke-neutral-400 dark:stroke-neutral-600" strokeDasharray="2 2" />
+              <circle cx="810" cy="185" r="2.5" className={selectedStage === 'cloud' ? 'fill-neutral-900 dark:fill-white' : 'fill-neutral-400 dark:fill-neutral-600'} />
+              <text x="810" y="88" textAnchor="middle" className={`font-mono text-[10px] tracking-widest font-semibold uppercase ${selectedStage === 'cloud' ? 'fill-neutral-950 dark:fill-white' : 'fill-neutral-500'}`}>
+                STAGE 05
+              </text>
+              <text x="810" y="100" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-400 dark:fill-neutral-500 uppercase">
+                CLOUD & DATA
+              </text>
+
+              <text x="810" y="320" textAnchor="middle" className="font-mono text-[9px] tracking-wider fill-neutral-500 dark:fill-neutral-400">
+                DATA VAULT
+              </text>
+            </g>
+
+            {/* Stage Selector Ring around active stage base */}
+            {selectedStage === 'interface' && (
+              <polygon points="110,214 180,250 110,286 40,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+            )}
+            {selectedStage === 'context' && (
+              <polygon points="285,214 355,250 285,286 215,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+            )}
+            {selectedStage === 'reasoning' && (
+              <polygon points="460,214 535,250 460,286 385,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.5" strokeDasharray="4 4" />
+            )}
+            {selectedStage === 'pipeline' && (
+              <polygon points="635,214 705,250 635,286 565,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+            )}
+            {selectedStage === 'cloud' && (
+              <polygon points="810,214 880,250 810,286 740,250" fill="none" className="stroke-neutral-950 dark:stroke-white" strokeWidth="1.25" strokeDasharray="4 4" />
+            )}
           </svg>
         </div>
 
-        {/* Right Detail HUD & Spec Inspection */}
-        <div className="lg:col-span-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 flex flex-col justify-between shadow-xs">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-semibold">
-                {active.code}
-              </span>
-              <span className="text-[11px] font-mono text-neutral-400">Telemetry Active</span>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-medium text-neutral-900 dark:text-white tracking-tight">
-                {active.name}
-              </h3>
-              <p className="text-xs font-mono text-neutral-500 mt-0.5 uppercase tracking-wide">
-                {active.tagline}
-              </p>
-            </div>
-
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
-              {active.role}
-            </p>
-
-            {/* Specifications list */}
-            <div className="space-y-2 pt-2">
-              {active.specs.map((s, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/70 dark:border-neutral-700/60 text-xs"
+        {/* Quick Stage Selection Navigation Pills */}
+        <div className="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap items-center justify-between gap-2">
+          <span className="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
+            INSPECT STAGE:
+          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {STAGE_KEYS.map((key) => {
+              const item = STAGE_DETAILS[key];
+              const isSelected = selectedStage === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setSelectedStage(key)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-150 flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 font-bold shadow-xs'
+                      : 'bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-neutral-800'
+                  }`}
                 >
-                  <span className="font-mono text-neutral-500 dark:text-neutral-400 text-[11px]">
-                    {s.label}
-                  </span>
-                  <span className="font-medium text-neutral-900 dark:text-white text-[11px] text-right truncate max-w-[200px]">
-                    {s.value}
-                  </span>
-                </div>
-              ))}
-            </div>
+                  <span className="opacity-60">{item.number}</span>
+                  <span>{item.name.split(' ')[0]}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-            {/* Tech stack badges */}
-            <div className="pt-2">
-              <div className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
-                Underlying Technologies
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {active.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200/80 dark:border-neutral-700"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
+      {/* Selected Stage Technical HUD Inspector (Pure Monochromatic) */}
+      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-8 backdrop-blur-sm shadow-xs transition-colors duration-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold">
+              {active.code}
+            </span>
+            <span className="text-xs font-mono text-neutral-500">
+              Telemetry Status: Active
+            </span>
+          </div>
+          <div className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
+            Pipeline Stage {active.number} of 05
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <div className="space-y-1">
+            <h3 className="text-xl font-medium text-neutral-900 dark:text-white font-sans">
+              {active.name}
+            </h3>
+            <div className="text-xs font-mono uppercase tracking-wider text-neutral-500">
+              {active.tagline}
             </div>
           </div>
+          <p className="text-sm text-neutral-600 dark:text-neutral-300 font-light leading-relaxed">
+            {active.role}
+          </p>
+        </div>
 
-          <div className="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono text-neutral-500">
-            <span>Click any layer in 3D to inspect</span>
-            <span className="text-neutral-900 dark:text-white font-semibold">Ready</span>
+        {/* Technical Specification Matrix */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          {active.specs.map((spec, i) => (
+            <div
+              key={i}
+              className="p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 bg-neutral-50 dark:bg-neutral-950/60 space-y-1"
+            >
+              <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500">
+                {spec.label}
+              </div>
+              <div className="text-xs font-semibold text-neutral-900 dark:text-white font-mono">
+                {spec.value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Underlying Technologies Badges */}
+        <div>
+          <div className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2.5">
+            Underlying Architecture & Standards
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {active.tech.map((t, i) => (
+              <span
+                key={i}
+                className="px-3 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700/80 text-neutral-800 dark:text-neutral-200"
+              >
+                {t}
+              </span>
+            ))}
           </div>
         </div>
       </div>

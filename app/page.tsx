@@ -12,8 +12,8 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <CapabilitiesGrid />
-        <ArchitectureSection />
         <DemoSection />
+        <ArchitectureSection />
       </main>
       <Footer />
     </div>

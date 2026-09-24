@@ -5,8 +5,8 @@ import { Menu, X, ExternalLink, Sun, Moon } from 'lucide-react';
 
 const navLinks = [
   { name: 'Capabilities', href: '#capabilities' },
-  { name: 'Architecture', href: '#architecture' },
   { name: 'Demo', href: '#demo' },
+  { name: 'Architecture', href: '#architecture' },
 ];
 
 export default function Navbar() {
