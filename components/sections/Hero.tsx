@@ -51,7 +51,7 @@ export default function Hero() {
               </a>
               <a
                 href="#architecture"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full border border-neutral-300 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/50 hover:bg-neutral-100 dark:hover:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-xs"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-xs"
               >
                 <Brain className="w-4 h-4" />
                 <span>View Architecture</span>
@@ -195,8 +195,8 @@ function AgentVisual() {
                 y2={`${cy * 100}%`}
                 className={`transition-all duration-500 ease-in-out ${
                   isCurrent
-                    ? 'stroke-neutral-700 dark:stroke-neutral-300 stroke-[1.5] opacity-100'
-                    : 'stroke-neutral-300 dark:stroke-neutral-800/80 stroke-[1] opacity-50'
+                    ? 'stroke-neutral-500 dark:stroke-neutral-400 stroke-[1.25] opacity-90'
+                    : 'stroke-neutral-300 dark:stroke-neutral-800/80 stroke-[1] opacity-40'
                 }`}
                 strokeDasharray={isCurrent ? 'none' : '3 4'}
               />
@@ -204,8 +204,8 @@ function AgentVisual() {
               <circle
                 cx={`${(0.5 + (r * 0.65) * Math.cos(rad)) * 100}%`}
                 cy={`${(0.5 + (r * 0.65) * Math.sin(rad)) * 100}%`}
-                r="3"
-                className={`fill-neutral-700 dark:fill-neutral-300 transition-opacity duration-500 ease-in-out ${
+                r="2.5"
+                className={`fill-neutral-500 dark:fill-neutral-400 transition-opacity duration-500 ease-in-out ${
                   isCurrent ? 'opacity-100 animate-pulse' : 'opacity-0'
                 }`}
               />
@@ -216,7 +216,7 @@ function AgentVisual() {
 
       {/* Center Holographic Agent Core with Smooth Cross-Fade */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white/95 dark:bg-neutral-900/95 border border-neutral-300/90 dark:border-neutral-700/80 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out">
+        <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white dark:bg-neutral-900 border border-neutral-300/90 dark:border-neutral-700/80 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-2 transition-all duration-500 ease-out">
           {/* Rotating Outer Accent Ring */}
           <div className="absolute -inset-2 rounded-full border border-neutral-300/80 dark:border-neutral-700/70 animate-spin-slow pointer-events-none" />
 
@@ -238,7 +238,7 @@ function AgentVisual() {
         </div>
       </div>
 
-      {/* Orbiting Tool Nodes with Non-Bold Icons, Tooltips & Slow Switching */}
+      {/* Orbiting Tool Nodes with Soft Transitions, Corner Tooltips & Less Rounded Icons */}
       {tools.map((tool, i) => {
         const rad = ((tool.angle - 90) * Math.PI) / 180;
         const r = 160;
@@ -248,7 +248,26 @@ function AgentVisual() {
         const Icon = tool.icon;
         const isCurrent = i === activeIndex;
         const isHovered = i === hoveredIndex;
-        const isTopHalf = tool.angle <= 60 || tool.angle >= 300;
+
+        // Tooltip alignment:
+        // - Right-side elements (angle 60, 120): start from top-right corner of element icon
+        // - Left-side elements (angle 240, 300): start from top-left corner of element icon
+        // - Top/Bottom middle elements (angle 0, 180): centered above/below
+        const isRightSide = tool.angle === 60 || tool.angle === 120;
+        const isLeftSide = tool.angle === 240 || tool.angle === 300;
+        const isMiddleTop = tool.angle === 0;
+
+        let tooltipPlacementClass = '';
+        if (isRightSide) {
+          tooltipPlacementClass = 'left-[calc(100%+8px)] top-0';
+        } else if (isLeftSide) {
+          tooltipPlacementClass = 'right-[calc(100%+8px)] top-0';
+        } else if (isMiddleTop) {
+          tooltipPlacementClass = 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2';
+        } else {
+          // Angle 180: bottom middle, position neatly above icon
+          tooltipPlacementClass = 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2';
+        }
 
         return (
           <div
@@ -262,32 +281,37 @@ function AgentVisual() {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            {/* Soft Charcoal Tooltip on Hover */}
-            <div
-              className={`absolute ${isTopHalf ? '-top-8' : '-bottom-8'} px-2.5 py-1 rounded-md text-[9px] font-mono tracking-wider bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border border-neutral-700 dark:border-neutral-300 shadow-md whitespace-nowrap pointer-events-none transition-all duration-300 ease-out ${
-                isHovered ? 'opacity-100 scale-100 -translate-y-0.5' : 'opacity-0 scale-95 pointer-events-none'
-              }`}
-            >
-              {tool.tooltip}
+            {/* Tool Icon Box with Relative Container for Corner-Anchored Tooltip */}
+            <div className="relative">
+              {/* Corner-Aligned Monochromatic Tooltip with refined padding and less rounded border */}
+              <div
+                className={`absolute z-30 pointer-events-none px-3.5 py-1.5 rounded-[4px] text-[9.5px] font-mono tracking-wider bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border border-neutral-700/90 dark:border-neutral-300/90 shadow-md whitespace-nowrap transition-all duration-300 ease-out ${
+                  tooltipPlacementClass
+                } ${
+                  isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+                }`}
+              >
+                {tool.tooltip}
+              </div>
+
+              {/* Interactive Tool Box — less rounded (rounded-xl), soft border change & grow effect without variant flip */}
+              <div
+                className={`w-13 h-13 sm:w-15 sm:h-15 rounded-xl flex items-center justify-center transition-all duration-500 ease-out bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border ${
+                  isCurrent
+                    ? 'scale-110 -translate-y-0.5 border-neutral-400 dark:border-neutral-500 shadow-md text-neutral-900 dark:text-neutral-100'
+                    : 'scale-100 translate-y-0 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 shadow-xs'
+                }`}
+              >
+                <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ease-out" />
+              </div>
             </div>
 
-            {/* Interactive Tool Box with Non-Bold Icon & Soft Charcoal Focus */}
-            <div
-              className={`w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center transition-all duration-500 ease-out ${
-                isCurrent
-                  ? 'scale-108 -translate-y-0.5 bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border border-neutral-700 dark:border-neutral-300 shadow-lg'
-                  : 'bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 shadow-xs'
-              }`}
-            >
-              <Icon strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ease-out" />
-            </div>
-
-            {/* Monospace Badge Label with Soft Charcoal Active State */}
+            {/* Monospace Badge Label with Soft Border Focus (No Variant Flipping) */}
             <span
-              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-500 ease-out whitespace-nowrap ${
+              className={`text-[9px] sm:text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-md border transition-all duration-500 ease-out whitespace-nowrap bg-white dark:bg-neutral-900 ${
                 isCurrent
-                  ? 'bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 border-neutral-700 dark:border-neutral-300 font-medium'
-                  : 'bg-white/90 dark:bg-neutral-900/90 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800'
+                  ? 'border-neutral-400 dark:border-neutral-500 text-neutral-900 dark:text-neutral-100 font-medium'
+                  : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400'
               }`}
             >
               {tool.label}

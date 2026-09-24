@@ -109,7 +109,7 @@ export default function CapabilitiesGrid() {
           {filtered.map((cap, idx) => (
             <div
               key={idx}
-              className={`${cap.span} p-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-sm hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-xs`}
+              className={`${cap.span} p-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between group shadow-sm`}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

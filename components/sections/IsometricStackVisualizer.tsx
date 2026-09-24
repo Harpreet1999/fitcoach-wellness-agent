@@ -550,7 +550,7 @@ export default function IsometricStackVisualizer() {
       </div>
 
       {/* Selected Stage Technical HUD Inspector (Pure Monochromatic) */}
-      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-8 backdrop-blur-sm shadow-xs transition-colors duration-200">
+      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 sm:p-8 shadow-xs transition-colors duration-200">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-neutral-200 dark:border-neutral-800">
           <div className="flex items-center gap-3">
             <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-widest uppercase bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white font-semibold">

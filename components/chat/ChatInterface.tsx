@@ -172,9 +172,9 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[640px] rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-200">
+    <div className="flex flex-col h-[640px] rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
       {/* Chat header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/80 dark:bg-neutral-950/40">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/60">
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="w-2.5 h-2.5 rounded-full bg-neutral-800 dark:bg-white animate-pulse" />
@@ -289,7 +289,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input bar */}
-      <div className="px-5 pb-5 pt-3 border-t border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/80 dark:bg-neutral-950/30">
+      <div className="px-5 pb-5 pt-3 border-t border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/60">
         <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800/90 rounded-full border border-neutral-200 dark:border-neutral-700/70 px-4 py-2 focus-within:border-neutral-400 dark:focus-within:border-neutral-500 transition-colors">
           <input
             type="text"
