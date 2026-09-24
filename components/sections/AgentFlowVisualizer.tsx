@@ -164,7 +164,7 @@ const target = goal === 'weight_loss' ? Math.round(tdee * 0.82) : tdee;`,
     },
     outputPayload: {
       uiComponentsMounted: ['<MacroCard />', '<ReactMarkdown />'],
-      storageUpdated: 'fitcoach_session_messages',
+      storageUpdated: 'fitcoach_messages',
       renderStatus: '200_SUCCESS',
     },
     codeSnippet: `// components/chat/ChatInterface.tsx

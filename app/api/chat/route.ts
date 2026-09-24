@@ -117,8 +117,6 @@ export async function POST(request: NextRequest) {
       ? `${SYSTEM_PROMPT}\n\nUser profile from this session: ${JSON.stringify(userProfile)}`
       : SYSTEM_PROMPT;
 
-    let lastError: unknown = null;
-
     for (const modelName of CANDIDATE_MODELS) {
       try {
         const model = genAI.getGenerativeModel({
@@ -188,7 +186,6 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ text: response.text(), toolsUsed, cardData });
         }
       } catch (err) {
-        lastError = err;
         console.warn(`Model ${modelName} failed, trying next candidate:`, err instanceof Error ? err.message : err);
         // If 503 or 429, try next candidate
         continue;

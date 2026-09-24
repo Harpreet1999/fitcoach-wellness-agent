@@ -8,7 +8,7 @@ import WorkoutCard from './cards/WorkoutCard';
 import HabitCard from './cards/HabitCard';
 import NutritionCard from './cards/NutritionCard';
 import { WorkoutLogCard, WorkoutListCard } from './cards/WorkoutListCards';
-import { saveMessages, loadMessages, saveWorkoutLog, getProfile, saveProfile } from '@/lib/memory';
+import { saveMessages, loadMessages, saveWorkoutLog, getProfile, saveProfile, clearSession as clearMemorySession } from '@/lib/memory';
 
 interface CardData {
   cardType: string;
@@ -167,8 +167,7 @@ export default function ChatInterface() {
 
   const clearSession = () => {
     setMessages([]);
-    localStorage.removeItem('fitcoach_session_messages');
-    localStorage.removeItem('fitcoach_profile');
+    clearMemorySession();
   };
 
   return (

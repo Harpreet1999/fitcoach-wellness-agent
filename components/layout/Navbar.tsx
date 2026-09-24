@@ -4,6 +4,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { Menu, X, ExternalLink, Sun, Moon } from 'lucide-react';
 
 const navLinks = [
+  { name: 'Home', href: '#' },
   { name: 'Capabilities', href: '#capabilities' },
   { name: 'Demo', href: '#demo' },
   { name: 'Architecture', href: '#architecture' },
@@ -24,7 +25,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/80 py-3 shadow-xs'
+          ? 'bg-white/90 dark:bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/60 py-3 shadow-xs'
           : 'bg-transparent py-5'
       }`}
     >
@@ -46,16 +47,22 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="hover:text-neutral-800 dark:hover:text-white transition-colors duration-200 relative group py-1"
-              >
-                {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-neutral-800 dark:bg-white transition-all duration-200 group-hover:w-full" />
-              </a>
+          <nav className="hidden md:flex items-center gap-3.5 text-xs font-normal uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
+            {navLinks.map((link, idx) => (
+              <div key={link.name} className="flex items-center gap-3.5">
+                {idx > 0 && (
+                  <span className="text-neutral-300 dark:text-neutral-700 select-none font-light" aria-hidden="true">
+                    |
+                  </span>
+                )}
+                <a
+                  href={link.href}
+                  className="hover:text-neutral-800 dark:hover:text-white transition-colors duration-200 relative group py-1"
+                >
+                  {link.name}
+                  <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-neutral-800 dark:bg-white transition-all duration-200 group-hover:w-full" />
+                </a>
+              </div>
             ))}
           </nav>
 
@@ -75,7 +82,7 @@ export default function Navbar() {
             </button>
 
             <a
-              href="https://github.com/harpreetsingh"
+              href="https://github.com/Harpreet1999"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-100/60 dark:bg-neutral-900/60 text-neutral-700 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors"
@@ -105,14 +112,14 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {isMobileOpen && (
-        <div className="md:hidden border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/98 dark:bg-neutral-950/98 backdrop-blur-xl px-6 py-6 animate-fade-in">
+        <div className="md:hidden border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5]/98 dark:bg-neutral-900/98 backdrop-blur-xl px-6 py-6 animate-fade-in">
           <nav className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileOpen(false)}
-                className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white flex items-center justify-between py-2 border-b border-neutral-200/50 dark:border-neutral-800/50 text-sm font-medium uppercase tracking-wider"
+                className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white flex items-center justify-between py-2 border-b border-neutral-200/50 dark:border-neutral-800/50 text-sm font-normal uppercase tracking-wider"
               >
                 <span>{link.name}</span>
                 <ExternalLink className="w-4 h-4 opacity-50" />

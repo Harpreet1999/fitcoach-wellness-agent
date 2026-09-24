@@ -74,17 +74,17 @@ export default function DemoSection() {
                     <button
                       key={p.title}
                       onClick={() => handlePromptClick(p.prompt)}
-                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
+                      className="text-left p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-neutral-950/60 transition-all duration-300 ease-out group shadow-sm focus:outline-none focus:border-neutral-300 dark:focus:border-neutral-700"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-500 transition-all duration-200">
+                        <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60 text-neutral-700 dark:text-neutral-300 group-hover:scale-110 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 group-hover:border-neutral-300 dark:group-hover:border-neutral-500 transition-all duration-250 ease-out">
                           <Icon className="w-3.5 h-3.5" />
                         </div>
-                        <div className="text-xs font-semibold text-neutral-800 dark:text-white">
+                        <div className="text-xs font-semibold text-neutral-800 dark:text-white group-hover:text-neutral-900 dark:group-hover:text-neutral-50 transition-colors duration-200">
                           {p.title}
                         </div>
                       </div>
-                      <div className="text-[11px] text-neutral-500 font-mono mt-2 leading-relaxed line-clamp-2">
+                      <div className="text-[11px] text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 font-mono mt-2 leading-relaxed line-clamp-2 transition-colors duration-200">
                         {p.prompt}
                       </div>
                     </button>

@@ -35,7 +35,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
       try {
         localStorage.setItem('kanso_theme', next);
-      } catch (e) {}
+      } catch {}
       return next;
     });
   };
@@ -49,7 +49,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     try {
       localStorage.setItem('kanso_theme', t);
-    } catch (e) {}
+    } catch {}
   };
 
   return (

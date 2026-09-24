@@ -82,6 +82,7 @@ export function getWorkoutLog(): WorkoutLogEntry[] {
 export function clearSession(): void {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(MESSAGES_KEY);
+  localStorage.removeItem('fitcoach_session_messages');
   localStorage.removeItem(WORKOUT_LOG_KEY);
   localStorage.removeItem(PROFILE_KEY);
 }

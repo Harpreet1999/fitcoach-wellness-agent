@@ -261,25 +261,30 @@ function AgentVisual() {
         const isCurrent = i === activeIndex;
         const isHovered = i === hoveredIndex;
 
-        // Tooltip alignment:
-        // - Right-side elements (angle 60, 120): start from top-right corner of element icon
-        // - Left-side elements (angle 240, 300): start from top-left corner of element icon
-        // - Top middle (angle 0): rendered on top
-        // - Bottom middle (angle 180): rendered on bottom
-        const isRightSide = tool.angle === 60 || tool.angle === 120;
-        const isLeftSide = tool.angle === 240 || tool.angle === 300;
-        const isMiddleTop = tool.angle === 0;
-
+        // Per-angle tooltip placement with correct vertical anchor & 22px gap:
+        // angle 0   (Macro Calc, top):         centered above
+        // angle 60  (Workouts, top-right):      right side, top-anchored
+        // angle 120 (Nutrition, bottom-right):  right side, bottom-anchored
+        // angle 180 (Habits, bottom):           centered below
+        // angle 240 (Intelligence, bottom-left):left side, bottom-anchored
+        // angle 300 (Memory, top-left):         left side, top-anchored
         let tooltipPlacementClass = '';
-        if (isRightSide) {
-          tooltipPlacementClass = 'left-[calc(100%+8px)] top-0';
-        } else if (isLeftSide) {
-          tooltipPlacementClass = 'right-[calc(100%+8px)] top-0';
-        } else if (isMiddleTop) {
-          tooltipPlacementClass = 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2';
+        if (tool.angle === 0) {
+          tooltipPlacementClass = 'bottom-[calc(100%+22px)] left-1/2 -translate-x-1/2';
+        } else if (tool.angle === 60) {
+          // Workouts: top-right → tooltip right side, top of icon
+          tooltipPlacementClass = 'left-[calc(100%+22px)] top-0';
+        } else if (tool.angle === 120) {
+          // Nutrition: bottom-right → tooltip right side, bottom of icon
+          tooltipPlacementClass = 'left-[calc(100%+22px)] bottom-0';
+        } else if (tool.angle === 180) {
+          tooltipPlacementClass = 'top-[calc(100%+22px)] left-1/2 -translate-x-1/2';
+        } else if (tool.angle === 240) {
+          // Intelligence: bottom-left → tooltip left side, bottom of icon
+          tooltipPlacementClass = 'right-[calc(100%+22px)] bottom-0';
         } else {
-          // Angle 180: bottom element rendered on bottom
-          tooltipPlacementClass = 'top-[calc(100%+8px)] left-1/2 -translate-x-1/2';
+          // Memory: top-left → tooltip left side, top of icon
+          tooltipPlacementClass = 'right-[calc(100%+22px)] top-0';
         }
 
         return (

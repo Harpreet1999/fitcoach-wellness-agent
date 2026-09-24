@@ -3,7 +3,7 @@ import { ExternalLink } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800/80 bg-white dark:bg-neutral-950 py-12 transition-colors duration-200">
+    <footer className="border-t border-neutral-200 dark:border-neutral-800/60 bg-white dark:bg-neutral-900 py-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo & tagline */}
@@ -15,7 +15,7 @@ export default function Footer() {
               <span className="font-semibold text-sm tracking-widest text-neutral-800 dark:text-white uppercase font-sans">FITCOACH AI</span>
             </div>
             <span className="text-xs font-mono text-neutral-500">
-              Built at Google Build with Gemini 2026 · Powered by Gemini API
+              Built at Google Build with Gemini 2026 · Powered by Gemini API · Developed by Harpreet Singh
             </span>
           </div>
 
@@ -30,7 +30,7 @@ export default function Footer() {
               harpreetsingh.xyz <ExternalLink className="w-3 h-3" />
             </a>
             <a
-              href="https://github.com/harpreetsingh"
+              href="https://github.com/Harpreet1999"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 hover:text-neutral-800 dark:hover:text-white transition-colors"

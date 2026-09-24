@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { CheckCircle2, Dumbbell, Calculator, Database, Leaf, Lightbulb, Image } from 'lucide-react';
+import { CheckCircle2, Dumbbell, Calculator, Database, Leaf, Lightbulb, Image as ImageIcon } from 'lucide-react';
 
 type FilterTab = 'all' | 'fitness' | 'nutrition' | 'generation';
 
@@ -55,7 +55,7 @@ const capabilities = [
     title: 'AI Intelligence & Reasoning',
     description: 'Contextual, multi-turn reasoning that adapts workout protocols and nutrition targets dynamically to user profile constraints.',
     metric: 'Gemini 3.5 Flash',
-    icon: <Image className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
+    icon: <ImageIcon className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />,
     tool: 'gemini_multiturn_reasoning',
     span: 'md:col-span-8',
   },
