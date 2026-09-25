@@ -101,7 +101,7 @@ export default function DemoSection() {
           </div>
 
           {/* Chat */}
-          <div className="lg:col-span-8 flex flex-col lg:pt-[30px]">
+          <div className="lg:col-span-8 flex flex-col lg:pt-[30px] min-h-0">
             <ChatInterface />
           </div>
 

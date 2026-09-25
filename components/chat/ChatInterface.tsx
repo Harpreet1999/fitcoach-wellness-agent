@@ -37,14 +37,27 @@ function formatModelName(model?: string): string {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1.5 px-4 py-3">
-      {[0, 1, 2].map(i => (
-        <div
-          key={i}
-          className="w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-500 animate-dots"
-          style={{ animationDelay: `${i * 0.15}s` }}
+    <div className="flex items-center gap-2.5 px-4 py-2.5 select-none">
+      <div className="relative flex items-center justify-center w-5 h-5 rounded-md bg-neutral-200/80 dark:bg-neutral-800 border border-neutral-300/80 dark:border-neutral-700">
+        <Sparkles className="w-3 h-3 text-amber-500 dark:text-amber-400 animate-spin" style={{ animationDuration: '3.5s' }} />
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span
+          className="w-2 h-2 rounded-full bg-neutral-700 dark:bg-neutral-200 animate-typing-dot"
+          style={{ animationDelay: '0ms' }}
         />
-      ))}
+        <span
+          className="w-2 h-2 rounded-full bg-neutral-700 dark:bg-neutral-200 animate-typing-dot"
+          style={{ animationDelay: '180ms' }}
+        />
+        <span
+          className="w-2 h-2 rounded-full bg-neutral-700 dark:bg-neutral-200 animate-typing-dot"
+          style={{ animationDelay: '360ms' }}
+        />
+      </div>
+      <span className="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-widest ml-0.5 animate-pulse">
+        Thinking...
+      </span>
     </div>
   );
 }
@@ -235,7 +248,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[680px] lg:h-full lg:flex-1 lg:max-h-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
+    <div className="flex flex-col h-[680px] lg:h-full lg:max-h-full min-h-0 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
       {/* Chat header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/60">
         <div className="flex items-center gap-3">
@@ -267,7 +280,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Messages */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scrollbar-minimal">
+      <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto px-5 py-4 space-y-4 scrollbar-minimal">
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center text-center gap-3 text-neutral-400 dark:text-neutral-500">
             <Sparkles className="w-8 h-8 opacity-40" />
