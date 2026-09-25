@@ -267,7 +267,7 @@ export default function ChatInterface() {
 
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-up`}>
-            <div className={`max-w-[88%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
+            <div className={`max-w-[80%] sm:max-w-[76%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
               {/* Model & Tools used badges */}
               {msg.role === 'model' && (
                 <div className="flex flex-wrap items-center gap-1.5 mb-1">
