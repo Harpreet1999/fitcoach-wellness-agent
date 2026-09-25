@@ -20,6 +20,19 @@ interface Message {
   parts: [{ text: string }];
   cards?: CardData[];
   toolsUsed?: string[];
+  modelUsed?: string;
+}
+
+function formatModelName(model?: string): string {
+  if (!model) return 'Gemini 3.5 Flash Lite';
+  if (model.includes('3.5-flash-lite')) return 'Gemini 3.5 Flash Lite';
+  if (model.includes('flash-lite-latest')) return 'Gemini Flash Lite';
+  if (model.includes('3.1-flash-lite')) return 'Gemini 3.1 Flash Lite';
+  if (model.includes('3.5-flash')) return 'Gemini 3.5 Flash';
+  if (model.includes('2.0-flash')) return 'Gemini 2.0 Flash';
+  if (model.includes('1.5-flash')) return 'Gemini 1.5 Flash';
+  if (model.toLowerCase().includes('local')) return 'Local Engine (Offline)';
+  return model;
 }
 
 function TypingIndicator() {
@@ -65,6 +78,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [activeModel, setActiveModel] = useState<string>('gemini-3.5-flash-lite');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -72,6 +86,10 @@ export default function ChatInterface() {
     const saved = loadMessages();
     if (saved.length > 0) {
       setMessages(saved as Message[]);
+      const lastModelMsg = [...(saved as Message[])].reverse().find(m => m.role === 'model' && m.modelUsed);
+      if (lastModelMsg?.modelUsed) {
+        setActiveModel(lastModelMsg.modelUsed);
+      }
     }
   }, []);
 
@@ -148,11 +166,16 @@ export default function ChatInterface() {
         }
       });
 
+      if (data.modelUsed) {
+        setActiveModel(data.modelUsed);
+      }
+
       const agentMsg: Message = {
         role: 'model',
         parts: [{ text: data.text || '' }],
         cards: data.cardData || [],
         toolsUsed: data.toolsUsed || [],
+        modelUsed: data.modelUsed,
       };
 
       const finalMessages = [...newMessages, agentMsg];
@@ -211,8 +234,11 @@ export default function ChatInterface() {
             <div className="text-xs font-semibold text-neutral-800 dark:text-white uppercase tracking-wider font-sans">
               FitCoach Agent
             </div>
-            <div className="text-[10px] font-mono text-neutral-500">
-              Gemini 3.5 Flash · In-Session Memory
+            <div className="text-[10px] font-mono text-neutral-500 flex items-center gap-1.5">
+              <span className={`inline-block w-1.5 h-1.5 rounded-full ${activeModel.toLowerCase().includes('local') ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`} />
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">{formatModelName(activeModel)}</span>
+              <span>·</span>
+              <span>In-Session Memory</span>
             </div>
           </div>
         </div>
@@ -242,10 +268,16 @@ export default function ChatInterface() {
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-up`}>
             <div className={`max-w-[88%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
-              {/* Tools used badge */}
-              {msg.role === 'model' && msg.toolsUsed && msg.toolsUsed.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-1">
-                  {msg.toolsUsed.map(tool => (
+              {/* Model & Tools used badges */}
+              {msg.role === 'model' && (
+                <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                  {msg.modelUsed && (
+                    <span className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700 flex items-center gap-1 font-medium">
+                      <Sparkles className="w-2.5 h-2.5 opacity-80 text-amber-500 dark:text-amber-400" />
+                      {formatModelName(msg.modelUsed)}
+                    </span>
+                  )}
+                  {msg.toolsUsed && msg.toolsUsed.map(tool => (
                     <span key={tool} className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 flex items-center gap-1">
                       <Cpu className="w-2.5 h-2.5 opacity-70" />
                       {tool}
