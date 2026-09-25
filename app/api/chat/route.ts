@@ -108,11 +108,8 @@ export const maxDuration = 30;
 
 const CANDIDATE_MODELS = [
   'gemini-3.5-flash-lite',
+  'gemini-3.8-flash',
   'gemini-flash-lite-latest',
-  'gemini-3.1-flash-lite',
-  'gemini-3.5-flash',
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
 ];
 
 interface ParsedMacroParams {
@@ -187,10 +184,6 @@ export async function POST(request: NextRequest) {
   try {
     const { messages, userProfile } = await request.json();
 
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'API key not configured', code: 'INVALID_KEY' }, { status: 500 });
-    }
-
     const lastMessage = messages?.[messages.length - 1];
     const lastUserText = lastMessage?.parts?.[0]?.text?.trim() || '';
 
@@ -198,91 +191,103 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message text is required' }, { status: 400 });
     }
 
-    const systemInstruction = userProfile && Object.keys(userProfile).length > 0
-      ? `${SYSTEM_PROMPT}\n\nUser profile from this session: ${JSON.stringify(userProfile)}`
-      : SYSTEM_PROMPT;
+    const apiKey = process.env.GEMINI_API_KEY;
 
-    // Sanitize multi-turn history for Gemini: remove empty/invalid parts
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sanitizedHistory = (messages.slice(0, -1) || [])
+    if (apiKey) {
+      const systemInstruction = userProfile && Object.keys(userProfile).length > 0
+        ? `${SYSTEM_PROMPT}\n\nUser profile from this session: ${JSON.stringify(userProfile)}`
+        : SYSTEM_PROMPT;
+
+      // Sanitize multi-turn history for Gemini: remove empty/invalid parts
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .filter((m: any) => m?.role && m?.parts?.[0]?.text && typeof m.parts[0].text === 'string' && m.parts[0].text.trim().length > 0)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((m: any) => ({
-        role: m.role === 'model' ? 'model' : 'user',
-        parts: [{ text: m.parts[0].text.trim() }],
-      }));
+      const sanitizedHistory = (messages.slice(0, -1) || [])
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .filter((m: any) => m?.role && m?.parts?.[0]?.text && typeof m.parts[0].text === 'string' && m.parts[0].text.trim().length > 0)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .map((m: any) => ({
+          role: m.role === 'model' ? 'model' : 'user',
+          parts: [{ text: m.parts[0].text.trim() }],
+        }));
 
-    for (const modelName of CANDIDATE_MODELS) {
-      try {
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          tools,
-          systemInstruction,
-        });
+      for (const modelName of CANDIDATE_MODELS) {
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            tools,
+            systemInstruction,
+          });
 
-        const chat = model.startChat({ history: sanitizedHistory });
-        const result = await chat.sendMessage(lastUserText);
-        const response = result.response;
+          const chat = model.startChat({ history: sanitizedHistory });
+          
+          // Strict 6s timeout to prevent Vercel 10s serverless invocation timeouts
+          const timeoutPromise = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('Model timeout')), 6000)
+          );
 
-        const toolsUsed: string[] = [];
-        const cardData: ToolResult[] = [];
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const result: any = await Promise.race([chat.sendMessage(lastUserText), timeoutPromise]);
+          const response = result.response;
 
-        const candidate = response.candidates?.[0];
-        if (!candidate) {
-          continue;
-        }
+          const toolsUsed: string[] = [];
+          const cardData: ToolResult[] = [];
 
-        const functionCallParts = candidate.content.parts.filter(p => p.functionCall);
-
-        if (functionCallParts.length > 0) {
-          const functionResponses = [];
-
-          for (const part of functionCallParts) {
-            const { name, args } = part.functionCall!;
-            const a = args as AnyArgs;
-            toolsUsed.push(name);
-
-            let toolResult: ToolResult;
-
-            switch (name) {
-              case 'log_workout_routine':
-                toolResult = logWorkoutRoutine(a.day, a.muscleGroups, a.notes);
-                break;
-              case 'calculate_macros_and_bmr':
-                toolResult = calculateMacrosAndBmr(a.weight_kg, a.height_cm, a.age, a.gender, a.activity_level, a.goal);
-                break;
-              case 'list_workouts':
-                toolResult = listWorkouts(a.category);
-                break;
-              case 'get_workout':
-                toolResult = getWorkout(a.id);
-                break;
-              case 'get_fruit_nutrition':
-                toolResult = await getFruitNutrition(a.fruit_name);
-                break;
-              case 'get_recommended_habit':
-                toolResult = getRecommendedHabit(a.category);
-                break;
-              default:
-                toolResult = { cardType: 'error', data: { message: `Unknown tool: ${name}` } };
-            }
-
-            cardData.push(toolResult);
-            functionResponses.push({
-              functionResponse: { name, response: toolResult.data },
-            });
+          const candidate = response.candidates?.[0];
+          if (!candidate) {
+            continue;
           }
 
-          const followUp = await chat.sendMessage(functionResponses);
-          const finalText = followUp.response.text();
-          return NextResponse.json({ text: finalText, toolsUsed, cardData, modelUsed: modelName });
-        } else {
-          return NextResponse.json({ text: response.text(), toolsUsed, cardData, modelUsed: modelName });
+          const functionCallParts = candidate.content.parts.filter((p: { functionCall?: unknown }) => p.functionCall);
+
+          if (functionCallParts.length > 0) {
+            const functionResponses = [];
+
+            for (const part of functionCallParts) {
+              const { name, args } = part.functionCall!;
+              const a = args as AnyArgs;
+              toolsUsed.push(name);
+
+              let toolResult: ToolResult;
+
+              switch (name) {
+                case 'log_workout_routine':
+                  toolResult = logWorkoutRoutine(a.day, a.muscleGroups, a.notes);
+                  break;
+                case 'calculate_macros_and_bmr':
+                  toolResult = calculateMacrosAndBmr(a.weight_kg, a.height_cm, a.age, a.gender, a.activity_level, a.goal);
+                  break;
+                case 'list_workouts':
+                  toolResult = listWorkouts(a.category);
+                  break;
+                case 'get_workout':
+                  toolResult = getWorkout(a.id);
+                  break;
+                case 'get_fruit_nutrition':
+                  toolResult = await getFruitNutrition(a.fruit_name);
+                  break;
+                case 'get_recommended_habit':
+                  toolResult = getRecommendedHabit(a.category);
+                  break;
+                default:
+                  toolResult = { cardType: 'error', data: { message: `Unknown tool: ${name}` } };
+              }
+
+              cardData.push(toolResult);
+              functionResponses.push({
+                functionResponse: { name, response: toolResult.data },
+              });
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const followUp: any = await Promise.race([chat.sendMessage(functionResponses), timeoutPromise]);
+            const finalText = followUp.response.text();
+            return NextResponse.json({ text: finalText, toolsUsed, cardData, modelUsed: modelName });
+          } else {
+            return NextResponse.json({ text: response.text(), toolsUsed, cardData, modelUsed: modelName });
+          }
+        } catch (err) {
+          console.warn(`Model ${modelName} failed or rate-limited:`, err instanceof Error ? err.message : err);
+          continue;
         }
-      } catch (err) {
-        console.warn(`Model ${modelName} failed or rate-limited:`, err instanceof Error ? err.message : err);
-        continue;
       }
     }
 
