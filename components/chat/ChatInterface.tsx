@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Send, Trash2, Sparkles, Cpu } from 'lucide-react';
+import { Send, Trash2, Sparkles, Cpu, Square } from 'lucide-react';
 import MacroCard from './cards/MacroCard';
 import WorkoutCard from './cards/WorkoutCard';
 import HabitCard from './cards/HabitCard';
@@ -66,6 +66,7 @@ export default function ChatInterface() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const saved = loadMessages();
@@ -83,8 +84,22 @@ export default function ChatInterface() {
     }
   }, [messages, isLoading]);
 
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsLoading(false);
+  }, []);
+
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     const userMsg: Message = { role: 'user', parts: [{ text: text.trim() }] };
     const newMessages = [...messages, userMsg];
@@ -97,6 +112,7 @@ export default function ChatInterface() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           messages: newMessages.map(m => ({ role: m.role, parts: m.parts })),
           userProfile: profile,
@@ -143,6 +159,16 @@ export default function ChatInterface() {
       setMessages(finalMessages);
       saveMessages(finalMessages);
     } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') {
+        const stoppedMsg: Message = {
+          role: 'model',
+          parts: [{ text: '*(Generation stopped by user)*' }],
+        };
+        const finalMessages = [...newMessages, stoppedMsg];
+        setMessages(finalMessages);
+        saveMessages(finalMessages);
+        return;
+      }
       const errMsg = err instanceof Error ? err.message : 'Something went wrong';
       const errorMsg: Message = {
         role: 'model',
@@ -151,6 +177,7 @@ export default function ChatInterface() {
       setMessages([...newMessages, errorMsg]);
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   }, [messages, isLoading]);
 
@@ -172,7 +199,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[640px] rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
+    <div className="flex flex-col h-[680px] max-h-[85vh] rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
       {/* Chat header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/60">
         <div className="flex items-center gap-3">
@@ -201,7 +228,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Messages */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scrollbar-minimal">
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center text-center gap-3 text-neutral-400 dark:text-neutral-500">
             <Sparkles className="w-8 h-8 opacity-40" />
@@ -302,17 +329,31 @@ export default function ChatInterface() {
               }
             }}
             placeholder="Ask about workouts, macros, habits..."
-            className="flex-1 bg-transparent text-sm text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none"
+            className="flex-1 bg-transparent text-sm text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 outline-none selection:bg-neutral-800 selection:text-white dark:selection:bg-white dark:selection:text-neutral-950"
             disabled={isLoading}
           />
-          <button
-            onClick={() => sendMessage(input)}
-            disabled={!input.trim() || isLoading}
-            className="p-2 rounded-full bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-20 active:scale-95 transition-all duration-200 shrink-0"
-            aria-label="Send message"
-          >
-            <Send className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {isLoading && (
+              <button
+                onClick={stopGeneration}
+                type="button"
+                className="p-2 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 border border-red-500/20 dark:border-red-500/30 active:scale-95 transition-all duration-200 flex items-center justify-center animate-fade-in"
+                title="Stop response"
+                aria-label="Stop response"
+              >
+                <Square className="w-3 h-3 fill-current" />
+              </button>
+            )}
+            <button
+              onClick={() => sendMessage(input)}
+              disabled={!input.trim() || isLoading}
+              className="p-2 rounded-full bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-20 active:scale-95 transition-all duration-200 shrink-0"
+              aria-label="Send message"
+              title="Send message"
+            >
+              <Send className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -25,20 +25,58 @@
   }
 }
 
+/* Selection styling with high contrast in light and dark mode */
+::selection {
+  background-color: #d4d4d4;
+  color: #0a0a0a;
+}
+.dark ::selection {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
 /* Custom minimal scrollbar — matches Kanso reference */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(150, 150, 150, 0.3);
+  background: rgba(150, 150, 150, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.45);
+}
+
+/* Dedicated ultra-minimal scrollbar for chat window */
+.scrollbar-minimal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(150, 150, 150, 0.25) transparent;
+}
+.dark .scrollbar-minimal {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.scrollbar-minimal::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-minimal::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-minimal::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.25);
+  border-radius: 9999px;
+}
+.scrollbar-minimal::-webkit-scrollbar-thumb:hover {
   background: rgba(150, 150, 150, 0.5);
+}
+.dark .scrollbar-minimal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+.dark .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Kanso font mono utility */
