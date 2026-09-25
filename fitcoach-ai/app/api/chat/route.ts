@@ -103,7 +103,78 @@ TONE & STYLE CONSTRAINTS:
 
 Available workout IDs in the catalog: push_day_strength, pull_day_hypertrophy, leg_day_complete, upper_body_strength, lower_body_hypertrophy, full_body_beginner, hiit_metabolic, hiit_bodyweight, yoga_flow_morning, mobility_full_body.`;
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
+
 const CANDIDATE_MODELS = ['gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+
+interface ParsedMacroParams {
+  weight: number;
+  height: number;
+  age: number;
+  gender: string;
+  goal: string;
+  activity: string;
+}
+
+function parseLocalMacroParams(text: string, profile: Record<string, unknown> = {}): ParsedMacroParams {
+  const t = text.toLowerCase();
+
+  // Weight (e.g. "55kg", "55 kg", "55 kilos", "160 lbs")
+  let weight = Number(profile.weight_kg) || 75;
+  const lbsMatch = t.match(/(\d+(?:\.\d+)?)\s*(?:lbs|pounds)/);
+  const kgMatch = t.match(/(\d+(?:\.\d+)?)\s*(?:kg|kilos|kilograms)/) ||
+                  t.match(/(?:weight|weigh|i'm|im|at)\s*(\d+(?:\.\d+)?)\s*(?:kg)?/);
+  if (lbsMatch) {
+    weight = Math.round(parseFloat(lbsMatch[1]) * 0.453592);
+  } else if (kgMatch) {
+    weight = parseFloat(kgMatch[1]);
+  }
+
+  // Height (e.g. "178cm", "178 cm")
+  let height = Number(profile.height_cm) || 178;
+  const heightMatch = t.match(/(\d{2,3})\s*(?:cm|centimeters)/) ||
+                      t.match(/(?:height|tall|standing)\s*(?:is|:)?\s*(\d{2,3})/);
+  if (heightMatch) {
+    height = parseInt(heightMatch[1], 10);
+  }
+
+  // Age (e.g. "27 years old", "27yo", "age 27")
+  let age = Number(profile.age) || 25;
+  const ageMatch = t.match(/(\d{1,2})\s*(?:years\s*old|yo|yr|yrs|year|age)/) ||
+                   t.match(/(?:age|aged)\s*(?:is|:)?\s*(\d{1,2})/);
+  if (ageMatch) {
+    age = parseInt(ageMatch[1], 10);
+  }
+
+  // Gender
+  let gender = (profile.gender as string) || 'male';
+  if (t.includes('female') || t.includes('woman') || t.includes('girl')) {
+    gender = 'female';
+  } else if (t.includes('male') || t.includes('man') || t.includes('guy')) {
+    gender = 'male';
+  }
+
+  // Goal
+  let goal = (profile.goal as string) || 'weight_loss';
+  if (t.includes('bulk') || t.includes('gain') || t.includes('muscle') || t.includes('surplus') || t.includes('hypertrophy')) {
+    goal = 'muscle_gain';
+  } else if (t.includes('cut') || t.includes('loss') || t.includes('deficit') || t.includes('lose') || t.includes('lean')) {
+    goal = 'weight_loss';
+  } else if (t.includes('maintain') || t.includes('maintenance') || t.includes('recomp')) {
+    goal = 'maintenance';
+  }
+
+  // Activity level
+  let activity = (profile.activity_level as string) || 'moderate';
+  if (t.includes('sedentary')) activity = 'sedentary';
+  else if (t.includes('very active') || t.includes('very_active') || t.includes('athlete')) activity = 'very_active';
+  else if (t.includes('active') || t.includes('heavy')) activity = 'active';
+  else if (t.includes('light')) activity = 'light';
+  else if (t.includes('moderate')) activity = 'moderate';
+
+  return { weight, height, age, gender, goal, activity };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -113,9 +184,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'API key not configured', code: 'INVALID_KEY' }, { status: 500 });
     }
 
+    const lastMessage = messages?.[messages.length - 1];
+    const lastUserText = lastMessage?.parts?.[0]?.text?.trim() || '';
+
+    if (!lastUserText) {
+      return NextResponse.json({ error: 'Message text is required' }, { status: 400 });
+    }
+
     const systemInstruction = userProfile && Object.keys(userProfile).length > 0
       ? `${SYSTEM_PROMPT}\n\nUser profile from this session: ${JSON.stringify(userProfile)}`
       : SYSTEM_PROMPT;
+
+    // Sanitize multi-turn history for Gemini: remove empty/invalid parts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sanitizedHistory = (messages.slice(0, -1) || [])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .filter((m: any) => m?.role && m?.parts?.[0]?.text && typeof m.parts[0].text === 'string' && m.parts[0].text.trim().length > 0)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((m: any) => ({
+        role: m.role === 'model' ? 'model' : 'user',
+        parts: [{ text: m.parts[0].text.trim() }],
+      }));
 
     for (const modelName of CANDIDATE_MODELS) {
       try {
@@ -125,9 +214,8 @@ export async function POST(request: NextRequest) {
           systemInstruction,
         });
 
-        const chat = model.startChat({ history: messages.slice(0, -1) });
-        const lastMessage = messages[messages.length - 1];
-        const result = await chat.sendMessage(lastMessage.parts[0].text);
+        const chat = model.startChat({ history: sanitizedHistory });
+        const result = await chat.sendMessage(lastUserText);
         const response = result.response;
 
         const toolsUsed: string[] = [];
@@ -186,52 +274,143 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ text: response.text(), toolsUsed, cardData });
         }
       } catch (err) {
-        console.warn(`Model ${modelName} failed, trying next candidate:`, err instanceof Error ? err.message : err);
-        // If 503 or 429, try next candidate
+        console.warn(`Model ${modelName} failed or rate-limited:`, err instanceof Error ? err.message : err);
         continue;
       }
     }
 
-    // If all Gemini candidates failed (e.g. 503 high demand spike), provide intelligent local tool execution fallback
-    console.log('Gemini candidates temporarily unavailable, activating resilient local agent dispatcher');
-    const lastUserText = messages[messages.length - 1]?.parts?.[0]?.text?.toLowerCase() || '';
+    // Resilient local agent fallback: parses user input dynamically so results are never repeated or static
+    console.log('Gemini candidates temporarily unavailable/rate-limited, activating dynamic local agent dispatcher');
+    const lowerText = lastUserText.toLowerCase();
     const toolsUsed: string[] = [];
     const cardData: ToolResult[] = [];
     let finalText = '';
 
-    if (lastUserText.includes('sleep') || lastUserText.includes('habit') || lastUserText.includes('recovery')) {
-      const cat = lastUserText.includes('sleep') ? 'sleep' : (lastUserText.includes('recovery') ? 'recovery' : 'sleep');
-      const toolRes = getRecommendedHabit(cat);
-      toolsUsed.push('get_recommended_habit');
-      cardData.push(toolRes);
-      finalText = `Here is your science-backed ${cat} protocol. Implementing this consistently optimizes neurological recovery and restorative sleep cycles.`;
-    } else if (lastUserText.includes('macro') || lastUserText.includes('cutting') || lastUserText.includes('calories') || lastUserText.includes('bmr')) {
-      const toolRes = calculateMacrosAndBmr(75, 178, 25, 'male', 'moderate', 'weight_loss');
+    if (
+      lowerText.includes('macro') ||
+      lowerText.includes('cutting') ||
+      lowerText.includes('bulking') ||
+      lowerText.includes('calories') ||
+      lowerText.includes('bmr') ||
+      lowerText.includes('tdee') ||
+      lowerText.includes('deficit') ||
+      lowerText.includes('surplus') ||
+      lowerText.includes('split for')
+    ) {
+      const p = parseLocalMacroParams(lastUserText, userProfile);
+      const toolRes = calculateMacrosAndBmr(p.weight, p.height, p.age, p.gender, p.activity, p.goal);
       toolsUsed.push('calculate_macros_and_bmr');
       cardData.push(toolRes);
-      finalText = `Based on your biometrics, here is your calculated caloric deficit and daily macronutrient distribution designed to preserve lean muscle tissue.`;
-    } else if (lastUserText.includes('chest') || lastUserText.includes('push')) {
+
+      const targetCals = (toolRes.data as Record<string, unknown>).target_calories;
+      const goalDesc =
+        p.goal === 'muscle_gain'
+          ? 'controlled caloric surplus targeting clean muscle hypertrophy'
+          : p.goal === 'weight_loss'
+          ? 'caloric deficit designed to accelerate fat loss while preserving lean mass'
+          : 'caloric maintenance balance for stable body composition';
+
+      finalText = `Based on your biometrics (${p.weight}kg, ${p.height}cm, ${p.age} years old ${p.gender}, ${p.activity} activity), here is your ${goalDesc}. Your personalized daily target is approximately **${targetCals} kcal**. Meet these targets consistently with quality nutrition for optimal results.`;
+    } else if (lowerText.includes('chest') || lowerText.includes('tricep') || lowerText.includes('push')) {
       const toolRes = getWorkout('push_day_strength');
       toolsUsed.push('get_workout');
       cardData.push(toolRes);
       finalText = `Here is the structured Chest and Triceps strength protocol from the catalog, including compound lifts and accessory volume.`;
-    } else if (lastUserText.includes('workout') || lastUserText.includes('hiit') || lastUserText.includes('routine')) {
-      const toolRes = listWorkouts('Strength');
+    } else if (lowerText.includes('back') || lowerText.includes('bicep') || lowerText.includes('pull')) {
+      const toolRes = getWorkout('pull_day_hypertrophy');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the Pull Hypertrophy protocol focused on lat width, upper back thickness, and bicep volume.`;
+    } else if (lowerText.includes('leg') || lowerText.includes('quad') || lowerText.includes('squat')) {
+      const toolRes = getWorkout('leg_day_complete');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the complete Leg Day protocol covering quadriceps, hamstrings, and calves for lower-body power.`;
+    } else if (lowerText.includes('upper')) {
+      const toolRes = getWorkout('upper_body_strength');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the Upper Body Strength protocol targeting compound pushing and pulling foundations.`;
+    } else if (lowerText.includes('hiit') || lowerText.includes('metabolic') || lowerText.includes('cardio')) {
+      const toolRes = getWorkout('hiit_metabolic');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the HIIT Metabolic Conditioning routine designed to elevate heart rate and maximize VO2 expenditure.`;
+    } else if (lowerText.includes('yoga') || lowerText.includes('flow')) {
+      const toolRes = getWorkout('yoga_flow_morning');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the Morning Yoga Flow routine for mobility, alignment, and mindful activation.`;
+    } else if (lowerText.includes('mobility') || lowerText.includes('stretch')) {
+      const toolRes = getWorkout('mobility_full_body');
+      toolsUsed.push('get_workout');
+      cardData.push(toolRes);
+      finalText = `Here is the Full Body Mobility routine for joint health, hip opening, and active recovery.`;
+    } else if (lowerText.includes('workout') || lowerText.includes('routine') || lowerText.includes('catalog') || lowerText.includes('list')) {
+      let cat: string | undefined = undefined;
+      if (lowerText.includes('strength')) cat = 'Strength';
+      else if (lowerText.includes('hiit')) cat = 'HIIT';
+      else if (lowerText.includes('yoga')) cat = 'Yoga';
+      else if (lowerText.includes('calisthenic')) cat = 'Calisthenics';
+      else if (lowerText.includes('mobility')) cat = 'Mobility';
+      const toolRes = listWorkouts(cat);
       toolsUsed.push('list_workouts');
       cardData.push(toolRes);
-      finalText = `Here are the curated workout routines available in the training database.`;
-    } else if (lastUserText.includes('banana') || lastUserText.includes('fruit') || lastUserText.includes('nutrition')) {
-      const toolRes = await getFruitNutrition('banana');
+      finalText = cat
+        ? `Here are the curated ${cat} routines available in the training database.`
+        : `Here are the curated workout routines available across all disciplines in the training database.`;
+    } else if (
+      lowerText.includes('banana') ||
+      lowerText.includes('apple') ||
+      lowerText.includes('orange') ||
+      lowerText.includes('strawberry') ||
+      lowerText.includes('fruit') ||
+      lowerText.includes('nutrition')
+    ) {
+      const fruits = ['banana', 'apple', 'orange', 'strawberry', 'blueberry', 'watermelon', 'mango', 'pineapple', 'kiwi'];
+      const fruitName = fruits.find(f => lowerText.includes(f)) || 'banana';
+      const toolRes = await getFruitNutrition(fruitName);
       toolsUsed.push('get_fruit_nutrition');
       cardData.push(toolRes);
-      finalText = `Retrieved nutritional profile per 100g serving from the public nutrition database.`;
-    } else if (lastUserText.includes('split') || lastUserText.includes('log')) {
-      const toolRes = logWorkoutRoutine('Monday', ['Chest', 'Triceps', 'Shoulders'], 'Push session logged');
+      finalText = `Retrieved verified nutritional profile for ${fruitName.charAt(0).toUpperCase() + fruitName.slice(1)} per 100g serving from the public nutrition database.`;
+    } else if (
+      lowerText.includes('sleep') ||
+      lowerText.includes('habit') ||
+      lowerText.includes('recovery') ||
+      lowerText.includes('hydration') ||
+      lowerText.includes('water') ||
+      lowerText.includes('mindset')
+    ) {
+      let cat = 'sleep';
+      if (lowerText.includes('hydration') || lowerText.includes('water')) cat = 'hydration';
+      else if (lowerText.includes('recovery') || lowerText.includes('soreness')) cat = 'recovery';
+      else if (lowerText.includes('mindset') || lowerText.includes('focus')) cat = 'mindset';
+      else if (lowerText.includes('nutrition') || lowerText.includes('diet')) cat = 'nutrition';
+      else if (lowerText.includes('movement') || lowerText.includes('step')) cat = 'movement';
+
+      const toolRes = getRecommendedHabit(cat);
+      toolsUsed.push('get_recommended_habit');
+      cardData.push(toolRes);
+      finalText = `Here is your science-backed ${cat} recommendation. Implementing this habit consistently optimizes recovery and metabolic health.`;
+    } else if (lowerText.includes('split') || lowerText.includes('log') || lowerText.includes('schedule')) {
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const foundDay = days.find(d => lowerText.includes(d.toLowerCase())) || 'Monday';
+      const groups: string[] = [];
+      if (lowerText.includes('chest')) groups.push('Chest');
+      if (lowerText.includes('tricep')) groups.push('Triceps');
+      if (lowerText.includes('back')) groups.push('Back');
+      if (lowerText.includes('bicep')) groups.push('Biceps');
+      if (lowerText.includes('shoulder')) groups.push('Shoulders');
+      if (lowerText.includes('leg') || lowerText.includes('quad') || lowerText.includes('hamstring')) groups.push('Legs');
+      if (lowerText.includes('core') || lowerText.includes('ab')) groups.push('Core');
+      if (groups.length === 0) groups.push('Push Session');
+
+      const toolRes = logWorkoutRoutine(foundDay, groups, `Training split logged for ${foundDay}`);
       toolsUsed.push('log_workout_routine');
       cardData.push(toolRes);
-      finalText = `Training routine successfully logged into your active session memory.`;
+      finalText = `Training routine successfully logged for ${foundDay} (${groups.join(' & ')}) into your active session memory.`;
     } else {
-      finalText = `I am FitCoach AI, your fitness and wellness assistant. I can calculate your personalized macros, explore structured workout routines, log your weekly training split, and recommend evidence-based health habits. How can I assist your training today?`;
+      finalText = `I am FitCoach AI, your personal fitness and wellness intelligence assistant. I can calculate your personalized macros, explore structured workout routines, log your weekly training split, and recommend evidence-based health habits. How can I assist your training today?`;
     }
 
     return NextResponse.json({ text: finalText, toolsUsed, cardData });

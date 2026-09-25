@@ -110,12 +110,13 @@ export default function ChatInterface() {
       }
 
       // Extract user profile from response if mentioned
-      if (data.text && data.toolsUsed?.includes('calculate_macros_and_bmr') && data.cardData?.[0]?.data) {
-        const macroData = data.cardData[0].data;
+      const macroCard = data.cardData?.find((c: CardData) => c.cardType === 'macro_card');
+      if (macroCard?.data) {
+        const macroData = macroCard.data as Record<string, unknown>;
         saveProfile({
           ...profile,
-          ...(macroData.goal && { goal: macroData.goal as string }),
-          ...(macroData.activity_level && { activity_level: macroData.activity_level as string }),
+          ...(macroData.goal ? { goal: String(macroData.goal) } : {}),
+          ...(macroData.activity_level ? { activity_level: String(macroData.activity_level) } : {}),
         });
       }
 
