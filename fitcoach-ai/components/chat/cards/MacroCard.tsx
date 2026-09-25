@@ -32,62 +32,62 @@ export default function MacroCard({ data }: { data: MacroData }) {
   const fatPct = Math.round((data.fat_g * 9 / totalCals) * 100);
 
   return (
-    <div className="my-1.5 p-3.5 sm:p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm animate-fade-up">
+    <div className="my-1 p-2 sm:p-2.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xs animate-fade-up">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60">
-            <Flame className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300" />
+      <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center gap-1.5">
+          <div className="p-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-700/60">
+            <Flame className="w-3 h-3 text-neutral-700 dark:text-neutral-300" />
           </div>
           <div>
-            <div className="text-[9px] font-mono uppercase tracking-widest text-neutral-500">Daily Targets</div>
-            <div className="text-xs font-semibold text-neutral-800 dark:text-white">{goalLabel[data.goal] || data.goal}</div>
+            <div className="text-[8px] font-mono uppercase tracking-widest text-neutral-500">Daily Targets</div>
+            <div className="text-[11px] font-semibold text-neutral-800 dark:text-white leading-tight">{goalLabel[data.goal] || data.goal}</div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-lg sm:text-xl font-semibold text-neutral-800 dark:text-white font-sans">{data.target_calories.toLocaleString()}</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase tracking-wider">kcal / day</div>
+          <div className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white font-sans leading-tight">{data.target_calories.toLocaleString()}</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase tracking-wider">kcal / day</div>
         </div>
       </div>
 
       {/* Macro bars */}
-      <div className="flex gap-1 h-1.5 rounded-full overflow-hidden mb-3 bg-neutral-100 dark:bg-neutral-800">
+      <div className="flex gap-1 h-1 rounded-full overflow-hidden mb-1.5 bg-neutral-100 dark:bg-neutral-800">
         <div className="bg-neutral-800 dark:bg-neutral-100 rounded-full transition-all duration-500" style={{ width: `${proteinPct}%` }} />
         <div className="bg-neutral-500 dark:bg-neutral-400 rounded-full transition-all duration-500" style={{ width: `${carbsPct}%` }} />
         <div className="bg-neutral-300 dark:bg-neutral-600 rounded-full transition-all duration-500" style={{ width: `${fatPct}%` }} />
       </div>
 
       {/* Macros */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        <div className="p-2 sm:p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
-          <Beef className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
-          <div className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">{data.protein_g}g</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase">Protein</div>
-          <div className="text-[9px] text-neutral-400 dark:text-neutral-500 font-mono">{proteinPct}%</div>
+      <div className="grid grid-cols-3 gap-1 mb-1.5">
+        <div className="p-1 sm:p-1.5 rounded-md bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
+          <Beef className="w-3 h-3 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
+          <div className="text-xs sm:text-[13px] font-semibold text-neutral-800 dark:text-white leading-tight">{data.protein_g}g</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase">Protein</div>
+          <div className="text-[8px] text-neutral-400 dark:text-neutral-500 font-mono">{proteinPct}%</div>
         </div>
-        <div className="p-2 sm:p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
-          <Wheat className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
-          <div className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">{data.carbs_g}g</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase">Carbs</div>
-          <div className="text-[9px] text-neutral-400 dark:text-neutral-500 font-mono">{carbsPct}%</div>
+        <div className="p-1 sm:p-1.5 rounded-md bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
+          <Wheat className="w-3 h-3 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
+          <div className="text-xs sm:text-[13px] font-semibold text-neutral-800 dark:text-white leading-tight">{data.carbs_g}g</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase">Carbs</div>
+          <div className="text-[8px] text-neutral-400 dark:text-neutral-500 font-mono">{carbsPct}%</div>
         </div>
-        <div className="p-2 sm:p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
-          <Droplets className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
-          <div className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">{data.fat_g}g</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase">Fat</div>
-          <div className="text-[9px] text-neutral-400 dark:text-neutral-500 font-mono">{fatPct}%</div>
+        <div className="p-1 sm:p-1.5 rounded-md bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/70 dark:border-neutral-700/50 text-center">
+          <Droplets className="w-3 h-3 text-neutral-700 dark:text-neutral-300 mx-auto mb-0.5" />
+          <div className="text-xs sm:text-[13px] font-semibold text-neutral-800 dark:text-white leading-tight">{data.fat_g}g</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase">Fat</div>
+          <div className="text-[8px] text-neutral-400 dark:text-neutral-500 font-mono">{fatPct}%</div>
         </div>
       </div>
 
       {/* BMR / TDEE */}
-      <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-neutral-200 dark:border-neutral-800">
+      <div className="grid grid-cols-2 gap-1 pt-1.5 border-t border-neutral-200 dark:border-neutral-800">
         <div className="text-center">
-          <div className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">{data.bmr.toLocaleString()} kcal</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase">BMR (Resting)</div>
+          <div className="text-[10px] sm:text-[11px] font-semibold text-neutral-800 dark:text-neutral-200">{data.bmr.toLocaleString()} kcal</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase">BMR (Resting)</div>
         </div>
         <div className="text-center">
-          <div className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">{data.tdee.toLocaleString()} kcal</div>
-          <div className="text-[9px] font-mono text-neutral-500 uppercase">TDEE ({activityLabel[data.activity_level] || data.activity_level})</div>
+          <div className="text-[10px] sm:text-[11px] font-semibold text-neutral-800 dark:text-neutral-200">{data.tdee.toLocaleString()} kcal</div>
+          <div className="text-[8px] font-mono text-neutral-500 uppercase">TDEE ({activityLabel[data.activity_level] || data.activity_level})</div>
         </div>
       </div>
     </div>
