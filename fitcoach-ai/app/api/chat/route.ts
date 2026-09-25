@@ -180,6 +180,33 @@ function parseLocalMacroParams(text: string, profile: Record<string, unknown> = 
   return { weight, height, age, gender, goal, activity };
 }
 
+function generateToolCompanionText(toolName?: string, data?: Record<string, unknown>): string {
+  switch (toolName) {
+    case 'calculate_macros_and_bmr': {
+      const cals = data?.target_calories || 2200;
+      return `Calculated your personalized metabolic baselines and macro distribution. Your daily caloric target is **${cals} kcal/day**. Meet these targets consistently with nutrient-dense foods to achieve your body composition goal.`;
+    }
+    case 'get_workout': {
+      const name = data?.name || 'routine';
+      return `Loaded the **${name}** routine with target sets, reps, and form guidance. Review the protocol card above to begin your session.`;
+    }
+    case 'list_workouts':
+      return `Retrieved curated workout routines matching your criteria from the catalog. Choose a routine to view complete exercise details.`;
+    case 'get_fruit_nutrition': {
+      const fruit = data?.name || 'fruit';
+      return `Retrieved nutritional breakdown for **${fruit}** per 100g serving from the nutrition database.`;
+    }
+    case 'get_recommended_habit': {
+      const habit = data?.title || 'habit';
+      return `Here is your science-backed recommendation: **${habit}**. Consistent implementation reinforces systemic recovery.`;
+    }
+    case 'log_workout_routine':
+      return `Successfully logged your workout split into active session memory.`;
+    default:
+      return `Processed your request and rendered your fitness intelligence card above.`;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { messages, userProfile } = await request.json();
@@ -277,9 +304,19 @@ export async function POST(request: NextRequest) {
               });
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const followUp: any = await Promise.race([chat.sendMessage(functionResponses), timeoutPromise]);
-            const finalText = followUp.response.text();
+            let finalText = '';
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const followUpPromise: Promise<any> = chat.sendMessage(functionResponses);
+              const followUpTimeout = new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error('Followup timeout')), 2500)
+              );
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const followUp: any = await Promise.race([followUpPromise, followUpTimeout]);
+              finalText = followUp.response.text();
+            } catch {
+              finalText = generateToolCompanionText(toolsUsed[0], cardData[0]?.data as Record<string, unknown>);
+            }
             return NextResponse.json({ text: finalText, toolsUsed, cardData, modelUsed: modelName });
           } else {
             return NextResponse.json({ text: response.text(), toolsUsed, cardData, modelUsed: modelName });
