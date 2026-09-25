@@ -267,7 +267,7 @@ export default function ChatInterface() {
 
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-up`}>
-            <div className={`max-w-[70%] sm:max-w-[62%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
+            <div className={`max-w-[80%] sm:max-w-[76%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
               {/* Model & Tools used badges */}
               {msg.role === 'model' && (
                 <div className="flex flex-wrap items-center gap-1.5 mb-1">
@@ -296,7 +296,7 @@ export default function ChatInterface() {
               {/* Message bubble */}
               {msg.parts[0].text && (
                 <div
-                  className={`px-3 py-2 rounded-xl text-xs sm:text-[12.5px] leading-relaxed font-light ${
+                  className={`px-4 py-3 rounded-2xl text-sm leading-relaxed font-light ${
                     msg.role === 'user'
                       ? 'bg-neutral-800 text-white dark:bg-white dark:text-neutral-950 rounded-br-xs shadow-xs'
                       : 'bg-[#f8f7f5] dark:bg-neutral-800/80 text-neutral-800 dark:text-neutral-200 rounded-bl-xs border border-neutral-200 dark:border-neutral-700/60 shadow-xs'
