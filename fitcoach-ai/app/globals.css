@@ -54,37 +54,37 @@
 /* Dedicated ultra-minimal, clearly visible scrollbar for chat window */
 .scrollbar-minimal {
   scrollbar-width: thin;
-  scrollbar-color: rgba(163, 163, 163, 0.45) transparent;
+  scrollbar-color: rgba(160, 160, 160, 0.6) transparent;
   overscroll-behavior: contain;
 }
 .dark .scrollbar-minimal {
-  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
 }
 .scrollbar-minimal::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 .scrollbar-minimal::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.04);
   border-radius: 9999px;
-  margin: 6px 0;
+  margin: 8px 0;
 }
 .dark .scrollbar-minimal::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 9999px;
 }
 .scrollbar-minimal::-webkit-scrollbar-thumb {
-  background: rgba(163, 163, 163, 0.45);
+  background: rgba(160, 160, 160, 0.6);
   border-radius: 9999px;
   transition: background 0.2s ease;
 }
 .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
-  background: rgba(115, 115, 115, 0.75);
+  background: rgba(100, 100, 100, 0.9);
 }
 .dark .scrollbar-minimal::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.5);
 }
 .dark .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Animated typing wave dots */

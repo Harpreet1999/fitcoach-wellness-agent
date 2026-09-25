@@ -248,7 +248,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[680px] lg:h-full lg:max-h-full min-h-0 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
+    <div className="flex flex-col h-[600px] sm:h-[650px] lg:h-[663px] max-h-[85vh] lg:max-h-[663px] min-h-0 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-black/5 dark:shadow-black/40 overflow-hidden transition-colors duration-200">
       {/* Chat header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-[#f8f7f5] dark:bg-neutral-950/60">
         <div className="flex items-center gap-3">
