@@ -106,7 +106,14 @@ Available workout IDs in the catalog: push_day_strength, pull_day_hypertrophy, l
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
-const CANDIDATE_MODELS = ['gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+const CANDIDATE_MODELS = [
+  'gemini-3.5-flash-lite',
+  'gemini-flash-lite-latest',
+  'gemini-3.1-flash-lite',
+  'gemini-3.5-flash',
+  'gemini-2.0-flash',
+  'gemini-1.5-flash',
+];
 
 interface ParsedMacroParams {
   weight: number;
@@ -269,9 +276,9 @@ export async function POST(request: NextRequest) {
 
           const followUp = await chat.sendMessage(functionResponses);
           const finalText = followUp.response.text();
-          return NextResponse.json({ text: finalText, toolsUsed, cardData });
+          return NextResponse.json({ text: finalText, toolsUsed, cardData, modelUsed: modelName });
         } else {
-          return NextResponse.json({ text: response.text(), toolsUsed, cardData });
+          return NextResponse.json({ text: response.text(), toolsUsed, cardData, modelUsed: modelName });
         }
       } catch (err) {
         console.warn(`Model ${modelName} failed or rate-limited:`, err instanceof Error ? err.message : err);
@@ -413,7 +420,7 @@ export async function POST(request: NextRequest) {
       finalText = `I am FitCoach AI, your personal fitness and wellness intelligence assistant. I can calculate your personalized macros, explore structured workout routines, log your weekly training split, and recommend evidence-based health habits. How can I assist your training today?`;
     }
 
-    return NextResponse.json({ text: finalText, toolsUsed, cardData });
+    return NextResponse.json({ text: finalText, toolsUsed, cardData, modelUsed: 'Local Engine' });
   } catch (err: unknown) {
     console.error('Chat API fatal error:', err);
     const msg = err instanceof Error ? err.message : 'Unknown error';
