@@ -137,10 +137,23 @@ export default function ChatInterface() {
         }),
       });
 
-      const data = await res.json();
+      let data: any = null;
+      try {
+        const text = await res.text();
+        data = JSON.parse(text);
+      } catch {
+        data = null;
+      }
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to get response');
+      if (!res.ok || !data) {
+        const serverError = data?.error;
+        if (serverError) {
+          throw new Error(serverError);
+        }
+        if (res.status === 504 || res.status === 408) {
+          throw new Error('Agent request timed out. Please try again.');
+        }
+        throw new Error('Agent service is temporarily unavailable. Please try your prompt again.');
       }
 
       // Extract user profile from response if mentioned
