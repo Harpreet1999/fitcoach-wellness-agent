@@ -7,6 +7,8 @@ import MacroCard from './cards/MacroCard';
 import WorkoutCard from './cards/WorkoutCard';
 import HabitCard from './cards/HabitCard';
 import NutritionCard from './cards/NutritionCard';
+import TimelineCard from './cards/TimelineCard';
+import DietPlanCard from './cards/DietPlanCard';
 import { WorkoutLogCard, WorkoutListCard } from './cards/WorkoutListCards';
 import { saveMessages, loadMessages, saveWorkoutLog, getProfile, saveProfile, clearSession as clearMemorySession } from '@/lib/memory';
 
@@ -69,6 +71,10 @@ function CardRenderer({ cards }: { cards: CardData[] }) {
         switch (card.cardType) {
           case 'macro_card':
             return <MacroCard key={i} data={card.data as unknown as Parameters<typeof MacroCard>[0]['data']} />;
+          case 'timeline_card':
+            return <TimelineCard key={i} data={card.data as unknown as Parameters<typeof TimelineCard>[0]['data']} />;
+          case 'diet_plan_card':
+            return <DietPlanCard key={i} data={card.data as unknown as Parameters<typeof DietPlanCard>[0]['data']} />;
           case 'workout_detail':
             return <WorkoutCard key={i} data={card.data as unknown as Parameters<typeof WorkoutCard>[0]['data']} />;
           case 'workout_log':
@@ -171,12 +177,17 @@ export default function ChatInterface() {
 
       // Extract user profile from response if mentioned
       const macroCard = data.cardData?.find((c: CardData) => c.cardType === 'macro_card');
-      if (macroCard?.data) {
-        const macroData = macroCard.data as Record<string, unknown>;
+      const timelineCard = data.cardData?.find((c: CardData) => c.cardType === 'timeline_card');
+      if (macroCard?.data || timelineCard?.data) {
+        const macroData = (macroCard?.data || {}) as Record<string, unknown>;
+        const timelineData = (timelineCard?.data || {}) as Record<string, unknown>;
         saveProfile({
           ...profile,
           ...(macroData.goal ? { goal: String(macroData.goal) } : {}),
           ...(macroData.activity_level ? { activity_level: String(macroData.activity_level) } : {}),
+          ...(timelineData.current_weight_kg ? { weight_kg: Number(timelineData.current_weight_kg) } : {}),
+          ...(timelineData.target_weight_kg ? { target_weight_kg: Number(timelineData.target_weight_kg) } : {}),
+          ...(timelineData.goal ? { goal: String(timelineData.goal) } : {}),
         });
       }
 

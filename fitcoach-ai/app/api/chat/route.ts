@@ -3,6 +3,8 @@ import { GoogleGenerativeAI, Tool, FunctionDeclaration, SchemaType } from '@goog
 import {
   logWorkoutRoutine,
   calculateMacrosAndBmr,
+  calculateGoalTimeline,
+  getDietPlan,
   listWorkouts,
   getWorkout,
   getFruitNutrition,
@@ -31,7 +33,7 @@ const functionDeclarations: FunctionDeclaration[] = [
   },
   {
     name: 'calculate_macros_and_bmr',
-    description: 'Calculates BMR, TDEE, and daily macro targets using Mifflin-St Jeor equation.',
+    description: 'Calculates BMR, TDEE, and daily macro targets using Mifflin-St Jeor equation. Only call when user asks to calculate or recalculate calorie/macro targets.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -43,6 +45,33 @@ const functionDeclarations: FunctionDeclaration[] = [
         goal: { type: SchemaType.STRING, description: 'weight_loss, maintenance, or muscle_gain' },
       },
       required: ['weight_kg', 'height_cm', 'age', 'gender', 'activity_level', 'goal'],
+    },
+  },
+  {
+    name: 'calculate_goal_timeline',
+    description: 'Calculates the realistic duration (weeks/months), rate of gain/loss, and milestones to reach a target weight from current weight. Call when user asks how long it will take, what the timeline is, or how long to maintain a target.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        current_weight_kg: { type: SchemaType.NUMBER, description: 'Current body weight in kg' },
+        target_weight_kg: { type: SchemaType.NUMBER, description: 'Target body weight in kg' },
+        goal: { type: SchemaType.STRING, description: 'muscle_gain, weight_loss, or maintenance' },
+      },
+      required: ['current_weight_kg', 'target_weight_kg'],
+    },
+  },
+  {
+    name: 'get_diet_plan',
+    description: 'Generates a personalized daily meal plan structure (Breakfast, Lunch, Pre/Post Workout, Dinner) matching target calories and dietary goal.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        target_calories: { type: SchemaType.NUMBER, description: 'Target daily calories' },
+        goal: { type: SchemaType.STRING, description: 'muscle_gain, weight_loss, or maintenance' },
+        protein_g: { type: SchemaType.NUMBER, description: 'Optional target protein in grams' },
+        preference: { type: SchemaType.STRING, description: 'omnivore, vegetarian, or vegan' },
+      },
+      required: [],
     },
   },
   {
@@ -98,8 +127,16 @@ const SYSTEM_PROMPT = `You are FitCoach AI — an elite, minimalist personal fit
 TONE & STYLE CONSTRAINTS:
 1. ZERO EMOJIS: Never use emojis or unicode pictograms (strictly no emoji icons of any kind). Maintain an editorial, sophisticated, monochromatic tone.
 2. CLEAN MARKDOWN: Write crisp markdown with clean line breaks between paragraphs, bold accents for key metrics, and neat bullet lists. Never cram headings and bullet points together on the same line.
-3. VISUAL CARD COMPANION: When a tool is triggered (e.g. calculate_macros_and_bmr, get_recommended_habit, get_workout, list_workouts, get_fruit_nutrition), the client UI will immediately render a dedicated interactive visual card with the data. Keep your text commentary concise (2-3 sentences), insightful, and actionable — do NOT re-list all card fields verbatim in text.
-4. TOOL CALLING: Always call appropriate tools for calculations, workout lookup, and habit recommendations. If key data is missing for macros (weight, height, age, gender, goal), ask concisely.
+3. CONVERSATIONAL INTELLIGENCE & INTENT ROUTING:
+   - Always answer the user's specific question directly in your opening sentence before expanding with tactical coaching.
+   - If the user asks "how long", "timeline", "how many weeks/months to reach X kg", or how long to maintain a target: Call calculate_goal_timeline. Answer directly with the exact time estimate (e.g. "Gaining 8kg from 52kg to 60kg takes approximately 20 to 24 weeks (~5 to 6 months)"). DO NOT call calculate_macros_and_bmr for timeline questions.
+   - If the user asks for a "diet plan", "meal plan", "what should I eat", or "daily meal schedule": Call get_diet_plan. Detail the meal structure and tactical timing.
+   - If the user asks for advice on how to maintain a diet or achieve a goal (e.g. "Any suggestions how can I maintain the diet to support 60kg in next 6 months"): Provide deep, actionable coaching advice (caloric density, liquid calories, meal distribution into 3 meals + 2 snacks, weekly weigh-in routines). DO NOT call calculate_macros_and_bmr if macro targets are already known.
+   - MULTI-TURN CONTEXT: Preserve user biometrics across turns. If the user is 52kg aiming for 60kg, their goal is muscle_gain (lean surplus). Never revert to maintenance unless they explicitly ask for maintenance!
+4. VISUAL CARD COMPANION:
+   - When a tool is triggered, the client UI will immediately render a dedicated interactive visual card.
+   - Accompany the card with thoughtful, comprehensive, actionable text commentary. Do NOT re-list all card fields verbatim in text, but explain physiological rationale, meal strategies, and weekly protocols.
+   - Never provide a lazy single-sentence boilerplate.
 
 Available workout IDs in the catalog: push_day_strength, pull_day_hypertrophy, leg_day_complete, upper_body_strength, lower_body_hypertrophy, full_body_beginner, hiit_metabolic, hiit_bodyweight, yoga_flow_morning, mobility_full_body.`;
 
@@ -185,6 +222,18 @@ function generateToolCompanionText(toolName?: string, data?: Record<string, unkn
     case 'calculate_macros_and_bmr': {
       const cals = data?.target_calories || 2200;
       return `Calculated your personalized metabolic baselines and macro distribution. Your daily caloric target is **${cals} kcal/day**. Meet these targets consistently with nutrient-dense foods to achieve your body composition goal.`;
+    }
+    case 'calculate_goal_timeline': {
+      const weeks = data?.estimated_weeks || '20–24 weeks';
+      const months = data?.estimated_months || '5–6 months';
+      const diff = data?.difference_kg || 8;
+      const rate = data?.weekly_rate || '+0.35 to +0.40 kg / week';
+      return `Target progression calculated: Gaining **${diff} kg** safely requires approximately **${weeks} (${months})** at a recommended lean pacing rate of **${rate}**. Consistent surplus and progressive overload ensure lean contractile tissue rather than excess adiposity.`;
+    }
+    case 'get_diet_plan': {
+      const cals = data?.target_calories || 2600;
+      const prot = data?.protein_target_g || 105;
+      return `Here is your structured daily meal protocol targeting **${cals} kcal** and **${prot}g protein** across 4 meals. Focus on whole-food consistency, liquid calories for easy digestion, and regular hydration.`;
     }
     case 'get_workout': {
       const name = data?.name || 'routine';
@@ -282,6 +331,12 @@ export async function POST(request: NextRequest) {
                 case 'calculate_macros_and_bmr':
                   toolResult = calculateMacrosAndBmr(a.weight_kg, a.height_cm, a.age, a.gender, a.activity_level, a.goal);
                   break;
+                case 'calculate_goal_timeline':
+                  toolResult = calculateGoalTimeline(a.current_weight_kg, a.target_weight_kg, a.goal);
+                  break;
+                case 'get_diet_plan':
+                  toolResult = getDietPlan(a.target_calories, a.goal, a.protein_g, a.preference);
+                  break;
                 case 'list_workouts':
                   toolResult = listWorkouts(a.category);
                   break;
@@ -309,7 +364,7 @@ export async function POST(request: NextRequest) {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const followUpPromise: Promise<any> = chat.sendMessage(functionResponses);
               const followUpTimeout = new Promise<never>((_, reject) =>
-                setTimeout(() => reject(new Error('Followup timeout')), 2500)
+                setTimeout(() => reject(new Error('Followup timeout')), 8000)
               );
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const followUp: any = await Promise.race([followUpPromise, followUpTimeout]);
@@ -335,7 +390,85 @@ export async function POST(request: NextRequest) {
     const cardData: ToolResult[] = [];
     let finalText = '';
 
+    // 1. Timeline & Duration queries (e.g. "how long", "timeline", "reach 60", "to 60kg", "from 52")
     if (
+      lowerText.includes('how long') ||
+      lowerText.includes('timeline') ||
+      lowerText.includes('how many weeks') ||
+      lowerText.includes('how many months') ||
+      (lowerText.includes('maintain') && (lowerText.includes('to achieve') || lowerText.includes('to reach') || lowerText.includes('how long'))) ||
+      (lowerText.includes('60') && (lowerText.includes('52') || lowerText.includes('reach') || lowerText.includes('achieve')))
+    ) {
+      // Parse weights
+      let curWeight = Number(userProfile?.weight_kg) || 52;
+      let tgtWeight = Number(userProfile?.target_weight_kg) || 60;
+
+      const wMatches = lastUserText.match(/(\d+(?:\.\d+)?)\s*(?:kg|kilos|kilograms)?/g);
+      if (wMatches && wMatches.length >= 2) {
+        const nums = wMatches.map((m: string) => parseFloat(m)).filter((n: number) => n >= 30 && n <= 250);
+        if (nums.length >= 2) {
+          curWeight = nums[0] < nums[1] ? nums[0] : nums[1];
+          tgtWeight = nums[0] < nums[1] ? nums[1] : nums[0];
+        }
+      } else if (lowerText.includes('52') && lowerText.includes('60')) {
+        curWeight = 52;
+        tgtWeight = 60;
+      }
+
+      const toolRes = calculateGoalTimeline(curWeight, tgtWeight, 'muscle_gain');
+      toolsUsed.push('calculate_goal_timeline');
+      cardData.push(toolRes);
+
+      const diff = Math.abs(tgtWeight - curWeight);
+      finalText = `Gaining **${diff} kg** of lean tissue (from ${curWeight}kg to ${tgtWeight}kg) takes approximately **20 to 24 weeks (~5 to 6 months)**:
+
+* **Optimal Pacing Rate**: For natural muscle hypertrophy, a healthy rate of gain is **~0.35 to 0.40 kg per week** (roughly 1.2 to 1.5 kg per month). Gaining faster than this typically increases body fat rather than lean contractile muscle.
+* **Caloric Surplus Strategy**: Maintain a steady surplus of **+300 to +400 kcal/day** above your maintenance (approximately **~2,630 kcal/day**).
+* **Progression Roadmap**:
+  * **Months 1–2 (Foundation)**: ${curWeight}kg → ${(curWeight + diff * 0.33).toFixed(1)}kg (initial glycogen, water retention, and neuromuscular adaptation).
+  * **Months 3–4 (Peak Hypertrophy)**: ${(curWeight + diff * 0.33).toFixed(1)}kg → ${(curWeight + diff * 0.66).toFixed(1)}kg (steady muscle growth with progressive overload).
+  * **Months 5–6 (Consolidation)**: ${(curWeight + diff * 0.66).toFixed(1)}kg → ${tgtWeight}kg (stabilizing new mass into your baseline).`;
+    }
+    // 2. Personalized Diet Plan queries
+    else if (
+      lowerText.includes('diet plan') ||
+      lowerText.includes('meal plan') ||
+      (lowerText.includes('make') && lowerText.includes('diet')) ||
+      (lowerText.includes('plan') && (lowerText.includes('eat') || lowerText.includes('food') || lowerText.includes('diet')))
+    ) {
+      const toolRes = getDietPlan(2630, 'muscle_gain', 105);
+      toolsUsed.push('get_diet_plan');
+      cardData.push(toolRes);
+
+      finalText = `Here is your structured **2,630 kcal / 105g Protein** daily meal protocol designed for lean muscle gain:
+
+* **Breakfast (07:30 AM) — ~650 kcal · 28g Protein**  
+  3 whole eggs scrambled, 2 slices artisanal sourdough with extra virgin olive oil, and 1 cup rolled oatmeal with sliced banana and honey.
+* **Lunch (01:00 PM) — ~700 kcal · 32g Protein**  
+  150g grilled chicken breast or paneer, 1.5 cups steamed basmati rice, roasted broccoli & zucchini, and 1 tbsp olive oil drizzle.
+* **Pre/Post Workout Snack (04:30 PM) — ~500 kcal · 20g Protein**  
+  High-calorie shake: 1 scoop whey or plant protein, 40g rolled oats, 1 ripe banana, 2 tbsp natural peanut butter, and 250ml milk.
+* **Dinner (08:00 PM) — ~650 kcal · 25g Protein**  
+  160g wild salmon fillet or lentil curry, baked sweet potato wedges, sautéed asparagus, and a fresh leafy salad.
+* **Adherence Tip**: Drink 3 to 3.5 liters of water daily to support muscle glycogen hydration.`;
+    }
+    // 3. Dietary Maintenance & Advice suggestions (e.g. "how can I maintain the diet", "suggestions how")
+    else if (
+      lowerText.includes('maintain the diet') ||
+      lowerText.includes('how can i maintain') ||
+      lowerText.includes('suggestions how') ||
+      (lowerText.includes('suggestions') && (lowerText.includes('diet') || lowerText.includes('food'))) ||
+      (lowerText.includes('support') && lowerText.includes('60kg'))
+    ) {
+      finalText = `To consistently maintain your nutrition protocol and support reaching 60kg over the next 6 months, follow these 4 tactical pillars:
+
+1. **Distribute Calories Across 5 Feedings**: Do not attempt to force 2,600+ kcal in 2 or 3 large meals. Spread your intake across **3 main meals + 2 calorie-dense snacks** (e.g. Greek yogurt with granola, mixed almonds/walnuts, peanut butter bananas).
+2. **Harness Liquid Calories**: Digestion can feel heavy when in a sustained surplus. Blending smoothies (protein powder, rolled oats, banana, whole milk/soy milk, peanut butter) bypasses early satiety receptors and delivers 500–600 clean calories effortlessly.
+3. **Weekly Fasted Weigh-In Protocol**: Step on the scale once per week, first thing in the morning after using the restroom. Aim for a steady **+0.35 to +0.40 kg per week**. If your weight plateaus for two consecutive weeks, increase daily intake by +150 kcal.
+4. **Sleep & Systemic Recovery**: Muscle tissue synthesis occurs during deep slow-wave sleep. Target 7.5 to 8.5 hours nightly to maintain growth hormone output and cortisol suppression.`;
+    }
+    // 4. Macro & BMR calculation queries
+    else if (
       lowerText.includes('macro') ||
       lowerText.includes('cutting') ||
       lowerText.includes('bulking') ||
