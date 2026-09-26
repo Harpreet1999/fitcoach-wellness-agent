@@ -59,7 +59,7 @@ export default function DemoSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* Quick prompt chips */}
           <div className="lg:col-span-4 flex flex-col">
